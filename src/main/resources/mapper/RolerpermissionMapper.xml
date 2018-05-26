@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.RolerpermissionMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Rolerpermission">
+    <id column="FID" jdbcType="INTEGER" property="fid" />
+    <result column="FRoleID" jdbcType="INTEGER" property="froleid" />
+    <result column="FPermissionID" jdbcType="INTEGER" property="fpermissionid" />
+    <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    FID, FRoleID, FPermissionID, FCreateTime
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.RolerpermissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_RoleRPermission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_RoleRPermission
+    where FID = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_RoleRPermission
+    where FID = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.RolerpermissionExample">
+    delete from T_VS_RoleRPermission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Rolerpermission">
+    insert into T_VS_RoleRPermission (FID, FRoleID, FPermissionID, 
+      FCreateTime)
+    values (#{fid,jdbcType=INTEGER}, #{froleid,jdbcType=INTEGER}, #{fpermissionid,jdbcType=INTEGER}, 
+      #{fcreatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Rolerpermission">
+    insert into T_VS_RoleRPermission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        FID,
+      </if>
+      <if test="froleid != null">
+        FRoleID,
+      </if>
+      <if test="fpermissionid != null">
+        FPermissionID,
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="froleid != null">
+        #{froleid,jdbcType=INTEGER},
+      </if>
+      <if test="fpermissionid != null">
+        #{fpermissionid,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatetime != null">
+        #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.RolerpermissionExample" resultType="java.lang.Long">
+    select count(*) from T_VS_RoleRPermission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_RoleRPermission
+    <set>
+      <if test="record.fid != null">
+        FID = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.froleid != null">
+        FRoleID = #{record.froleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fpermissionid != null">
+        FPermissionID = #{record.fpermissionid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fcreatetime != null">
+        FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_RoleRPermission
+    set FID = #{record.fid,jdbcType=INTEGER},
+      FRoleID = #{record.froleid,jdbcType=INTEGER},
+      FPermissionID = #{record.fpermissionid,jdbcType=INTEGER},
+      FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Rolerpermission">
+    update T_VS_RoleRPermission
+    <set>
+      <if test="froleid != null">
+        FRoleID = #{froleid,jdbcType=INTEGER},
+      </if>
+      <if test="fpermissionid != null">
+        FPermissionID = #{fpermissionid,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Rolerpermission">
+    update T_VS_RoleRPermission
+    set FRoleID = #{froleid,jdbcType=INTEGER},
+      FPermissionID = #{fpermissionid,jdbcType=INTEGER},
+      FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP}
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>

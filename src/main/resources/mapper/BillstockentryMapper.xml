@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.BillstockentryMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Billstockentry">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="foid" jdbcType="INTEGER" property="foid" />
+    <result column="fqty" jdbcType="DOUBLE" property="fqty" />
+    <result column="factqty" jdbcType="DOUBLE" property="factqty" />
+    <result column="fentryid" jdbcType="INTEGER" property="fentryid" />
+    <result column="fbillid" jdbcType="INTEGER" property="fbillid" />
+    <result column="fbatch" jdbcType="VARCHAR" property="fbatch" />
+    <result column="fobillid" jdbcType="INTEGER" property="fobillid" />
+    <result column="fonumber" jdbcType="VARCHAR" property="fonumber" />
+    <result column="fmaterialid" jdbcType="INTEGER" property="fmaterialid" />
+    <result column="fstockid" jdbcType="INTEGER" property="fstockid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fid, foid, fqty, factqty, fentryid, fbillid, fbatch, fobillid, fonumber, fmaterialid, 
+    fstockid
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.BillstockentryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_BillStockEntry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_BillStockEntry
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_BillStockEntry
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.BillstockentryExample">
+    delete from T_VS_BillStockEntry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Billstockentry">
+    insert into T_VS_BillStockEntry ( foid, fqty,
+      factqty, fentryid, fbillid, 
+      fbatch, fobillid, fonumber, 
+      fmaterialid, fstockid)
+    values ( #{foid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE},
+      #{factqty,jdbcType=DOUBLE}, #{fentryid,jdbcType=INTEGER}, #{fbillid,jdbcType=INTEGER},
+      #{fbatch,jdbcType=VARCHAR}, #{fobillid,jdbcType=INTEGER}, #{fonumber,jdbcType=VARCHAR}, 
+      #{fmaterialid,jdbcType=INTEGER}, #{fstockid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Billstockentry">
+    insert into T_VS_BillStockEntry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="foid != null">
+        foid,
+      </if>
+      <if test="fqty != null">
+        fqty,
+      </if>
+      <if test="factqty != null">
+        factqty,
+      </if>
+      <if test="fentryid != null">
+        fentryid,
+      </if>
+      <if test="fbillid != null">
+        fbillid,
+      </if>
+      <if test="fbatch != null">
+        fbatch,
+      </if>
+      <if test="fobillid != null">
+        fobillid,
+      </if>
+      <if test="fonumber != null">
+        fonumber,
+      </if>
+      <if test="fmaterialid != null">
+        fmaterialid,
+      </if>
+      <if test="fstockid != null">
+        fstockid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="foid != null">
+        #{foid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="factqty != null">
+        #{factqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fentryid != null">
+        #{fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="fbillid != null">
+        #{fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="fbatch != null">
+        #{fbatch,jdbcType=VARCHAR},
+      </if>
+      <if test="fobillid != null">
+        #{fobillid,jdbcType=INTEGER},
+      </if>
+      <if test="fonumber != null">
+        #{fonumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fmaterialid != null">
+        #{fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="fstockid != null">
+        #{fstockid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.BillstockentryExample" resultType="java.lang.Long">
+    select count(*) from T_VS_BillStockEntry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_BillStockEntry
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.foid != null">
+        foid = #{record.foid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fqty != null">
+        fqty = #{record.fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.factqty != null">
+        factqty = #{record.factqty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fentryid != null">
+        fentryid = #{record.fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fbillid != null">
+        fbillid = #{record.fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fbatch != null">
+        fbatch = #{record.fbatch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fobillid != null">
+        fobillid = #{record.fobillid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fonumber != null">
+        fonumber = #{record.fonumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fmaterialid != null">
+        fmaterialid = #{record.fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fstockid != null">
+        fstockid = #{record.fstockid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_BillStockEntry
+    set fid = #{record.fid,jdbcType=INTEGER},
+      foid = #{record.foid,jdbcType=INTEGER},
+      fqty = #{record.fqty,jdbcType=DOUBLE},
+      factqty = #{record.factqty,jdbcType=DOUBLE},
+      fentryid = #{record.fentryid,jdbcType=INTEGER},
+      fbillid = #{record.fbillid,jdbcType=INTEGER},
+      fbatch = #{record.fbatch,jdbcType=VARCHAR},
+      fobillid = #{record.fobillid,jdbcType=INTEGER},
+      fonumber = #{record.fonumber,jdbcType=VARCHAR},
+      fmaterialid = #{record.fmaterialid,jdbcType=INTEGER},
+      fstockid = #{record.fstockid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Billstockentry">
+    update T_VS_BillStockEntry
+    <set>
+      <if test="foid != null">
+        foid = #{foid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        fqty = #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="factqty != null">
+        factqty = #{factqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fentryid != null">
+        fentryid = #{fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="fbillid != null">
+        fbillid = #{fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="fbatch != null">
+        fbatch = #{fbatch,jdbcType=VARCHAR},
+      </if>
+      <if test="fobillid != null">
+        fobillid = #{fobillid,jdbcType=INTEGER},
+      </if>
+      <if test="fonumber != null">
+        fonumber = #{fonumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fmaterialid != null">
+        fmaterialid = #{fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="fstockid != null">
+        fstockid = #{fstockid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Billstockentry">
+    update T_VS_BillStockEntry
+    set foid = #{foid,jdbcType=INTEGER},
+      fqty = #{fqty,jdbcType=DOUBLE},
+      factqty = #{factqty,jdbcType=DOUBLE},
+      fentryid = #{fentryid,jdbcType=INTEGER},
+      fbillid = #{fbillid,jdbcType=INTEGER},
+      fbatch = #{fbatch,jdbcType=VARCHAR},
+      fobillid = #{fobillid,jdbcType=INTEGER},
+      fonumber = #{fonumber,jdbcType=VARCHAR},
+      fmaterialid = #{fmaterialid,jdbcType=INTEGER},
+      fstockid = #{fstockid,jdbcType=INTEGER}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <select id="sumQTY" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT SUM(factqty) FROM T_VS_BillStockEntry WHERE foid = #{foid,jdbcType=INTEGER}
+  </select>
+  <select id="sumQTYChecked" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT SUM(factqty) FROM T_VS_BillStockEntry E
+    LEFT JOIN T_VS_BillStock S ON S.fid = E.fbillid
+    WHERE foid = #{foid,jdbcType=INTEGER} AND S.fstatus = 1
+  </select>
+  <select id="checkQty" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    <![CDATA[SELECT COUNT(*) FROM T_VS_BillStockEntry WHERE fbillid = #{fbillid,jdbcType=INTEGER} AND factqty <> fqty]]>
+  </select>
+  <select id="getDetail" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT * FROM T_VS_BillStockEntry S
+    LEFT JOIN T_VS_BillCheckEntry C ON C.FID = S.foid
+    LEFT JOIN T_VS_BillEntry E ON E.FID = C.foid
+    LEFT JOIN T_VS_Material M ON M.FID = E.fmaid
+    WHERE S.fbillid = #{fbillid,jdbcType=INTEGER}
+  </select>
+  <select id="checkStatus" parameterType="java.lang.Integer">
+    SELECT COUNT (*) FROM T_VS_BillStockEntry E
+    LEFT JOIN T_VS_BillStock S ON S.fid = E.fbillid
+    WHERE E.foid = #{foid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteBatch">
+    delete from T_VS_BillStockEntry where FID in (
+    <foreach collection="list" item="entry" index="index"
+             separator=",">
+      #{entry.fid}
+    </foreach>
+    )
+
+  </delete>
+</mapper>

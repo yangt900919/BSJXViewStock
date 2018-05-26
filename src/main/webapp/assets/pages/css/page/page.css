@@ -1,0 +1,115 @@
+.page_title
+{
+	margin: 20px auto;
+	height: 41px;
+	width:483px;
+	font-size: 40px;
+	color:#1990dd;
+	font-weight: bold;
+	/* background: url("../../img/page/title_new.png") no-repeat center;
+	 background-size:100% 100%; */
+}
+.page_button
+{
+	margin: 20px auto;
+	height: 41px;
+/* 	width:100px; */
+}
+#home{
+	background-color: #1990dd;
+	border-color:#1990dd;
+	color:#eef7fc;
+}
+#back
+{
+	border-color:#1990dd;
+	color:#1990dd;
+	background-color: #ffffff;
+}
+.main_body
+{
+/* background-color: #edf8fc; */
+}
+.page_head
+{
+	margin-top: 25px;
+	text-align: center;
+}
+.flag
+{
+display: inline; 
+float: right; 
+}
+@media screen and (min-width:1367px) and (max-width:1920px){
+.page-body
+{
+	margin:1%;
+	margin-top: 2%;
+	/* background-color: #13d0e6; */
+	border: 2px solid #42abf7;
+	border-radius:5px; 
+}
+}
+@media screen and (min-width:1281px) and (max-width:1366px){
+	.page-body
+{
+	margin:1%;
+/* 	background-color: #13d0e6; */
+	border: 2px solid #42abf7;
+	border-radius:5px; 
+}
+
+	}
+@media screen  and (max-width:1280px){	
+	.page-body
+{
+	margin:1%;
+	margin-top: 3%;
+/* 	background-color: #13d0e6; */
+	border: 2px solid #42abf7;
+	border-radius:5px; 
+}
+	}
+.page-navbar
+{
+/* 	height:8%; */
+	/*  background: -webkit-linear-gradient(#42abf7, #42abf7); Safari 5.1 - 6.0
+    background: -o-linear-gradient(#42abf7, #42abf7); Opera 11.1 - 12.0
+    background: -moz-linear-gradient(#42abf7, #42abf7); Firefox 3.6 - 15
+    background: linear-gradient(#42abf7, #42abf7); ��׼���﷨ */
+    background-color:#42abf7  !important;
+    box-shadow:0px 0px 10px rgba(255,255,255,0.63) !important ;
+    height: 70px !important;
+    line-height: 70px !important;
+/*     line-height: 8%; */
+}
+.logo-default {
+   
+    height:160% !important;
+}
+/* .pull-right
+{
+	float:right !important;
+	border: 1px solid red;
+} */
+.top-a
+{
+	color:#ffffff !important;
+	font-size: 20px !important;
+	font-weight: bold !important;
+}
+.top-a:HOVER {
+	color:blue !important;
+}
+.main-top
+{
+	margin: 20px;
+}
+.tl
+{
+	border: 5px dotted #c1ddf0;
+}
+.page-body>.row
+{
+	margin: 1%;
+}

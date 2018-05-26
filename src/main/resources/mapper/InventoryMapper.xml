@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.InventoryMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Inventory">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fmaid" jdbcType="INTEGER" property="fmaid" />
+    <result column="fgoodseatid" jdbcType="INTEGER" property="fgoodseatid" />
+    <result column="fstockid" jdbcType="INTEGER" property="fstockid" />
+    <result column="fqty" jdbcType="DOUBLE" property="fqty" />
+    <result column="fdate" jdbcType="TIMESTAMP" property="fdate" />
+    <result column="fmdate" jdbcType="TIMESTAMP" property="fmdate" />
+    <result column="fgperiod" jdbcType="DOUBLE" property="fgperiod" />
+    <result column="fbatch" jdbcType="VARCHAR" property="fbatch" />
+
+    <association property="material" javaType="com.linkpal.model.Material">
+      <id column="fmaid" jdbcType="INTEGER" property="fid" />
+      <result column="materialNumber" jdbcType="VARCHAR" property="materialnumber" />
+      <result column="materialName" jdbcType="VARCHAR" property="materialname" />
+      <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
+      <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
+    </association>
+
+    <association property="goodseat" javaType="com.linkpal.model.Goodseat">
+      <id column="gID" property="fid"/>
+      <result column="gNumber" property="fnumber"/>
+    </association>
+
+    <association property="stock" javaType="com.linkpal.model.Stock">
+      <id column="fstid" jdbcType="INTEGER" property="fid" />
+      <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
+      <result column="stockName" jdbcType="VARCHAR" property="stockname" />
+      <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
+      <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+    </association>
+
+    <association property="cabinet" javaType="com.linkpal.model.Cabinet">
+      <id column="cID" property="fid"/>
+      <result column="cNumber" property="fnumber"/>
+      <result column="cName" property="fname"/>
+    </association>
+
+    <association property="scabinet" javaType="com.linkpal.model.Scabinet">
+      <id column="scID" property="fid"/>
+      <result column="scNumber" property="fnumber"/>
+      <result column="scName" property="fname"/>
+    </association>
+    
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fid, fmaid, fgoodseatid, fstockid, fqty, fdate, fmdate, fgperiod
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.InventoryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_Inventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_Inventory
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_Inventory
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.InventoryExample">
+    delete from T_VS_Inventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Inventory">
+    insert into T_VS_Inventory (fid, fmaid, fgoodseatid, 
+      fstockid, fqty, fdate, 
+      fmdate, fgperiod)
+    values (#{fid,jdbcType=INTEGER}, #{fmaid,jdbcType=INTEGER}, #{fgoodseatid,jdbcType=INTEGER}, 
+      #{fstockid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE}, #{fdate,jdbcType=TIMESTAMP}, 
+      #{fmdate,jdbcType=TIMESTAMP}, #{fgperiod,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Inventory">
+    insert into T_VS_Inventory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="fmaid != null">
+        fmaid,
+      </if>
+      <if test="fgoodseatid != null">
+        fgoodseatid,
+      </if>
+      <if test="fstockid != null">
+        fstockid,
+      </if>
+      <if test="fqty != null">
+        fqty,
+      </if>
+      <if test="fdate != null">
+        fdate,
+      </if>
+      <if test="fmdate != null">
+        fmdate,
+      </if>
+      <if test="fgperiod != null">
+        fgperiod,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fmaid != null">
+        #{fmaid,jdbcType=INTEGER},
+      </if>
+      <if test="fgoodseatid != null">
+        #{fgoodseatid,jdbcType=INTEGER},
+      </if>
+      <if test="fstockid != null">
+        #{fstockid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fdate != null">
+        #{fdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fmdate != null">
+        #{fmdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fgperiod != null">
+        #{fgperiod,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.InventoryExample" resultType="java.lang.Long">
+    select count(*) from T_VS_Inventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_Inventory
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fmaid != null">
+        fmaid = #{record.fmaid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fgoodseatid != null">
+        fgoodseatid = #{record.fgoodseatid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fstockid != null">
+        fstockid = #{record.fstockid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fqty != null">
+        fqty = #{record.fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fdate != null">
+        fdate = #{record.fdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fmdate != null">
+        fmdate = #{record.fmdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fgperiod != null">
+        fgperiod = #{record.fgperiod,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_Inventory
+    set fid = #{record.fid,jdbcType=INTEGER},
+      fmaid = #{record.fmaid,jdbcType=INTEGER},
+      fgoodseatid = #{record.fgoodseatid,jdbcType=INTEGER},
+      fstockid = #{record.fstockid,jdbcType=INTEGER},
+      fqty = #{record.fqty,jdbcType=DOUBLE},
+      fdate = #{record.fdate,jdbcType=TIMESTAMP},
+      fmdate = #{record.fmdate,jdbcType=TIMESTAMP},
+      fgperiod = #{record.fgperiod,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Inventory">
+    update T_VS_Inventory
+    <set>
+      <if test="fmaid != null">
+        fmaid = #{fmaid,jdbcType=INTEGER},
+      </if>
+      <if test="fgoodseatid != null">
+        fgoodseatid = #{fgoodseatid,jdbcType=INTEGER},
+      </if>
+      <if test="fstockid != null">
+        fstockid = #{fstockid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        fqty = #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fdate != null">
+        fdate = #{fdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fmdate != null">
+        fmdate = #{fmdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fgperiod != null">
+        fgperiod = #{fgperiod,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Inventory">
+    update T_VS_Inventory
+    set fmaid = #{fmaid,jdbcType=INTEGER},
+      fgoodseatid = #{fgoodseatid,jdbcType=INTEGER},
+      fstockid = #{fstockid,jdbcType=INTEGER},
+      fqty = #{fqty,jdbcType=DOUBLE},
+      fdate = #{fdate,jdbcType=TIMESTAMP},
+      fmdate = #{fmdate,jdbcType=TIMESTAMP},
+      fgperiod = #{fgperiod,jdbcType=DOUBLE}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="getList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select top ${pageSize} t0.*,t1.fid fmaid,t1.materialNumber ,t1.materialName ,t1.materialModel ,
+    t2.fid gID,t2.fnumber gNumber,'' gName,
+    t3.fid fstid,t3.stockNumber ,t3.stockName ,t4.fid cID,
+    t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber
+    from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    where  t0.fqty>0 and t0.fid not in (
+    select top ${pageIndex} tt0.fid from T_VS_Inventory tt0
+    left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
+    left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    where  tt0.fqty>0 and   convert(varchar,fdate,23) between #{sdate} and #{edate}
+    <if test="fmaid>0">
+      and tt0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and tt0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="fstockid>0">
+      and tt0.fstockid =#{fstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+
+
+
+
+    order by tt2.fnumber
+    )
+    <if test="fmaid>0">
+      and t0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and t0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="fstockid>0">
+      and t0.fstockid =#{fstockid} 		</if>
+    <if test="fcabinetid>0">
+      and t5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and t4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+    <!-- <if test="FSdate!='' and  FSdate!=null">
+    and convert(varchar,t0.fdate,23)=#{FSdate}
+    </if> -->
+
+    and convert(varchar,t0.fdate,23) between #{sdate} and #{edate}
+    order by t2.fnumber
+  </select>
+
+  <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_Inventory tt0
+    left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
+    left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    where  tt0.fqty>0 and   convert(varchar,fdate,23) between #{sdate} and #{edate}
+    <if test="fmaid>0">
+      and tt0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and tt0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="fstockid>0">
+      and tt0.fstockid =#{fstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+
+
+
+  </select>
+</mapper>

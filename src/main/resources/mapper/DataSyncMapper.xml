@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 文件的命名 表名 + Mapper -->
+
+<!-- namespace:接口包 + 接口名
+	
+ -->
+<mapper namespace="com.linkpal.map.IDataSyncMapper">
+
+
+	<select id="getHeadData" resultType="java.util.Map"  parameterType="java.util.Map">
+		<if test="billtype=='RKD'">
+
+			select t.fid,t.fnumber,convert(varchar,t.fbizdate,23) fdate,isnull(t1.supplierName,'')
+			fsupplier,isnull(t2.userName,'') fuser,t.fboxno,t.fisqt from t_vs_billstock t
+			left join T_VS_Supplier t1 on t.fsupplierid=t1.fid
+			left join T_VS_User t2 on t.fkeeperid=t2.fid
+			where t.fstatus=0 and t2.username=#{username}
+            order by t.fnumber
+
+		</if>
+		<if test="billtype=='LLD'">
+
+			select t.fid,t.fnumber,convert(varchar,t.fdodate,23) fdate,isnull(t1.organizationName,'')
+			fdepart,isnull(t2.userName,'') fuser,t.fisqt from T_VS_BillGet t
+			left join T_VS_Organization t1 on t.fdepartmentid=t1.fid
+			left join T_VS_User t2 on t.fsenderid=t2.fid
+			where t.fstate=0 and t2.username=#{username}
+			order by fnumber
+		</if>
+
+		<if test="billtype=='QT'">
+			select t.fid,t.fbillno fsrc_number,t.fboxno,t.fbillid fsrc_billid,t.fentryid fsrc_entryid,t1.materialNumber manum,
+			t1.materialName maname,t1.materialUnit maunit,t.fqty from T_VS_Homogeneity t
+			inner join T_VS_Material t1 on t.fmaterialid=t1.fid
+           where t.fboxno=#{username}
+		</if>
+
+	</select>
+
+	<select id="getEntryData" resultType="java.util.Map"  parameterType="java.util.Map">
+		<if test="billtype=='RKD'">
+			select t.fbillid,t.fentryid,t1.materialNumber manum,t1.materialName maname,
+			t1.materialModel mamodel,t1.materialUnit maunit,t.fqty fqty,isnull(t.factqty,0) factqty,
+			case when isnull(t.factqty,0)=0 then '未上架' when t.factqty &gt; 0 and t.factqty &lt; t.fqty then '上架中' when t.fqty=t.factqty then '已上架' end
+			fstate,isnull(t2.stockname,'') fstock,dbo.getRecommandGS(t1.materialnumber,'RKD') fgoodseat,t.fonumber fsrc_number,t.fobillid fsrc_billid,t.foid fsrc_entryid  from T_VS_BillStockEntry t
+			left join T_VS_Material t1 on t.fmaterialid=t1.fid
+			left join T_VS_Stock t2 on t.fstockid=t2.fid
+			where t.fbillid=#{fid}
+            and t.fqty!=isnull(t.factqty,0)
+
+		</if>
+		<if test="billtype=='LLD'">
+
+			select t.fbillid,t.fentryid,t1.materialNumber manum,t1.materialName maname,
+			t1.materialModel mamodel,t1.materialUnit maunit,t.fapplyqty fqty,isnull(t.frealqty,0) factqty,
+			case when isnull(t.frealqty,0)=0 then  '未下架' when  t.frealqty &gt; 0 and t.frealqty &lt; t.fapplyqty then '下架中' when
+			t.frealqty=t.fapplyqty then '已上架' end fstate,isnull(t2.stockname,'') fstock,dbo.getRecommandGS(t1.materialnumber,'LLD') fgoodseat,'' fsrc_number from T_VS_BillGetEntry t
+			left join T_VS_Material t1 on t.fmaterialid=t1.fid
+			left join T_VS_Stock t2 on t.fsendstockid=t2.fid
+			where t.fbillid=#{fid}
+            and isnull(t.frealqty,0)!=isnull(t.fapplyqty,0)
+
+		</if>
+	</select>
+
+
+	<select id="dataSave" statementType="CALLABLE"  resultType="java.util.Map"  parameterType="java.util.Map">
+		<if test="ftype=='czjl'">
+			exec Proc_SaveOperateLog #{_id},#{fnumber},#{fbillid},#{fentryid},#{fuser},#{fdate},#{fbilltype},#{manum}
+			,#{fqty},#{factqty},#{fgoodseat},#{fsrc_number},#{fdeviceid},#{fsrc_billid},#{fsrc_entryid}
+		</if>
+		<if test="ftype=='jskc'">
+			exec Proc_SaveInventory #{fsrc_number},#{manum},#{fgoodseat},#{fdate},#{fqty},#{fsrc_billid},#{fsrc_entryid}
+		</if>
+	</select>
+	
+	
+</mapper>

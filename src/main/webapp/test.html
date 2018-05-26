@@ -1,0 +1,219 @@
+<!--<!DOCTYPE html>
+<html>
+    <head>
+        <title>order.html</title>
+
+        <meta name="keywords" content="keyword1,keyword2,keyword3">
+        <meta name="description" content="this is my page">
+        <meta name="content-type" content="text/html; charset=UTF-8">
+
+        <link rel="stylesheet" type="text/css" href=" assets/global/plugins/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href=" assets/pages/css/login.css"/>
+        <link rel="stylesheet" href="assets/global/plugins/bootstrapValidator/css/bootstrapValidator.css"/>
+        <script type="text/javascript" src=" assets/global/plugins/jquery.min.js"></script>
+        <script type="text/javascript" src=" assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/global/plugins/bootstrapValidator/js/bootstrapValidator.js"></script>
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row">
+                &lt;!&ndash; form: &ndash;&gt;
+                <section>
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="page-header">
+                            <h2>Sign up</h2>
+                        </div>
+
+                        <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Full name</label>
+                                <div class="col-lg-4">
+                                    <input type="text" class="form-control" name="firstName" placeholder="First name"/>
+                                </div>
+                                <div class="col-lg-4">
+                                    <input type="text" class="form-control" name="lastName" placeholder="Last name"/>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input type="text" class="form-control" id="FName" name="FName" placeholder="用户名" autofocus
+                                       required>
+                                <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-9 col-lg-offset-3">
+                                    <button type="submit" class="btn btn-primary" name="signup" value="Sign up">Sign up</button>
+                                    <button type="submit" class="btn btn-primary" name="signup2" value="Sign up 2">Sign up 2
+                                    </button>
+                                    <button type="button" class="btn btn-info" id="validateBtn">Manual validate</button>
+                                    <button type="button" class="btn btn-info" id="resetBtn">Reset form</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </section>
+                &lt;!&ndash; :form &ndash;&gt;
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // Generate a simple captcha
+
+                $('#defaultForm').bootstrapValidator({
+        //        live: 'disabled',
+                    message: 'This value is not valid',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        firstName: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The first name is required and cannot be empty'
+                                }
+                            }
+                        },
+                        lastName: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The last name is required and cannot be empty'
+                                }
+                            }
+                        }
+                        ,
+                        FName: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The last name is required and cannot be empty'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Validate the form manually
+                $('#validateBtn').click(function () {
+                    $('#defaultForm').bootstrapValidator('validate');
+                });
+
+                $('#resetBtn').click(function () {
+                    $('#defaultForm').data('bootstrapValidator').resetForm(true);
+                });
+            });
+        </script>
+    </body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+
+    <!-- 页面的宽度与设备屏幕的宽度一致 -->
+    <meta name="viewport" content="width=device-width">
+    <!-- 初始缩放比例 1:1,没有横线滚动的效果 -->
+    <meta name="viewport" content="initial-scale=1">
+    <!-- 禁止用户缩放 -->
+    <meta name="viewport" content="user-scalable=no">
+
+    <!-- 引入外部bootstrap的css文件(压缩版) -->
+    <link rel="stylesheet" type="text/css" href=" assets/global/plugins/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href=" assets/pages/css/login.css" />
+    <link rel="stylesheet" href="assets/global/plugins/bootstrapValidator/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src=" assets/global/plugins/jquery.min.js"></script>
+    <script type="text/javascript" src=" assets/pages/scripts/jquery.jqprint-0.3.js"></script>
+    <script type="text/javascript" src=" assets/pages/scripts/jquery.qrcode.js"></script>
+    <script type="text/javascript" src=" assets/global/plugins/jquery.cookie.js"></script>
+    <script type="text/javascript" src=" assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrapValidator/js/bootstrapValidator.js"></script>
+</head>
+
+<body>
+<!--
+    table-responsive : 要写在表格所在的父元素
+    table的父元素是div，所以在div处写table-responsive
+    效果浏览器也可以查看
+
+    有table-responsive，表格有滚动条
+    没有table-responsive，网页有滚动条
+
+    -->
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr>
+            <td>数字</td>
+            <td>卦名</td>
+            <td>方位</td>
+            <td>属性</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>坎</td>
+            <td>北</td>
+            <td>水</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>坤</td>
+            <td>西南</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>震</td>
+            <td>东</td>
+            <td>木</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>巽</td>
+            <td>东南</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td></td>
+            <td>中</td>
+            <td>土</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>乾</td>
+            <td>西北</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>兑</td>
+            <td>西</td>
+            <td>金</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>艮</td>
+            <td>东北</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>离</td>
+            <td>南</td>
+            <td>火</td>
+        </tr>
+        <tr>
+            <td>占位abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz</td>
+            <td>占位abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz</td>
+            <td>占位abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz</td>
+            <td>占位abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

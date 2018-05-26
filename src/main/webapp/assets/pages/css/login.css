@@ -1,0 +1,74 @@
+.page-head
+{
+	margin:auto;
+	width:100%;
+	height:257px;
+	background: url("../img/login/bg.jpg") no-repeat center;
+    text-align:center;
+    background-size:100% 100%;
+}
+
+.page-head >img
+{
+	display:inline-block;
+	transform:translateY(20%);
+}
+
+.page-content
+{
+	width:25%;
+	margin: 51px auto;
+}
+
+.page-foot
+{
+	width:100%;
+	height:48px;
+	background-color: #364252;
+	line-height: 48px;
+	font-size:14px;
+	color:#B0B3BB;
+	text-align: center;
+	font-weight: bold;
+}
+
+input
+{
+	border-color: #d6d9db;
+}
+
+.btn
+{
+	width:100%;
+	background-color: #1179ed;
+	border-color: #1179ed;
+	border-bottom-color: #0651a7;
+	color:#ffffff;
+	font-weight: bold;
+	height:40px;
+	font-size:18px;
+}
+#checkbox
+{
+	width:20px;
+	height:20px;
+	background-color: #ffffff;
+}
+
+#FName,#FPassword
+{
+	position: relative;
+}
+
+#FPassword:after {
+	content: '';
+	position: absolute;
+	width: 22px;
+	height: 26px;
+	background: url('../img/login/2.png');
+	right: 0;
+	top: 50%;
+	translate: translate(0, -50%);
+}
+
+

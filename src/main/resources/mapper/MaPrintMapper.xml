@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 文件的命名 表名 + Mapper -->
+
+<!-- namespace:接口包 + 接口名
+
+ -->
+<mapper namespace="com.linkpal.map.MaPrintMapper">
+
+    <resultMap type="com.linkpal.model.MaPrint" id="BaseResultMap">
+        <id column="fid" property="fid"/>
+        <result column="fbillno" property="fbillno"/>
+        <result column="fboxno" property="fboxno"/>
+        <result column="fmaterialid" property="fmaterialid"/>
+        <result column="fbatch" property="fbatch"/>
+        <result column="fgperiod" property="fgperiod"/>
+        <result column="fmdate" property="fmdate"/>
+        <result column="fadate" property="fadate"/>
+        <result column="fquqty" property="fquqty"/>
+        <result column="fsupplierid" property="fsupplierid"/>
+
+        <association property="material" javaType="com.linkpal.model.Material">
+
+            <result column="materialNumber" jdbcType="VARCHAR" property="materialnumber" />
+            <result column="materialName" jdbcType="VARCHAR" property="materialname" />
+            <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
+            <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
+        </association>
+
+        <association property="supplier" javaType="com.linkpal.model.Supplier">
+
+            <result column="sunumber" property="suppliernumber"/>
+            <result column="suname" property="suppliername"/>
+        </association>
+    </resultMap>
+
+    <select id="getById" resultMap="BaseResultMap"  parameterType="int">
+        select  t.fid,ISNULL(t.fbillno,'')fbillno,isnull(t.fboxno,'') fboxno,ISNULL(t.fmaterialid,0)fmaterialid,ISNULL(t.fbatch,'') fbatch,
+       t.fgperiod fgperiod,ISNULL(convert(varchar,t.fmdate),'')fmdate,ISNULL(convert(varchar,t.fadate),'')fadate,
+        t.fquqty fquqty,ISNULL(t.fsupplierid,0)fsupplierid ,isnull(t1.materialNumber,'')materialNumber,
+        isnull(t1.materialName,'')materialName,isnull(t1.materialModel,'') materialModel,
+        isnull(t1.materialUnit,''),isnull(t2.supplierNumber,'') sunumber,isnull(t2.supplierName,'') suname from T_VS_MaPrint t
+        left join t_vs_material t1 on t.fmaterialid=t1.fid
+        left join t_vs_supplier t2 on t.fsupplierid=t2.fid where t.FID=#{ID}
+    </select>
+
+    <insert id="add" parameterType="com.linkpal.model.MaPrint">
+        INSERT INTO T_VS_MaPrint(fbillno,fboxno
+           ,fmaterialid
+           ,fbatch
+           ,fgperiod
+           ,fmdate
+           ,fadate
+           ,fquqty
+           ,fsupplierid)
+        VALUES(#{fbillno,jdbcType=VARCHAR},
+        #{fboxno,jdbcType=VARCHAR}
+           ,#{fmaterialid,jdbcType=INTEGER}
+           ,#{fbatch,jdbcType=VARCHAR}
+           ,#{fgperiod,jdbcType=DOUBLE}
+           ,#{fmdate,jdbcType=VARCHAR}
+           ,#{fadate,jdbcType=VARCHAR}
+           ,#{fquqty,jdbcType=DOUBLE}
+           ,#{fsupplierid,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="com.linkpal.model.MaPrint">
+        UPDATE T_VS_MaPrint
+        SET fbillno = #{fbillno,jdbcType=VARCHAR},fboxno=#{fboxno,jdbcType=VARCHAR},
+        fmaterialid=#{fmaterialid,jdbcType=INTEGER},fbatch=#{fbatch,jdbcType=VARCHAR},fgperiod=#{fgperiod,jdbcType=DOUBLE}
+        ,fmdate=#{fmdate,jdbcType=VARCHAR},fadate=#{fadate,jdbcType=VARCHAR},fquqty=#{fquqty,jdbcType=DOUBLE},fsupplierid=#{fsupplierid,jdbcType=INTEGER}
+        WHERE FID=#{fid}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM T_VS_MaPrint
+        WHERE FID=#{ID}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from T_VS_MaPrint where FID in (
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+
+    </delete>
+
+
+
+    <select id="getList"  resultMap="BaseResultMap">
+        SELECT top ${pageSize} t.fid,ISNULL(t.fbillno,'')fbillno,ISNULL(t.fmaterialid,0)fmaterialid,ISNULL(t.fbatch,'') fbatch,
+       t.fgperiod fgperiod,ISNULL(convert(varchar,t.fmdate),'')fmdate,ISNULL(convert(varchar,t.fadate),'')fadate,
+        t.fquqty fquqty,ISNULL(t.fsupplierid,0)fsupplierid ,isnull(t1.materialNumber,'')materialNumber,
+        isnull(t1.materialName,'')materialName,isnull(t1.materialModel,'') materialModel,
+        isnull(t1.materialUnit,''),isnull(t2.supplierNumber,'') sunumber,isnull(t2.supplierName,'') suname from T_VS_MaPrint t
+        left join t_vs_material t1 on t.fmaterialid=t1.fid
+        left join t_vs_supplier t2 on t.fsupplierid=t2.fid
+        where
+        t.fid not in (
+        select top ${pageIndex} tt.fid from T_VS_MaPrint tt
+        left join t_vs_material tt1 on tt.fmaterialid=tt1.fid
+        left join t_vs_supplier tt2 on tt.fsupplierid=tt2.fid
+
+        where  tt.fmaterialid is not null
+            <if test="t.materialnumber!=null and t.materialnumber!= '' ">
+                and tt1.materialnumber like '%${t.materilanumber}%' 		</if>
+            <if test="t.materialname!=null and t.materialname!= '' ">
+                and tt1.materialname like '%${t.materialname}%'
+            </if>
+
+        order by tt.fid
+
+        )
+
+        <if test="t.materialnumber!=null and t.materialnumber!= '' ">
+            and t1.materialnumber like '%${t.materialnumber}%' 		</if>
+        <if test="t.materialname!=null and t.materialname!= '' ">
+            and t1.materialname like '%${t.materialname}%'
+        </if>
+
+      and t.fmaterialid is not null
+        order by t.fid
+    </select>
+
+    <select id="getTotalNum" parameterType="com.linkpal.model.Material" resultType="int">
+        SELECT count(*)
+        from T_VS_MaPrint tt
+        left join t_vs_material tt1 on tt.fmaterialid=tt1.fid
+        left join t_vs_supplier tt2 on tt.fsupplierid=tt2.fid
+
+
+        where  tt.fmaterialid is not null
+            <if test="materialnumber!=null and materialnumber!= '' ">
+                and tt1.materialnumber like '%${materilanumber}%' 		</if>
+            <if test="materialname!=null and materialname!= '' ">
+                and tt1.materialname like '%${materialname}%'
+            </if>
+
+
+
+    </select>
+
+    <select id="getboxList" parameterType="com.linkpal.model.MaPrint" resultMap="BaseResultMap">
+        select top ${pageSize} t.fid,ISNULL(t.fbillno,'')fbillno,isnull(t.fboxno,'') fboxno,ISNULL(t.fbatch,'') fbatch,
+        ISNULL(t.fsupplierid,0)fsupplierid,isnull(t1.supplierNumber,'') sunumber,isnull(t1.supplierName,'') suname from t_vs_maprint t
+        left join t_vs_supplier t1 on t.fsupplierid=t1.fid
+        where t.fid not IN (
+        select top ${pageIndex} tt.fid from T_VS_MaPrint tt
+        where tt.fmaterialid is NULL
+        <if test="t.fboxno!=null and t.fboxno!=''">
+            and tt.fboxno like '%${t.boxno}%'
+        </if>
+        <if test="t.fsupplierid>0">
+            and tt.fsupplierid=#{t.fsupplierid}
+        </if>
+        )
+        <if test="t.fboxno!=null and t.fboxno!=''">
+            and t.fboxno like '%${t.boxno}%'
+        </if>
+        <if test="t.fsupplierid>0">
+            and t.fsupplierid=#{t.fsupplierid}
+        </if>
+        and t.fmaterialid is null
+    </select>
+
+    <select id="getboxTotalNum" parameterType="com.linkpal.model.MaPrint" resultType="int">
+
+        select count(*) from T_VS_MaPrint tt
+        where tt.fmaterialid is NULL
+        <if test="fboxno!=null and fboxno!=''">
+            and tt.fboxno like '%${boxno}%'
+        </if>
+        <if test="fsupplierid>0">
+            and tt.fsupplierid=#{fsupplierid}
+        </if>
+
+    </select>
+
+    <select id="getCSNo" resultType="String">
+        select 'CS'+SUBSTRING('000000',1,6-len(convert(varchar,cast(substring(max(t.fbillno),3,LEN(max(t.fbillno))-2) as int)+1)))+
+convert(varchar,cast(substring(max(t.fbillno),3,LEN(max(t.fbillno))-2) as int)+1)fbillno from t_vs_maprint t
+    </select>
+
+</mapper>

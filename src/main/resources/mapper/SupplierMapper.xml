@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.SupplierMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Supplier">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="supplierNumber" jdbcType="VARCHAR" property="suppliernumber" />
+    <result column="supplierName" jdbcType="VARCHAR" property="suppliername" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fid, supplierNumber, supplierName
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.SupplierExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_Supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_Supplier
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_Supplier
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.SupplierExample">
+    delete from T_VS_Supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Supplier">
+    insert into T_VS_Supplier (supplierNumber, supplierName,createtime
+      )
+    values (#{suppliernumber,jdbcType=VARCHAR}, #{suppliername,jdbcType=VARCHAR},#{createtime}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Supplier">
+    insert into T_VS_Supplier
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="suppliernumber != null">
+        supplierNumber,
+      </if>
+      <if test="suppliername != null">
+        supplierName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="suppliernumber != null">
+        #{suppliernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliername != null">
+        #{suppliername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.SupplierExample" resultType="java.lang.Long">
+    select count(*) from T_VS_Supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <select id="getSupplierDetail" resultType="com.linkpal.model.Supplier" parameterType="java.lang.String">
+      SELECT * FROM T_VS_Supplier WHERE supplierName = #{suppliername,jdbcType=VARCHAR}
+    </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_Supplier
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.suppliernumber != null">
+        supplierNumber = #{record.suppliernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliername != null">
+        supplierName = #{record.suppliername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_Supplier
+    set supplierNumber = #{record.suppliernumber,jdbcType=VARCHAR},
+      supplierName = #{record.suppliername,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Supplier">
+    update T_VS_Supplier
+    <set>
+      <if test="suppliernumber != null">
+        supplierNumber = #{suppliernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliername != null">
+        supplierName = #{suppliername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Supplier">
+    update T_VS_Supplier
+    set supplierNumber = #{suppliernumber,jdbcType=VARCHAR},
+      supplierName = #{suppliername,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <select id="getPageList" parameterType="map" resultMap="BaseResultMap">
+    SELECT TOP #{pageSize, jdbcType=INTEGER} * FROM T_VS_Supplier WHERE fid NOT IN (SELECT TOP #{perSize, jdbcType=INTEGER} fid from T_VS_Supplier)
+  </select>
+  <select id="getTipPageList" parameterType="map" resultMap="BaseResultMap">
+    SELECT TOP #{pageSize, jdbcType=INTEGER} * FROM T_VS_Supplier WHERE fid NOT IN (SELECT TOP #{perSize, jdbcType=INTEGER} fid from T_VS_Supplier) AND
+    supplierNumber LIKE #{suppliernumber, jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteBatch">
+    delete from T_VS_Supplier where FID in (
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+
+  <select id="getList"  resultType="com.linkpal.model.Supplier">
+    SELECT top ${pageSize} *
+    from t_VS_Supplier
+    where
+    fid not in (
+    select top ${pageIndex} fid from t_VS_Supplier
+
+    <where>
+      <if test="t.suppliernumber!=null and t.suppliernumber!= '' ">
+        and suppliernumber like '%${t.suppliernumber}%' 		</if>
+      <if test="t.suppliername!=null and t.suppliername!= '' ">
+        and suppliername like '%${t.suppliername}%'
+      </if>
+
+    </where>
+    )
+
+    <if test="t.suppliernumber!=null and t.suppliernumber!= '' ">
+      and suppliernumber like '%${t.suppliernumber}%' 		</if>
+    <if test="t.suppliername!=null and t.suppliername!= '' ">
+      and suppliername like '%${t.suppliername}%'
+    </if>
+
+
+    order by fid
+  </select>
+
+</mapper>

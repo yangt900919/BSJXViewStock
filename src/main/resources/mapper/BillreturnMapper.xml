@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.BillreturnMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Billreturn">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fnumber" jdbcType="VARCHAR" property="fnumber" />
+    <result column="fbizdate" jdbcType="TIMESTAMP" property="fbizdate" />
+    <result column="fstate" jdbcType="INTEGER" property="fstate" />
+    <result column="fbiztype" jdbcType="VARCHAR" property="fbiztype" />
+    <result column="fsupplierid" jdbcType="INTEGER" property="fsupplierid" />
+    <result column="fnote" jdbcType="VARCHAR" property="fnote" />
+    <result column="fcreatorid" jdbcType="INTEGER" property="fcreatorid" />
+    <result column="fcreatedate" jdbcType="TIMESTAMP" property="fcreatedate" />
+    <result column="fauditorid" jdbcType="INTEGER" property="fauditorid" />
+    <result column="fauditdate" jdbcType="TIMESTAMP" property="fauditdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fid, fnumber, fbizdate, fstate, fbiztype, fsupplierid, fnote, fcreatorid, fcreatedate, 
+    fauditorid, fauditdate
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.BillreturnExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_BillReturn
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_BillReturn
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_BillReturn
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.BillreturnExample">
+    delete from T_VS_BillReturn
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Billreturn">
+    insert into T_VS_BillReturn (fid, fnumber, fbizdate, 
+      fstate, fbiztype, fsupplierid, 
+      fnote, fcreatorid, fcreatedate, 
+      fauditorid, fauditdate)
+    values (#{fid,jdbcType=INTEGER}, #{fnumber,jdbcType=VARCHAR}, #{fbizdate,jdbcType=TIMESTAMP}, 
+      #{fstate,jdbcType=INTEGER}, #{fbiztype,jdbcType=VARCHAR}, #{fsupplierid,jdbcType=INTEGER}, 
+      #{fnote,jdbcType=VARCHAR}, #{fcreatorid,jdbcType=INTEGER}, #{fcreatedate,jdbcType=TIMESTAMP}, 
+      #{fauditorid,jdbcType=INTEGER}, #{fauditdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Billreturn">
+    insert into T_VS_BillReturn
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="fnumber != null">
+        fnumber,
+      </if>
+      <if test="fbizdate != null">
+        fbizdate,
+      </if>
+      <if test="fstate != null">
+        fstate,
+      </if>
+      <if test="fbiztype != null">
+        fbiztype,
+      </if>
+      <if test="fsupplierid != null">
+        fsupplierid,
+      </if>
+      <if test="fnote != null">
+        fnote,
+      </if>
+      <if test="fcreatorid != null">
+        fcreatorid,
+      </if>
+      <if test="fcreatedate != null">
+        fcreatedate,
+      </if>
+      <if test="fauditorid != null">
+        fauditorid,
+      </if>
+      <if test="fauditdate != null">
+        fauditdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fnumber != null">
+        #{fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fbizdate != null">
+        #{fbizdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fstate != null">
+        #{fstate,jdbcType=INTEGER},
+      </if>
+      <if test="fbiztype != null">
+        #{fbiztype,jdbcType=VARCHAR},
+      </if>
+      <if test="fsupplierid != null">
+        #{fsupplierid,jdbcType=INTEGER},
+      </if>
+      <if test="fnote != null">
+        #{fnote,jdbcType=VARCHAR},
+      </if>
+      <if test="fcreatorid != null">
+        #{fcreatorid,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatedate != null">
+        #{fcreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fauditorid != null">
+        #{fauditorid,jdbcType=INTEGER},
+      </if>
+      <if test="fauditdate != null">
+        #{fauditdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.BillreturnExample" resultType="java.lang.Long">
+    select count(*) from T_VS_BillReturn
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_BillReturn
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fnumber != null">
+        fnumber = #{record.fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fbizdate != null">
+        fbizdate = #{record.fbizdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fstate != null">
+        fstate = #{record.fstate,jdbcType=INTEGER},
+      </if>
+      <if test="record.fbiztype != null">
+        fbiztype = #{record.fbiztype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fsupplierid != null">
+        fsupplierid = #{record.fsupplierid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fnote != null">
+        fnote = #{record.fnote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fcreatorid != null">
+        fcreatorid = #{record.fcreatorid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fcreatedate != null">
+        fcreatedate = #{record.fcreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fauditorid != null">
+        fauditorid = #{record.fauditorid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fauditdate != null">
+        fauditdate = #{record.fauditdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_BillReturn
+    set fid = #{record.fid,jdbcType=INTEGER},
+      fnumber = #{record.fnumber,jdbcType=VARCHAR},
+      fbizdate = #{record.fbizdate,jdbcType=TIMESTAMP},
+      fstate = #{record.fstate,jdbcType=INTEGER},
+      fbiztype = #{record.fbiztype,jdbcType=VARCHAR},
+      fsupplierid = #{record.fsupplierid,jdbcType=INTEGER},
+      fnote = #{record.fnote,jdbcType=VARCHAR},
+      fcreatorid = #{record.fcreatorid,jdbcType=INTEGER},
+      fcreatedate = #{record.fcreatedate,jdbcType=TIMESTAMP},
+      fauditorid = #{record.fauditorid,jdbcType=INTEGER},
+      fauditdate = #{record.fauditdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Billreturn">
+    update T_VS_BillReturn
+    <set>
+      <if test="fnumber != null">
+        fnumber = #{fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fbizdate != null">
+        fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fstate != null">
+        fstate = #{fstate,jdbcType=INTEGER},
+      </if>
+      <if test="fbiztype != null">
+        fbiztype = #{fbiztype,jdbcType=VARCHAR},
+      </if>
+      <if test="fsupplierid != null">
+        fsupplierid = #{fsupplierid,jdbcType=INTEGER},
+      </if>
+      <if test="fnote != null">
+        fnote = #{fnote,jdbcType=VARCHAR},
+      </if>
+      <if test="fcreatorid != null">
+        fcreatorid = #{fcreatorid,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatedate != null">
+        fcreatedate = #{fcreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fauditorid != null">
+        fauditorid = #{fauditorid,jdbcType=INTEGER},
+      </if>
+      <if test="fauditdate != null">
+        fauditdate = #{fauditdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Billreturn">
+    update T_VS_BillReturn
+    set fnumber = #{fnumber,jdbcType=VARCHAR},
+      fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
+      fstate = #{fstate,jdbcType=INTEGER},
+      fbiztype = #{fbiztype,jdbcType=VARCHAR},
+      fsupplierid = #{fsupplierid,jdbcType=INTEGER},
+      fnote = #{fnote,jdbcType=VARCHAR},
+      fcreatorid = #{fcreatorid,jdbcType=INTEGER},
+      fcreatedate = #{fcreatedate,jdbcType=TIMESTAMP},
+      fauditorid = #{fauditorid,jdbcType=INTEGER},
+      fauditdate = #{fauditdate,jdbcType=TIMESTAMP}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>

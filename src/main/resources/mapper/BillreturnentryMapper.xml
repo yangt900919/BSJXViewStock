@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.BillreturnentryMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Billreturnentry">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fbillid" jdbcType="INTEGER" property="fbillid" />
+    <result column="fentryid" jdbcType="INTEGER" property="fentryid" />
+    <result column="fmaterialid" jdbcType="INTEGER" property="fmaterialid" />
+    <result column="fstockid" jdbcType="INTEGER" property="fstockid" />
+    <result column="fqty" jdbcType="DOUBLE" property="fqty" />
+    <result column="freqty" jdbcType="DOUBLE" property="freqty" />
+    <result column="fredate" jdbcType="TIMESTAMP" property="fredate" />
+    <result column="fnote" jdbcType="VARCHAR" property="fnote" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fid, fbillid, fentryid, fmaterialid, fstockid, fqty, freqty, fredate, fnote
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.BillreturnentryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_BillReturnEntry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_BillReturnEntry
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_BillReturnEntry
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.BillreturnentryExample">
+    delete from T_VS_BillReturnEntry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Billreturnentry">
+    insert into T_VS_BillReturnEntry (fid, fbillid, fentryid, 
+      fmaterialid, fstockid, fqty, 
+      freqty, fredate, fnote
+      )
+    values (#{fid,jdbcType=INTEGER}, #{fbillid,jdbcType=INTEGER}, #{fentryid,jdbcType=INTEGER}, 
+      #{fmaterialid,jdbcType=INTEGER}, #{fstockid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE}, 
+      #{freqty,jdbcType=DOUBLE}, #{fredate,jdbcType=TIMESTAMP}, #{fnote,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Billreturnentry">
+    insert into T_VS_BillReturnEntry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="fbillid != null">
+        fbillid,
+      </if>
+      <if test="fentryid != null">
+        fentryid,
+      </if>
+      <if test="fmaterialid != null">
+        fmaterialid,
+      </if>
+      <if test="fstockid != null">
+        fstockid,
+      </if>
+      <if test="fqty != null">
+        fqty,
+      </if>
+      <if test="freqty != null">
+        freqty,
+      </if>
+      <if test="fredate != null">
+        fredate,
+      </if>
+      <if test="fnote != null">
+        fnote,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fbillid != null">
+        #{fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="fentryid != null">
+        #{fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="fmaterialid != null">
+        #{fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="fstockid != null">
+        #{fstockid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="freqty != null">
+        #{freqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fredate != null">
+        #{fredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fnote != null">
+        #{fnote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.BillreturnentryExample" resultType="java.lang.Long">
+    select count(*) from T_VS_BillReturnEntry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_BillReturnEntry
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fbillid != null">
+        fbillid = #{record.fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fentryid != null">
+        fentryid = #{record.fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fmaterialid != null">
+        fmaterialid = #{record.fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fstockid != null">
+        fstockid = #{record.fstockid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fqty != null">
+        fqty = #{record.fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freqty != null">
+        freqty = #{record.freqty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fredate != null">
+        fredate = #{record.fredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fnote != null">
+        fnote = #{record.fnote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_BillReturnEntry
+    set fid = #{record.fid,jdbcType=INTEGER},
+      fbillid = #{record.fbillid,jdbcType=INTEGER},
+      fentryid = #{record.fentryid,jdbcType=INTEGER},
+      fmaterialid = #{record.fmaterialid,jdbcType=INTEGER},
+      fstockid = #{record.fstockid,jdbcType=INTEGER},
+      fqty = #{record.fqty,jdbcType=DOUBLE},
+      freqty = #{record.freqty,jdbcType=DOUBLE},
+      fredate = #{record.fredate,jdbcType=TIMESTAMP},
+      fnote = #{record.fnote,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Billreturnentry">
+    update T_VS_BillReturnEntry
+    <set>
+      <if test="fbillid != null">
+        fbillid = #{fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="fentryid != null">
+        fentryid = #{fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="fmaterialid != null">
+        fmaterialid = #{fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="fstockid != null">
+        fstockid = #{fstockid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        fqty = #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="freqty != null">
+        freqty = #{freqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fredate != null">
+        fredate = #{fredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fnote != null">
+        fnote = #{fnote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Billreturnentry">
+    update T_VS_BillReturnEntry
+    set fbillid = #{fbillid,jdbcType=INTEGER},
+      fentryid = #{fentryid,jdbcType=INTEGER},
+      fmaterialid = #{fmaterialid,jdbcType=INTEGER},
+      fstockid = #{fstockid,jdbcType=INTEGER},
+      fqty = #{fqty,jdbcType=DOUBLE},
+      freqty = #{freqty,jdbcType=DOUBLE},
+      fredate = #{fredate,jdbcType=TIMESTAMP},
+      fnote = #{fnote,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>

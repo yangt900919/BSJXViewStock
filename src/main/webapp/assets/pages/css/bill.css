@@ -1,0 +1,49 @@
+/*#entrys
+{
+   !* border: 1px solid gray;*!
+    width: 100%;
+    margin:10px;
+!*    height: 35%;*!
+}
+
+
+ .table-cont{
+     !**make table can scroll**!
+     max-height:35%;
+     overflow: auto;
+     !** add some style**!
+     !*padding: 2px;*!
+   !*  background: #ddd;*!
+     margin: 20px 10px;
+    !* box-shadow: 0 0 1px 3px #ddd;*!
+     width:100%;
+ }
+
+#table-cont>thead{
+    background-color: #ddd;
+}*/
+
+/*#table-cont>table th{
+    white-space: nowrap !important;
+}
+#table-cont>table td{
+    white-space: nowrap !important;
+}
+!*  body,table{
+      font-size:12px;
+  }*!
+#table-cont>table{
+    empty-cells:show !important;
+    border-collapse: collapse !important;
+    margin:0 auto !important;
+}*/
+
+.bill_input
+{
+    width:182px !important;
+}
+
+.bill_input_b
+{
+    width:145px !important;
+}
