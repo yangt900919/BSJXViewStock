@@ -253,7 +253,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <tbody id="entrys">
 
         <c:forEach items="${billget.billgetentries}" var="map" varStatus="st">
-            <tr>
+            <tr id="tr${st.index}">
 
                 <td>
                     <c:if test="${map.fid>0}">
@@ -389,7 +389,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <button ${disabled} type="submit" class="btn btn-primary">
                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   提交</button>
                <c:if test="${billget.fid>0}">
-                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billorder',${billorder.fbillid})">
+                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billget',${billget.fid})">
                        <span class="glyphicon glyphicon-print" aria-hidden="true" ></span>  打印</button>
                </c:if>
                <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
@@ -400,6 +400,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </form>
   
   </div>
+     <c:if test="${isgprint==1}">
+         <jsp:include page="getprint.jsp"></jsp:include>
+     </c:if>
   <jsp:include page="../shared/modal.jsp"></jsp:include>
   </body>
 </html>

@@ -12,7 +12,11 @@ public class Billreturnentry implements Serializable {
 
     private Integer fmaterialid;
 
+    private Material material;
+
     private Integer fstockid;
+
+    private Stock stock;
 
     private Double fqty;
 
@@ -94,5 +98,21 @@ public class Billreturnentry implements Serializable {
 
     public void setFnote(String fnote) {
         this.fnote = fnote == null ? null : fnote.trim();
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 }

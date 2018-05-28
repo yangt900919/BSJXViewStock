@@ -271,7 +271,13 @@ public class BillCheckController {
     }
 
 
-
+    @RequestMapping(value = "/billcheck/print")
+    public ModelAndView Print(int ID)
+    {
+        ModelAndView mav=Edit(ID);
+        mav.addObject("iscprint",1);
+        return mav;
+    }
 
 
     @InitBinder

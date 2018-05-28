@@ -52,12 +52,13 @@ public class BillGetDaoImpl implements IBillGetDao {
         List<Billgetentry> billgetentries=billget.getBillgetentries();
         List<Billgetentry> billgetentries1=billgetMapper.selectByPrimaryKey(billget.getFid()).getBillgetentries();
 
+        if(billgetentries1.size()>billgetentries.size())
         for(int j=billgetentries1.size();j<billgetentries.size();j--)
         {
             billgetentryMapper.deleteByPrimaryKey(billgetentries1.get(j).getFid());
         }
 
-        int i=billgetentries.size()+1;
+        int i=billgetentries.size();
 
         for(Billgetentry entrys:billgetentries)
         {

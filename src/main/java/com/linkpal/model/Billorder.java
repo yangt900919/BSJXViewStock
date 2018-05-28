@@ -3,6 +3,7 @@ package com.linkpal.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class Billorder implements Serializable {
         this.fcreatetime=new java.sql.Date(new Date().getTime());
         this.fbizdate=new java.sql.Date(new Date().getTime());
         this.fstatus=0;
+        this.billorderentries=new ArrayList<>();
     }
 
     public Integer getFbillid() {

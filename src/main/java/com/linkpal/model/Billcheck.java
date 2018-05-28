@@ -3,6 +3,7 @@ package com.linkpal.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -93,6 +94,7 @@ public class Billcheck implements Serializable {
         this.fbizdate=new java.sql.Date(new Date().getTime());
         this.fcretime=new java.sql.Date(new Date().getTime());
         this.fstatus=0;
+        this.billcheckentries=new ArrayList<>();
     }
 
 

@@ -206,7 +206,7 @@ public class BillreturnExample {
         }
 
         public Criteria andFnumberLike(String value) {
-            addCriterion("fnumber like", value, "fnumber");
+            addCriterion("t0.fnumber like", value, "fnumber");
             return (Criteria) this;
         }
 

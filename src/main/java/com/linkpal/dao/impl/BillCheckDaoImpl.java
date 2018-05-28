@@ -53,17 +53,17 @@ public class BillCheckDaoImpl implements IBillCheckDao {
         List<Billcheckentry> billcheckentries1=billcheckMapper.selectByPrimaryKey(billcheck.getFid()).getBillcheckentries();
 
 
-
+if(billcheckentries1.size()>billcheckentries.size())
         for(int j=billcheckentries1.size();j<billcheckentries.size();j--)
         {
             billcheckentryMapper.deleteByPrimaryKey(billcheckentries1.get(j).getFid());
         }
 
-        int i=billcheckentries.size()+1;
+        int i=billcheckentries.size();
 
         for(Billcheckentry entry:billcheckentries)
         {
-            if(StringUtil.Change(entry.getFid())>0)
+            if(entry.getFid()>0||entry.getFid()==null)
             billcheckentryMapper.updateByPrimaryKey(entry);
             else
             {

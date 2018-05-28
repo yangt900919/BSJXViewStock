@@ -1,12 +1,12 @@
 package com.linkpal.controller;
 
-import com.linkpal.model.Billget;
+import com.linkpal.model.Billreturn;
 import com.linkpal.model.Page;
 import com.linkpal.model.User;
 import com.linkpal.service.*;
-import com.linkpal.util.InitBinderUtil;
-import com.linkpal.util.MapUtil;
 import com.linkpal.util.GlobalVarContext;
+import com.linkpal.util.InitBinderUtil;
+import com.linkpal.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -19,20 +19,17 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
-import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class BillGetController {
+public class BillReturnController {
 
     @Autowired
-    IBillGetService billGetService;
+    IBillReturnService billReturnService;
     @Autowired
     IMaterialService materialService;
     @Autowired
@@ -40,122 +37,111 @@ public class BillGetController {
     @Autowired
     IUserService userService;
     @Autowired
-    IOrganizationService organizationService;
-    @Autowired
-    ICustomService customService;
-
-    @RequestMapping(value = "/billget/index")
+    ISupplierService supplierService;
+    @RequestMapping(value = "/billreturn/index")
     public ModelAndView Index()
     {
-        ModelAndView mav=new ModelAndView("web/billget/index");
+        ModelAndView mav=new ModelAndView("web/billreturn/index");
         mav.addObject("model",new HashMap<>());
         mav.addObject("materiallist", materialService.getList());
         mav.addObject("stocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
-        mav.addObject("orgnizationlist", organizationService.getList());
-        mav.addObject("customlist", customService.getList());
+        mav.addObject("supplierlist", supplierService.getList());
         return mav;
     }
 
-    @RequestMapping(value = "/billget/getList")
+    @RequestMapping(value = "/billreturn/getList")
     @ResponseBody
     public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
-        Map<String, Object> m=billGetService.getPageList(request, params);
-        ModelAndView mav=new ModelAndView("web/billget/index");
-        mav.addObject("billgetlist", (List<Billget>) m.get("list"));
+        Map<String, Object> m=billReturnService.getPageList(request, params);
+        ModelAndView mav=new ModelAndView("web/billreturn/index");
+        mav.addObject("billreturnlist", (List<Billreturn>) m.get("list"));
         mav.addObject("page", (Page) m.get("page"));
-        mav.addObject("url", "billget/getList");
+        mav.addObject("url", "billreturn/getList");
         mav.addObject("model",m.get("model"));
         mav.addObject("materiallist", materialService.getList());
         mav.addObject("stocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
-        mav.addObject("orgnizationlist", organizationService.getList());
-        mav.addObject("customlist", customService.getList());
+        mav.addObject("supplierlist", supplierService.getList());
 /*        if(request!=null)
        GlobalVarContext.request=request;*/
         return mav;
     }
 
-    @RequestMapping(value = "/billget/create")
+    @RequestMapping(value = "/billreturn/create")
     public ModelAndView Create(HttpServletRequest request)
     {
-        ModelAndView mav=new ModelAndView("web/billget/edit");
-        Billget billget=new Billget();
+        ModelAndView mav=new ModelAndView("web/billreturn/edit");
+        Billreturn billreturn=new Billreturn();
         User user= GlobalVarContext.user;
-        billget.setCreator(user);
-        billget.setFcreaterid(user.getFid());
-        billget.setFnumber(billGetService.getAutoNumber());
-        mav.addObject("billget",billget);
+        billreturn.setCreator(user);
+        billreturn.setFcreatorid(user.getFid());
+        billreturn.setFnumber(billReturnService.getAutoNumber());
+        mav.addObject("billreturn",billreturn);
         mav.addObject("materiallist", materialService.getList());
         mav.addObject("stocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
-        mav.addObject("orgnizationlist", organizationService.getList());
-        mav.addObject("customlist", customService.getList());
+        mav.addObject("supplierlist", supplierService.getList());
         mav.addObject("readonly","");
         mav.addObject("disabled","");
-       // System.out.println(billget.getFcreatedate());
+       // System.out.println(billreturn.getFcreatedate());
         return mav;
     }
 
-    @RequestMapping(value = "/billget/save")
+    @RequestMapping(value = "/billreturn/save")
     @POST
-    public ModelAndView Save(HttpServletRequest request,Billget billget)
+    public ModelAndView Save(HttpServletRequest request,Billreturn billreturn) throws  Exception
     {
-        if(billget.getFid()==0)
+        if(StringUtil.Change(billreturn.getFid())==0)
         {
-            try {
-                billGetService.create(billget);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+                billReturnService.create(billreturn);
+
 
         }
         else
         {
-            try {
-                billGetService.update(billget);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+                billReturnService.update(billreturn);
+
         }
 
-        return  getList(request, (Map) request.getSession().getAttribute("Billget")) ;
+        return  getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }
 
-    @RequestMapping(value = "/billget/edit")
+    @RequestMapping(value = "/billreturn/edit")
     public ModelAndView Edit(int ID)
     {
-        ModelAndView mav=new ModelAndView("web/billget/edit");
-       Billget billget=billGetService.getDetail(ID);
-        mav.addObject("billget",billget);
+        ModelAndView mav=new ModelAndView("web/billreturn/edit");
+       Billreturn billreturn=billReturnService.getDetail(ID);
+        mav.addObject("billreturn",billreturn);
         mav.addObject("materiallist", materialService.getList());
         mav.addObject("stocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
-        mav.addObject("orgnizationlist", organizationService.getList());
-        mav.addObject("customlist", customService.getList());
-        if(billget.getFstate()==1) {
+        mav.addObject("supplierlist", supplierService.getList());
+        if(billreturn.getFstate()==1) {
             mav.addObject("readonly", "readonly");
             mav.addObject("disabled","disabled");
         }
         return mav;
     }
 
-    @RequestMapping(value = "/billget/delete")
+    @RequestMapping(value = "/billreturn/delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
-        billGetService.delete(ID);
-        return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
+        billReturnService.delete(ID);
+        return getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }
 
-    @RequestMapping(value = "/billget/deleteBatch")
+    @RequestMapping(value = "/billreturn/deleteBatch")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
-        billGetService.deleteBatch(ids);
-        return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
+        billReturnService.deleteBatch(ids);
+        return getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }
 
-    @RequestMapping(value = "/billget/CheckOnly")
+    @RequestMapping(value = "/billreturn/CheckOnly")
     @POST
     public void CheckOnly(HttpServletResponse response, String param, int ID) throws Exception
     {
@@ -169,36 +155,36 @@ public class BillGetController {
         out.println( coc.CheckOnly(model.getFNumber(), scabinetService, param, ID));*/
     }
 
-    @RequestMapping(value = "/billget/audit")
+    @RequestMapping(value = "/billreturn/audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
-        Billget billget=billGetService.getDetail(ID);
-        billget.setFauditorid(GlobalVarContext.user.getFid());
-        billget.setFauditdate(new Date());
-        billGetService.update(billget);
-        return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
+        Billreturn billreturn=billReturnService.getDetail(ID);
+        billreturn.setFauditorid(GlobalVarContext.user.getFid());
+        billreturn.setFauditdate(new Date());
+        billReturnService.update(billreturn);
+        return getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }
 
-    @RequestMapping(value = "/billget/unaudit")
+    @RequestMapping(value = "/billreturn/unaudit")
     public ModelAndView UnAudit(HttpServletRequest request, int ID) throws Exception {
-        Billget billget=billGetService.getDetail(ID);
-        billget.setFauditorid(0);
-        billget.setFauditdate(null);
-        billGetService.update(billget);
-        return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
+        Billreturn billreturn=billReturnService.getDetail(ID);
+        billreturn.setFauditorid(0);
+        billreturn.setFauditdate(null);
+        billReturnService.update(billreturn);
+        return getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }
 
-    @RequestMapping(value = "/billget/checkrelation")
+    @RequestMapping(value = "/billreturn/checkrelation")
     public void checkRealtion(HttpServletRequest  request,HttpServletResponse response,int ID) throws IOException {
 
 
         response.getWriter().println("false");
     }
 
-    @RequestMapping(value = "/billget/print")
+    @RequestMapping(value = "/billreturn/print")
     public ModelAndView Print(int ID)
     {
         ModelAndView mav=Edit(ID);
-        mav.addObject("isgprint",1);
+        mav.addObject("isrprint",1);
         return mav;
     }
 

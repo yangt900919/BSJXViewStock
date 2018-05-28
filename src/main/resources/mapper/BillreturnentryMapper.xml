@@ -105,11 +105,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.linkpal.model.Billreturnentry">
-    insert into T_VS_BillReturnEntry (fid, fbillid, fentryid, 
+    insert into T_VS_BillReturnEntry ( fbillid, fentryid,
       fmaterialid, fstockid, fqty, 
       freqty, fredate, fnote
       )
-    values (#{fid,jdbcType=INTEGER}, #{fbillid,jdbcType=INTEGER}, #{fentryid,jdbcType=INTEGER}, 
+    values ( #{fbillid,jdbcType=INTEGER}, #{fentryid,jdbcType=INTEGER},
       #{fmaterialid,jdbcType=INTEGER}, #{fstockid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE}, 
       #{freqty,jdbcType=DOUBLE}, #{fredate,jdbcType=TIMESTAMP}, #{fnote,jdbcType=VARCHAR}
       )
@@ -117,9 +117,7 @@
   <insert id="insertSelective" parameterType="com.linkpal.model.Billreturnentry">
     insert into T_VS_BillReturnEntry
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        fid,
-      </if>
+
       <if test="fbillid != null">
         fbillid,
       </if>
@@ -146,9 +144,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        #{fid,jdbcType=INTEGER},
-      </if>
+
       <if test="fbillid != null">
         #{fbillid,jdbcType=INTEGER},
       </if>

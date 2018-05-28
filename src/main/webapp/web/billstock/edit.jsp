@@ -211,7 +211,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
                 <c:forEach items="${billstock.billstockentries}" var="map" varStatus="st">
-                    <tr>
+                    <tr id="tr${st.index}">
 
                         <td>
                             <c:if test="${map.fid>0}">
@@ -347,7 +347,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <button ${disabled} type="submit" class="btn btn-primary">
                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   提交</button>
                <c:if test="${billstock.fid>0}">
-                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billorder',${billorder.fbillid})">
+                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billstock',${billstock.fid})">
                        <span class="glyphicon glyphicon-print" aria-hidden="true" ></span>  打印</button>
                </c:if>
                <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
@@ -358,6 +358,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </form>
   
   </div>
+     <c:if test="${issprint==1}">
+
+         <jsp:include page="stockprint.jsp"></jsp:include>
+     </c:if>
   <jsp:include page="../shared/modal.jsp"></jsp:include>
   </body>
 </html>

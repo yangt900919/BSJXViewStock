@@ -190,6 +190,15 @@ public class BillStockController {
     }
 
 
+    @RequestMapping(value = "/billstock/print")
+    public ModelAndView Print(int ID)
+    {
+        ModelAndView mav=Edit(ID);
+        mav.addObject("issprint",1);
+        return mav;
+    }
+
+
     @InitBinder
     public void InitBinder(WebDataBinder dataBinder)
     {

@@ -54,12 +54,13 @@ public class BillOrderDaoImpl implements IBillOrderDao {
 
         List<Billorderentry> billorderentries1=billorderMapper.selectByPrimaryKey(billorder.getFbillid()).getBillorderentries();
 
+        if(billorderentries1.size()>billorderentries.size())
         for(int j=billorderentries1.size();j<billorderentries.size();j--)
         {
             billorderentryMapper.deleteByPrimaryKey(billorderentries1.get(j).getFid());
         }
 
-        int i=billorderentries.size()+1;
+        int i=billorderentries.size();
 
         for(Billorderentry entry:billorderentries)
         {

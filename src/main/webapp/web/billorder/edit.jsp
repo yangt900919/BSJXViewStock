@@ -224,7 +224,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <tbody id="entrys">
 
                 <c:forEach items="${billorder.billorderentries}" var="map" varStatus="st">
-                    <tr>
+                    <tr id="tr${st.index}">
 
                         <td>
                             <input type="hidden" class="form-control" id="fid${st.index}" name=billorderentries[${st.index}].fid  placeholder="" value="${map.fid}">

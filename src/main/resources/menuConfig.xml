@@ -45,6 +45,8 @@
 				   permission="ma_view" />
 		<AdminMenu name="出库单" url="billget/index" info="添加修改删除出库单"
 				   permission="ma_view" />
+		<AdminMenu name="退换货单" url="billreturn/index" info="添加修改删除退换货单"
+				   permission="ma_view" />
 	</AdminMenuGroup>
 
 	<AdminMenuGroup name="即时库存" url="inventory/index"

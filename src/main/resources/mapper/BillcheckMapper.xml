@@ -169,6 +169,8 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from T_VS_BillCheck
     where fid = #{fid,jdbcType=INTEGER}
+
+    delete from t_vs_billcheckentry where fbillid=#{fbillid,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.linkpal.model.example.BillcheckExample">
     delete from T_VS_BillCheck

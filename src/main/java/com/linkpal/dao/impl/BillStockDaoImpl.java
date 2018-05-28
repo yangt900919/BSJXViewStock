@@ -53,12 +53,13 @@ public class BillStockDaoImpl implements IBillStockDao {
         List<Billstockentry> billstockentries=billstock.getBillstockentries();
         List<Billstockentry> billstockentries1=billstockMapper.selectByPrimaryKey(billstock.getFid()).getBillstockentries();
 
+        if(billstockentries1.size()>billstockentries.size())
         for(int j=billstockentries1.size();j<billstockentries.size();j--)
         {
             billstockentryMapper.deleteByPrimaryKey(billstockentries1.get(j).getFid());
         }
 
-        int i=billstockentries.size()+1;
+        int i=billstockentries.size();
 
         for(Billstockentry entry:billstockentries)
         {

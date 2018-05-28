@@ -3,6 +3,9 @@ package com.linkpal.map;
 import com.linkpal.model.Billreturn;
 import com.linkpal.model.BillreturnExample;
 import java.util.List;
+import java.util.Map;
+
+import com.linkpal.model.Billreturn;
 import org.apache.ibatis.annotations.Param;
 
 public interface BillreturnMapper {
@@ -27,4 +30,12 @@ public interface BillreturnMapper {
     int updateByPrimaryKeySelective(Billreturn record);
 
     int updateByPrimaryKey(Billreturn record);
+
+    List<Billreturn> getList(Map map);
+
+    String getAutoNumber();
+
+    int getTotalNum(Map map);
+
+    int deleteBatch(Integer[] ids);
 }

@@ -185,7 +185,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
                 <c:forEach items="${billcheck.billcheckentries}" var="map" varStatus="st">
-                    <tr>
+                    <tr id="tr${st.index}">
 
 
                         <td>
@@ -340,7 +340,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <button ${readcheck} type="submit" class="btn btn-primary">
                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   提交</button>
                <c:if test="${billcheck.fid>0}">
-                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billorder',${billorder.fbillid})">
+                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billcheck',${billcheck.fid})">
                        <span class="glyphicon glyphicon-print" aria-hidden="true" ></span>  打印</button>
                </c:if>
                <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
@@ -351,6 +351,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </form>
   
   </div>
+     <c:if test="${iscprint==1}">
+
+         <jsp:include page="checkprint.jsp"></jsp:include>
+     </c:if>
   <jsp:include page="../shared/modal.jsp"></jsp:include>
   </body>
 </html>
