@@ -14,6 +14,7 @@
     <result column="fdepartmentid" jdbcType="INTEGER" property="fdepartmentid" />
     <result column="fstatus" jdbcType="INTEGER" property="fstatus" />
     <result column="fnote" jdbcType="VARCHAR" property="fnote" />
+    <result column="fbuyer" jdbcType="VARCHAR" property="fbuyer" />
     <result column="fbizdate" jdbcType="TIMESTAMP" property="fbizdate" />
 
     <association property="organization" javaType="com.linkpal.model.Organization">
@@ -66,6 +67,8 @@
       <result column="frefoundqty" jdbcType="INTEGER" property="frefoundqty" />
       <result column="fstoredqty" jdbcType="INTEGER" property="fstoredqty" />
       <result column="fjudgetype" jdbcType="VARCHAR" property="fjudgetype" />
+      <result column="fnote" jdbcType="VARCHAR" property="fnote" />
+      <result column="fcurrency" jdbcType="VARCHAR" property="fcurrency" />
       <result column="fnote" jdbcType="VARCHAR" property="fnote" />
 
       <association property="material" javaType="com.linkpal.model.Material">
@@ -220,13 +223,13 @@
     insert into T_VS_BillOrder ( fnumber, fsupplierid,
       fcustomid, frestockid, fcreatetime, 
       fcruserid, fcheckdate, fchuserid, 
-      fdepartmentid, fstatus, fnote,fbizdate
+      fdepartmentid, fstatus, fnote,fbizdate,fbuyer
       )
     values ( #{fnumber,jdbcType=VARCHAR}, #{fsupplierid,jdbcType=INTEGER},
       #{fcustomid,jdbcType=INTEGER}, #{frestockid,jdbcType=INTEGER}, #{fcreatetime,jdbcType=TIMESTAMP}, 
       #{fcruserid,jdbcType=INTEGER}, #{fcheckdate,jdbcType=TIMESTAMP}, #{fchuserid,jdbcType=INTEGER}, 
       #{fdepartmentid,jdbcType=INTEGER}, #{fstatus,jdbcType=INTEGER}, #{fnote,jdbcType=VARCHAR},
-      #{fbizdate,jdbcType=TIMESTAMP}
+      #{fbizdate,jdbcType=TIMESTAMP},#{fbuyer,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Billorder">
@@ -269,6 +272,9 @@
       <if test="fbizdate != null">
         fbizdate,
       </if>
+      <if test="fbuyer != null">
+        fbuyer,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
 
@@ -307,6 +313,9 @@
       </if>
       <if test="fbizdate != null">
         #{fbizdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fbuyer != null">
+        #{fbuyer,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -358,6 +367,9 @@
       <if test="fbizdate != null">
         fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="fbuyer != null">
+        fbuyer = #{fbuyer,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -377,7 +389,8 @@
       fdepartmentid = #{fdepartmentid,jdbcType=INTEGER},
       fstatus = #{fstatus,jdbcType=INTEGER},
       fnote = #{fnote,jdbcType=VARCHAR},
-      fbizdate = #{fbizdate,jdbcType=TIMESTAMP}
+      fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
+    fbuyer = #{fbuyer,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -397,7 +410,8 @@
       fdepartmentid = #{fdepartmentid,jdbcType=INTEGER},
       fstatus = #{fstatus,jdbcType=INTEGER},
       fnote = #{fnote,jdbcType=VARCHAR},
-      fbizdate = #{fbizdate,jdbcType=TIMESTAMP}
+      fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
+       fbuyer = #{fbuyer,jdbcType=VARCHAR}
     where fbillid = #{fbillid,jdbcType=INTEGER}
   </update>
 
@@ -516,5 +530,9 @@ exec Proc_initAutoNum 'T_VS_BillOrder','CGDD'
 
   <select id="getPushDownQty" statementType="CALLABLE"  parameterType="Integer" resultType="float">
     exec Proc_getPushDownQty #{fentryid},#{fid},'t_vs_billcheckentry'
+  </select>
+
+  <select id="saveBillOrder" statementType="CALLABLE" resultType="java.util.Map" parameterType="java.util.Map">
+    exec Proc_saveBillOrder #{采购凭证},#{凭证日期},#{供应商/供应工厂},#{creatorid},#{PGr},#{物料},#{短文本},#{OUn},#{数量},#{净价},#{币别}
   </select>
 </mapper>

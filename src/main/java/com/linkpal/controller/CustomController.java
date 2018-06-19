@@ -8,6 +8,7 @@ import com.linkpal.model.Stock;
 import com.linkpal.service.ICustomService;
 import com.linkpal.util.CheckOnlyContext;
 import com.linkpal.util.StringUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class CustomController {
     }
 
     @RequestMapping(value = "/custom/getList")
+    @RequiresPermissions("custom:view")
     public ModelAndView getList(HttpServletRequest request,Custom custom)
     {
 
@@ -47,6 +49,7 @@ public class CustomController {
     }
 
     @RequestMapping(value = "/custom/create")
+    @RequiresPermissions("custom:create")
     public ModelAndView Create()
     {
         ModelAndView mav=new ModelAndView("web/custom/edit");
@@ -73,6 +76,7 @@ public class CustomController {
     }
 
     @RequestMapping(value = "/custom/edit")
+    @RequiresPermissions("custom:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/custom/edit");
@@ -82,12 +86,14 @@ public class CustomController {
     }
 
     @RequestMapping(value = "/custom/delete")
+    @RequiresPermissions("custom:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
         customService.delete(ID);
         return getList(request,(Custom)request.getSession().getAttribute("Custom"));
     }
 
     @RequestMapping(value = "/custom/deleteBatch")
+    @RequiresPermissions("custom:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         customService.deleteBatch(ids);

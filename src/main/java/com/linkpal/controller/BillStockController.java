@@ -9,6 +9,7 @@ import com.linkpal.util.GlobalVarContext;
 import com.linkpal.util.InitBinderUtil;
 import com.linkpal.util.MapUtil;
 import com.linkpal.util.StringUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -44,6 +45,7 @@ public class BillStockController {
     ICustomService customService;
 
     @RequestMapping(value = "/billstock/index")
+    @RequiresPermissions("billstock:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/billstock/index");
@@ -57,6 +59,7 @@ public class BillStockController {
 
     @RequestMapping(value = "/billstock/getList")
     @ResponseBody
+    @RequiresPermissions("billstock:view")
     public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
@@ -76,6 +79,7 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/create")
+    @RequiresPermissions("billstock:create")
     public ModelAndView Create(HttpServletRequest request)
     {
         ModelAndView mav=new ModelAndView("web/billstock/edit");
@@ -121,6 +125,7 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/edit")
+    @RequiresPermissions("billstock:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/billstock/edit");
@@ -138,12 +143,14 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/delete")
+    @RequiresPermissions("billstock:delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
         billStockService.delete(ID);
         return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billstock")) ;
     }
 
     @RequestMapping(value = "/billstock/deleteBatch")
+    @RequiresPermissions("billstock:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         billStockService.deleteBatch(ids);
@@ -165,6 +172,7 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/audit")
+    @RequiresPermissions("billstock:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billstock billstock=billStockService.getDetail(ID);
         billstock.setFuserid(GlobalVarContext.user.getFid());
@@ -174,6 +182,7 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/unaudit")
+    @RequiresPermissions("billstock:unaudit")
     public ModelAndView UnAudit(HttpServletRequest request, int ID) throws Exception {
         Billstock billstock=billStockService.getDetail(ID);
         billstock.setFuserid(0);
@@ -191,6 +200,7 @@ public class BillStockController {
 
 
     @RequestMapping(value = "/billstock/print")
+    @RequiresPermissions("billstock:print")
     public ModelAndView Print(int ID)
     {
         ModelAndView mav=Edit(ID);

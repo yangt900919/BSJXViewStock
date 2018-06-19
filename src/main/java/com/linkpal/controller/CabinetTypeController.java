@@ -14,6 +14,7 @@ import com.linkpal.model.Page;
 import com.linkpal.service.ICabinetTypeService;
 import com.linkpal.util.CheckOnlyContext;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ public class CabinetTypeController
     }
     
     @RequestMapping(value = "/cabinettype/getList")
+	@RequiresPermissions("cabinettype:view")
     public ModelAndView getList(HttpServletRequest request,Cabinettype cabinetType)
     {
 
@@ -52,6 +54,7 @@ public class CabinetTypeController
     }
     
     @RequestMapping(value = "/cabinettype/create")
+	@RequiresPermissions("cabinettype:create")
     public ModelAndView Create()
     {
     	ModelAndView mav=new ModelAndView("web/cabinettype/edit");
@@ -78,6 +81,7 @@ public class CabinetTypeController
     }
     
     @RequestMapping(value = "/cabinettype/edit")
+	@RequiresPermissions("cabinettype:edit")
     public ModelAndView Edit(int ID)
     {
     	ModelAndView mav=new ModelAndView("web/cabinettype/edit");
@@ -87,12 +91,14 @@ public class CabinetTypeController
     }
     
     @RequestMapping(value = "/cabinettype/delete")
+	@RequiresPermissions("cabinettype:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
     	cabinetTypeService.delete(ID);
     	   return getList(request,(Cabinettype)request.getSession().getAttribute("CabinetType"));
     }
     
     @RequestMapping(value = "/cabinettype/deleteBatch")
+	@RequiresPermissions("cabinettype:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
     	cabinetTypeService.deleteBatch(ids);

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.InvMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Inv">
+    <id column="FID" jdbcType="INTEGER" property="fid" />
+    <result column="fname" jdbcType="VARCHAR" property="fname" />
+    <result column="FDate" jdbcType="VARCHAR" property="fdate" />
+    <result column="FState" jdbcType="INTEGER" property="fstate" />
+    <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
+
+    <collection property="inventries" ofType="com.linkpal.model.Inventry">
+      <id column="FeID" jdbcType="INTEGER" property="fid" />
+      <result column="FParentID" jdbcType="INTEGER" property="fparentid" />
+      <result column="FMaterialID" jdbcType="INTEGER" property="fmaterialid" />
+      <result column="FGoodseatID" jdbcType="INTEGER" property="fgoodseatid" />
+      <result column="FQty" jdbcType="DOUBLE" property="fqty" />
+      <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
+
+      <association property="material" javaType="com.linkpal.model.Material">
+        <id column="mID" property="fid"/>
+        <result column="mNumber" property="materialnumber"/>
+        <result column="mName" property="materialname"/>
+        <result column="mModel" property="materialmodel"/>
+        <result column="mUnit" property="materialunit"/>
+      </association>
+
+      <association property="goodseat" javaType="com.linkpal.model.Goodseat">
+      <id column="gID" property="fid"/>
+      <result column="gNumber" property="fnumber"/>
+      </association>
+
+
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+   t0.*,t1.*,t1.fid Feid,t2.fid mID,t2.materialnumber mNumber,t2.materialname mName,
+    t2.materialmodel mModel,t2.materialunit mUnit,t3.fid gID,t3.fnumber gNumber
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.InvExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_Inv t0
+    inner join t_vs_inventry t1 on t0.fid=t1.fparentid
+    inner join t_vs_material t2 on t1.fmaterialid=t2.fid
+    inner join t_vs_goodseat t3 on t1.fgoodseatid=t3.fid
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_Inv t0
+    inner join t_vs_inventry t1 on t0.fid=t1.fparentid
+    inner join t_vs_material t2 on t1.fmaterialid=t2.fid
+    inner join t_vs_goodseat t3 on t1.fgoodseatid=t3.fid
+    where t0.FID = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_Inv
+    where FID = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.InvExample">
+    delete from T_VS_Inv
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Inv">
+    insert into T_VS_Inv ( fname, FDate,
+      FState, FCreateTime)
+    values ( #{fname,jdbcType=VARCHAR}, #{fdate,jdbcType=VARCHAR},
+      #{fstate,jdbcType=INTEGER}, #{fcreatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Inv">
+    insert into T_VS_Inv
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="fname != null">
+        fname,
+      </if>
+      <if test="fdate != null">
+        FDate,
+      </if>
+      <if test="fstate != null">
+        FState,
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="fname != null">
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="fdate != null">
+        #{fdate,jdbcType=VARCHAR},
+      </if>
+      <if test="fstate != null">
+        #{fstate,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatetime != null">
+        #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.InvExample" resultType="java.lang.Long">
+    select count(*) from T_VS_Inv
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_Inv
+    <set>
+      <if test="record.fid != null">
+        FID = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fname != null">
+        fname = #{record.fname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fdate != null">
+        FDate = #{record.fdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fstate != null">
+        FState = #{record.fstate,jdbcType=INTEGER},
+      </if>
+      <if test="record.fcreatetime != null">
+        FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_Inv
+    set FID = #{record.fid,jdbcType=INTEGER},
+      fname = #{record.fname,jdbcType=VARCHAR},
+      FDate = #{record.fdate,jdbcType=VARCHAR},
+      FState = #{record.fstate,jdbcType=INTEGER},
+      FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Inv">
+    update T_VS_Inv
+    <set>
+      <if test="fname != null">
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="fdate != null">
+        FDate = #{fdate,jdbcType=VARCHAR},
+      </if>
+      <if test="fstate != null">
+        FState = #{fstate,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Inv">
+    update T_VS_Inv
+    set fname = #{fname,jdbcType=VARCHAR},
+      FDate = #{fdate,jdbcType=VARCHAR},
+      FState = #{fstate,jdbcType=INTEGER},
+      FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP}
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+
+  <select id="getList"  resultType="com.linkpal.model.Inv" parameterType="com.linkpal.model.Inv" >
+    select top ${pageSize} t0.* from T_vs_Inv t0
+
+    where  t0.fid not in (
+    select top ${pageIndex} fid from T_vs_Inv
+    <where>
+      <if test="t.fname!='' and t.fname!=null ">
+        and t0.fname  like '%${t.fname}%'
+      </if>
+    </where>
+
+    order by fid
+    )
+    <if test="t.fname!='' and t.fname!=null ">
+      and t0.fname  like '%${t.fname}%'
+    </if>
+    order by t0.fid
+  </select>
+  <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
+    SELECT count(*)
+    from T_vs_Inv t0
+    <where>
+      <if test="fname!='' and fname!=null ">
+        and t0.fname  like '%${fname}%'
+      </if>
+    </where>
+
+  </select>
+
+  <update id="close" parameterType="int">
+    update T_VS_inv set fstate=1
+    WHERE FID=#{ID}
+  </update>
+
+  <update id="closeBatch">
+    update T_VS_inv set fstate=1 where FID in (
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    )
+
+  </update>
+</mapper>

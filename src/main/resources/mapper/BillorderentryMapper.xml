@@ -17,6 +17,8 @@
     <result column="frefoundqty" jdbcType="DOUBLE" property="frefoundqty" />
     <result column="fstoredqty" jdbcType="DOUBLE" property="fstoredqty" />
     <result column="fjudgetype" jdbcType="VARCHAR" property="fjudgetype" />
+    <result column="fprice" jdbcType="DOUBLE" property="fprice" />
+    <result column="fcurrency" jdbcType="VARCHAR" property="fcurrency" />
     <result column="fnote" jdbcType="VARCHAR" property="fnote" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -79,7 +81,7 @@
   </sql>
   <sql id="Base_Column_List">
     fid, fbillid, fentriyid, fmaid, fstockid, fqty, fstate, fbrand, fqulity, fdeldate, 
-    fcontnum, freceiptqty, frefoundqty, fstoredqty, fjudgetype, fnote
+    fcontnum, freceiptqty, frefoundqty, fstoredqty, fjudgetype, fnote,fprice,fcurrency
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.BillorderentryExample" resultMap="BaseResultMap">
     select
@@ -108,13 +110,13 @@
       fstate, fbrand, fqulity, 
       fdeldate, fcontnum, freceiptqty, 
       frefoundqty, fstoredqty, fjudgetype, 
-      fnote)
+      fnote,fprice,fcurrency)
     values ( #{fbillid,jdbcType=INTEGER}, #{fentriyid,jdbcType=INTEGER},
       #{fmaid,jdbcType=INTEGER}, #{fstockid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE},
       #{fstate,jdbcType=INTEGER}, #{fbrand,jdbcType=VARCHAR}, #{fqulity,jdbcType=VARCHAR}, 
       #{fdeldate,jdbcType=TIMESTAMP}, #{fcontnum,jdbcType=VARCHAR}, #{freceiptqty,jdbcType=DOUBLE},
       #{frefoundqty,jdbcType=DOUBLE}, #{fstoredqty,jdbcType=DOUBLE}, #{fjudgetype,jdbcType=VARCHAR},
-      #{fnote,jdbcType=VARCHAR})
+      #{fnote,jdbcType=VARCHAR},#{fprice,jdbcType=DOUBLE}, #{fcurrency,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Billorderentry">
     insert into T_VS_BillOrderEntry
@@ -165,6 +167,12 @@
       <if test="fnote != null">
         fnote,
       </if>
+      <if test="fprice != null">
+        fprice,
+      </if>
+      <if test="fcurrency != null">
+        fcurrency,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
 
@@ -212,6 +220,12 @@
       </if>
       <if test="fnote != null">
         #{fnote,jdbcType=VARCHAR},
+      </if>
+      <if test="fprice != null">
+        #{fprice,jdbcType=DOUBLE},
+      </if>
+      <if test="fcurrency != null">
+        #{fcurrency,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -278,6 +292,12 @@
       <if test="fnote != null">
         fnote = #{fnote,jdbcType=VARCHAR},
       </if>
+      <if test="fprice != null">
+        fprice = #{fprice,jdbcType=DOUBLE},
+      </if>
+      <if test="fcurrency != null">
+        fcurrency = #{fcurrency,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -300,7 +320,9 @@
       frefoundqty = #{frefoundqty,jdbcType=DOUBLE},
       fstoredqty = #{fstoredqty,jdbcType=DOUBLE},
       fjudgetype = #{fjudgetype,jdbcType=VARCHAR},
-      fnote = #{fnote,jdbcType=VARCHAR}
+      fnote = #{fnote,jdbcType=VARCHAR},
+    fprice = #{fprice,jdbcType=DOUBLE},
+    fcurrency = #{fcurrency,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -323,7 +345,9 @@
       frefoundqty = #{frefoundqty,jdbcType=DOUBLE},
       fstoredqty = #{fstoredqty,jdbcType=DOUBLE},
       fjudgetype = #{fjudgetype,jdbcType=VARCHAR},
-      fnote = #{fnote,jdbcType=VARCHAR}
+      fnote = #{fnote,jdbcType=VARCHAR},
+       fprice = #{fprice,jdbcType=DOUBLE},
+    fcurrency = #{fcurrency,jdbcType=VARCHAR}
        where fid = #{fid,jdbcType=INTEGER}
   </update>
 

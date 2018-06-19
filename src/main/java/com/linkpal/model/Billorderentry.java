@@ -38,6 +38,10 @@ public class Billorderentry implements Serializable {
 
     private String fjudgetype;
 
+    private Double fprice;
+
+    private String fcurrency;
+
     private String fnote;
 
     private static final long serialVersionUID = 1L;
@@ -184,5 +188,21 @@ public class Billorderentry implements Serializable {
 
     public void setStock(Stock stock) {
         this.stock = stock;
+    }
+
+    public Double getFprice() {
+        return fprice;
+    }
+
+    public void setFprice(Double fprice) {
+        this.fprice = fprice;
+    }
+
+    public String getFcurrency() {
+        return fcurrency;
+    }
+
+    public void setFcurrency(String fcurrency) {
+        this.fcurrency = fcurrency;
     }
 }

@@ -11,6 +11,7 @@ import com.linkpal.model.Page;
 import com.linkpal.service.*;
 import com.linkpal.util.StringUtil;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,7 @@ public class MaterialRGoodseatController
     
     
     @RequestMapping(value = "/materialrgoodseat/index")
+	@RequiresPermissions("materialrgoodseat:view")
     public ModelAndView Index()
     {
     	ModelAndView mav=new ModelAndView("web/materialrgoodseat/index");
@@ -56,6 +58,7 @@ public class MaterialRGoodseatController
     }
  
     @RequestMapping(value = "/materialrgoodseat/getList")
+	@RequiresPermissions("materialrgoodseat:view")
     public ModelAndView getList(HttpServletRequest request,Materialrgoodseat MaterialRGoodseat) 
     {
 
@@ -80,6 +83,7 @@ public class MaterialRGoodseatController
     }
     
     @RequestMapping(value = "/materialrgoodseat/create")
+	@RequiresPermissions("materialrgoodseat:create")
     public ModelAndView Create()
     {
     	ModelAndView mav=new ModelAndView("web/materialrgoodseat/edit");
@@ -110,6 +114,7 @@ public class MaterialRGoodseatController
     }
     
     @RequestMapping(value = "/materialrgoodseat/edit")
+	@RequiresPermissions("materialrgoodseat:edit")
     public ModelAndView Edit(int ID)
     {
     	ModelAndView mav=new ModelAndView("web/materialrgoodseat/edit");
@@ -124,12 +129,14 @@ public class MaterialRGoodseatController
     }
     
     @RequestMapping(value = "/materialrgoodseat/delete")
+	@RequiresPermissions("materialrgoodseat:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
     	MaterialRGoodseatService.delete(ID);
     	   return getList(request,(Materialrgoodseat) request.getSession().getAttribute("MaterialRGoodseat"));
     }
     
     @RequestMapping(value = "/materialrgoodseat/deleteBatch")
+	@RequiresPermissions("materialrgoodseat:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
     	MaterialRGoodseatService.deleteBatch(ids);

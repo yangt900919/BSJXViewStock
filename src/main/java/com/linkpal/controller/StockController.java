@@ -5,6 +5,7 @@ import com.linkpal.model.Page;
 import com.linkpal.model.Stock;
 import com.linkpal.service.IStockService;
 import com.linkpal.util.CheckOnlyContext;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,6 +112,7 @@ public class StockController {
     }*/
 
     @RequestMapping(value = "stock/getList")
+    @RequiresPermissions("stock:view")
     public ModelAndView getList(HttpServletRequest request,Stock stock)
     {
         Map map=stockService.getPageList(request, stock);
@@ -125,6 +127,7 @@ public class StockController {
     }
 
     @RequestMapping(value = "/stock/create")
+    @RequiresPermissions("stock:create")
     public ModelAndView Create()
     {
         ModelAndView mav=new ModelAndView("web/Warehouse/edit");
@@ -152,6 +155,7 @@ public class StockController {
     }
 
     @RequestMapping(value = "/stock/edit")
+    @RequiresPermissions("stock:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/Warehouse/edit");
@@ -162,12 +166,14 @@ public class StockController {
     }
 
     @RequestMapping(value = "/stock/delete")
+    @RequiresPermissions("stock:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
         stockService.delete(ID);
         return getList(request,(Stock) request.getSession().getAttribute("Stock"));
     }
 
     @RequestMapping(value = "/stock/deleteBatch")
+    @RequiresPermissions("stock:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         stockService.deleteBatch(ids);

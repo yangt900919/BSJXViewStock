@@ -14,6 +14,7 @@ import com.linkpal.model.Page;
 import com.linkpal.service.*;
 import com.linkpal.util.StringUtil;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,7 @@ public class GoodseatController
 
 
     @RequestMapping(value = "/goodseat/getList")
+    @RequiresPermissions("goodseat:view")
     public ModelAndView getList(HttpServletRequest request,Goodseat Goodseat)
     {
 
@@ -73,6 +75,7 @@ public class GoodseatController
     }
 
     @RequestMapping(value = "/goodseat/create")
+    @RequiresPermissions("goodseat:create")
     public ModelAndView Create()
     {
         ModelAndView mav=new ModelAndView("web/goodseat/edit");
@@ -105,6 +108,7 @@ public class GoodseatController
     }
 
     @RequestMapping(value = "/goodseat/edit")
+    @RequiresPermissions("goodseat:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/goodseat/edit");
@@ -130,12 +134,14 @@ public class GoodseatController
     }
 
     @RequestMapping(value = "/goodseat/delete")
+    @RequiresPermissions("goodseat:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
         GoodseatService.delete(ID);
         return getList(request,(Goodseat) request.getSession().getAttribute("Goodseat"));
     }
 
     @RequestMapping(value = "/goodseat/deleteBatch")
+    @RequiresPermissions("goodseat:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         GoodseatService.deleteBatch(ids);

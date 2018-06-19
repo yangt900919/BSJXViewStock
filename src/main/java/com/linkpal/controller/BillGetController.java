@@ -7,6 +7,7 @@ import com.linkpal.service.*;
 import com.linkpal.util.InitBinderUtil;
 import com.linkpal.util.MapUtil;
 import com.linkpal.util.GlobalVarContext;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -45,6 +46,7 @@ public class BillGetController {
     ICustomService customService;
 
     @RequestMapping(value = "/billget/index")
+    @RequiresPermissions("billget:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/billget/index");
@@ -59,6 +61,7 @@ public class BillGetController {
 
     @RequestMapping(value = "/billget/getList")
     @ResponseBody
+    @RequiresPermissions("billget:view")
     public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
@@ -79,6 +82,7 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/create")
+    @RequiresPermissions("billget:create")
     public ModelAndView Create(HttpServletRequest request)
     {
         ModelAndView mav=new ModelAndView("web/billget/edit");
@@ -125,6 +129,7 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/edit")
+    @RequiresPermissions("billget:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/billget/edit");
@@ -143,12 +148,14 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/delete")
+    @RequiresPermissions("billget:delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
         billGetService.delete(ID);
         return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
     }
 
     @RequestMapping(value = "/billget/deleteBatch")
+    @RequiresPermissions("billget:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         billGetService.deleteBatch(ids);
@@ -170,6 +177,7 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/audit")
+    @RequiresPermissions("billget:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billget billget=billGetService.getDetail(ID);
         billget.setFauditorid(GlobalVarContext.user.getFid());
@@ -179,6 +187,7 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/unaudit")
+    @RequiresPermissions("billget:unaudit")
     public ModelAndView UnAudit(HttpServletRequest request, int ID) throws Exception {
         Billget billget=billGetService.getDetail(ID);
         billget.setFauditorid(0);
@@ -195,6 +204,7 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/print")
+    @RequiresPermissions("billget:print")
     public ModelAndView Print(int ID)
     {
         ModelAndView mav=Edit(ID);

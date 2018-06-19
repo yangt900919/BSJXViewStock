@@ -307,7 +307,7 @@
         and fstockid=#{t.fstockid}
       </if>
     </where>
-    order by fnumber
+    order by fid
     )
     <if test="t.fnumber!=null and t.fnumber!= '' ">
       and t0.FNumber like '%${t.fnumber}%' 		</if>
@@ -324,7 +324,7 @@
     <if test="t.fstockid>0 ">
       and t0.fstockid=#{t.fstockid}
     </if>
-    order by t0.fnumber
+    order by t0.fid
 
   </select>
 

@@ -92,23 +92,27 @@
         SELECT top ${pageSize} t.fid,ISNULL(t.fbillno,'')fbillno,ISNULL(t.fmaterialid,0)fmaterialid,ISNULL(t.fbatch,'') fbatch,
        t.fgperiod fgperiod,ISNULL(convert(varchar,t.fmdate),'')fmdate,ISNULL(convert(varchar,t.fadate),'')fadate,
         t.fquqty fquqty,ISNULL(t.fsupplierid,0)fsupplierid ,isnull(t1.materialNumber,'')materialNumber,
-        isnull(t1.materialName,'')materialName,isnull(t1.materialModel,'') materialModel,
+        isnull(t1.materialname,'')materialName,isnull(t1.materialModel,'') materialModel,
         isnull(t1.materialUnit,''),isnull(t2.supplierNumber,'') sunumber,isnull(t2.supplierName,'') suname from T_VS_MaPrint t
         left join t_vs_material t1 on t.fmaterialid=t1.fid
+        --inner join  wl$ t3 on t1.materialnumber=t3.manum
         left join t_vs_supplier t2 on t.fsupplierid=t2.fid
         where
         t.fid not in (
         select top ${pageIndex} tt.fid from T_VS_MaPrint tt
         left join t_vs_material tt1 on tt.fmaterialid=tt1.fid
         left join t_vs_supplier tt2 on tt.fsupplierid=tt2.fid
+       -- inner join  wl$ tt3 on tt1.materialnumber=tt3.manum
 
         where  tt.fmaterialid is not null
             <if test="t.materialnumber!=null and t.materialnumber!= '' ">
-                and tt1.materialnumber like '%${t.materilanumber}%' 		</if>
+                and tt1.materialnumber like '%${t.materialnumber}%' 		</if>
             <if test="t.materialname!=null and t.materialname!= '' ">
                 and tt1.materialname like '%${t.materialname}%'
             </if>
-
+--and (tt3.kw like '%18/%' or tt3.kw like '%19/%' or tt3.kw like '%20/%' or tt3.kw like '%24/%' or tt3.kw like '%25/%')
+       -- and (tt.fbillno not like '%426' or tt.fbillno not like '%482' or tt.fbillno not like '%521' or tt.fbillno not like '%483'
+      --  or tt.fbillno not like '%547' or tt.fbillno not like '%382' or tt.fbillno not like '%661' or tt.fbillno not like '%503')
         order by tt.fid
 
         )
@@ -120,6 +124,9 @@
         </if>
 
       and t.fmaterialid is not null
+       -- and (t3.kw like '%18/%' or t3.kw like '%19/%' or t3.kw like '%20/%' or t3.kw like '%24/%' or t3.kw like '%25/%')
+       -- and (t.fbillno not like '%426' or t.fbillno not like '%482' or t.fbillno not like '%521' or t.fbillno not like '%483'
+       -- or t.fbillno not like '%547' or t.fbillno not like '%382' or t.fbillno not like '%661' or t.fbillno not like '%503')
         order by t.fid
     </select>
 
@@ -128,16 +135,18 @@
         from T_VS_MaPrint tt
         left join t_vs_material tt1 on tt.fmaterialid=tt1.fid
         left join t_vs_supplier tt2 on tt.fsupplierid=tt2.fid
-
+       -- inner join  wl$ tt3 on tt1.materialnumber=tt3.manum
 
         where  tt.fmaterialid is not null
             <if test="materialnumber!=null and materialnumber!= '' ">
-                and tt1.materialnumber like '%${materilanumber}%' 		</if>
+                and tt1.materialnumber like '%${materialnumber}%' 		</if>
             <if test="materialname!=null and materialname!= '' ">
                 and tt1.materialname like '%${materialname}%'
             </if>
 
-
+       -- and (tt3.kw like '%18/%' or tt3.kw like '%19/%' or tt3.kw like '%20/%' or tt3.kw like '%24/%' or tt3.kw like '%25/%')
+        --and (tt.fbillno not like '%426' or tt.fbillno not like '%482' or tt.fbillno not like '%521' or tt.fbillno not like '%483'
+        --or tt.fbillno not like '%547' or tt.fbillno not like '%382' or tt.fbillno not like '%661' or tt.fbillno not like '%503')
 
     </select>
 
@@ -145,7 +154,7 @@
         select top ${pageSize} t.fid,ISNULL(t.fbillno,'')fbillno,isnull(t.fboxno,'') fboxno,ISNULL(t.fbatch,'') fbatch,
         ISNULL(t.fsupplierid,0)fsupplierid,isnull(t1.supplierNumber,'') sunumber,isnull(t1.supplierName,'') suname from t_vs_maprint t
         left join t_vs_supplier t1 on t.fsupplierid=t1.fid
-        where t.fid not IN (
+        where t.fid not IN (                                                                       kk
         select top ${pageIndex} tt.fid from T_VS_MaPrint tt
         where tt.fmaterialid is NULL
         <if test="t.fboxno!=null and t.fboxno!=''">

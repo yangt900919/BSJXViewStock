@@ -10,6 +10,7 @@ import com.linkpal.service.IMaPrintService;
 import com.linkpal.service.IStockService;
 import com.linkpal.util.StringUtil;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,7 @@ public class MaPrintController
 
 
     @RequestMapping(value = "/maprint/getList")
+	@RequiresPermissions("maprint:view")
     public ModelAndView getList(HttpServletRequest request,Material material)
     {
 
@@ -57,6 +59,7 @@ public class MaPrintController
     }
     
     @RequestMapping(value = "/maprint/create")
+	@RequiresPermissions("maprint:create")
     public ModelAndView Create()
     {
     	ModelAndView mav=new ModelAndView("web/maprint/edit");
@@ -85,6 +88,7 @@ public class MaPrintController
     }
     
     @RequestMapping(value = "/maprint/edit")
+	@RequiresPermissions("maprint:edit")
     public ModelAndView Edit(int ID)
     {
     	ModelAndView mav=new ModelAndView("web/maprint/edit");
@@ -96,12 +100,14 @@ public class MaPrintController
     }
     
     @RequestMapping(value = "/maprint/delete")
+	@RequiresPermissions("maprint:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
     	maprintService.delete(ID);
 		return  getList(request,(Material) request.getSession().getAttribute("MaPrint")) ;
     }
     
     @RequestMapping(value = "/maprint/deleteBatch")
+	@RequiresPermissions("maprint:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
     	maprintService.deleteBatch(ids);
@@ -109,6 +115,7 @@ public class MaPrintController
     }
 
 	@RequestMapping(value = "/maprint/print")
+	@RequiresPermissions("maprint:print")
 	public ModelAndView Print(HttpServletRequest request,Integer[] qrcodes)
 	{
 		ModelAndView mav= getList(request,(Material) request.getSession().getAttribute("MaPrint"));

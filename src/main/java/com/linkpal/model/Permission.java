@@ -3,7 +3,9 @@ package com.linkpal.model;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Permission implements Serializable {
     private Integer fid;
@@ -18,6 +20,8 @@ public class Permission implements Serializable {
 
     private Date fcreatetime;
 
+    //private List<Permission> permissions;
+
     private static final long serialVersionUID = 1L;
 
     public Permission()
@@ -29,6 +33,8 @@ public class Permission implements Serializable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.fid=0;
+       // this.permissions=new ArrayList<>();
     }
 
     public Integer getFid() {
@@ -78,4 +84,12 @@ public class Permission implements Serializable {
     public void setFcreatetime(Date fcreatetime) {
         this.fcreatetime = fcreatetime;
     }
+
+   /* public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }*/
 }

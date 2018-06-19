@@ -1,6 +1,7 @@
 package com.linkpal.controller;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 
+import com.linkpal.model.MaPrint;
 import com.linkpal.model.Page;
 import com.linkpal.model.Scabinet;
 import com.linkpal.service.ICabinetService;
@@ -17,6 +19,7 @@ import com.linkpal.service.IStockService;
 import com.linkpal.util.CheckOnlyContext;
 import com.linkpal.util.StringUtil;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +49,7 @@ public class SCabinetController
    	private IStockService stockService;
     
     @RequestMapping(value = "/scabinet/index")
+	@RequiresPermissions("scabinet:view")
     public ModelAndView Index()
     {
     	ModelAndView mav=new ModelAndView("web/scabinet/index");
@@ -57,6 +61,7 @@ public class SCabinetController
     }
 	
     @RequestMapping(value = "/scabinet/getList")
+	@RequiresPermissions("scabinet:view")
     public ModelAndView getList(HttpServletRequest request,Scabinet scabinet) 
     {
 
@@ -78,6 +83,7 @@ public class SCabinetController
     }
     
     @RequestMapping(value = "/scabinet/create")
+	@RequiresPermissions("scabinet:create")
     public ModelAndView Create()
     {
     	ModelAndView mav=new ModelAndView("web/scabinet/edit");
@@ -107,6 +113,7 @@ public class SCabinetController
     }
     
     @RequestMapping(value = "/scabinet/edit")
+	@RequiresPermissions("scabinet:edit")
     public ModelAndView Edit(int ID)
     {
     	ModelAndView mav=new ModelAndView("web/scabinet/edit");
@@ -119,12 +126,14 @@ public class SCabinetController
     }
     
     @RequestMapping(value = "/scabinet/delete")
+	@RequiresPermissions("scabinet:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
     	scabinetService.delete(ID);
     	   return getList(request,(Scabinet) request.getSession().getAttribute("SCabinet"));
     }
     
     @RequestMapping(value = "/scabinet/deleteBatch")
+	@RequiresPermissions("scabinet:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
     	System.out.print(ids);
@@ -143,6 +152,22 @@ public class SCabinetController
 		if(ID==0)model=new Scabinet();
 		else model=scabinetService.getDetail(ID);
     	out.println( coc.CheckOnly(model.getFnumber(), scabinetService, param, ID));
-    }  
+    }
+
+	@RequestMapping(value = "/scabinet/print")
+	@RequiresPermissions("scabinet:print")
+	public ModelAndView Print(HttpServletRequest request,Integer[] qrcodes)
+	{
+		ModelAndView mav=  getList(request,(Scabinet) request.getSession().getAttribute("SCabinet"));
+		//ModelAndView mav=new ModelAndView("web/maboxprint/maboxprint");
+		List<Scabinet> mpboxlist=new ArrayList<>();
+		for(Integer code:qrcodes)
+		{
+			mpboxlist.add(scabinetService.getDetail(code));
+		}
+		mav.addObject("isscprint",mpboxlist.size());
+		mav.addObject("scplist", mpboxlist);
+		return mav;
+	}
  
 }

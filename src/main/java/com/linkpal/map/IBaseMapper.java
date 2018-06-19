@@ -23,10 +23,6 @@ public interface IBaseMapper<T> {
      */
     public List<T> getList(@Param("pageIndex")int pageIndex, @Param("pageSize")int pageSize, @Param("t")T t);
 
-/*    *//**
-     * 获取查询的所有条数
-     * @param t
-     * @return
-     *//*
-    public int getTotalNum(T t);*/
+
+    public int getTotalNum(T t);
 }

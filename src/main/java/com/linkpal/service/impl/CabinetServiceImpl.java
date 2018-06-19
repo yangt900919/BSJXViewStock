@@ -4,6 +4,7 @@ import com.linkpal.Excepetion.ImportException;
 import com.linkpal.dao.ICabinetDao;
 import com.linkpal.model.Cabinet;
 import com.linkpal.model.Page;
+import com.linkpal.model.Scabinet;
 import com.linkpal.service.ICabinetService;
 import com.linkpal.util.PageList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,10 @@ public class CabinetServiceImpl implements ICabinetService {
     public Map<String, Object> getPageList(HttpServletRequest request, Cabinet t) {
         PageList<Cabinet> plist=new PageList<>();
         return plist.getPageList(cabinetDao,request,t,"Cabinet");
+    }
+
+    @Override
+    public List<Scabinet> getScabinetList(Integer fid) {
+        return cabinetDao.getScabinetList(fid);
     }
 }

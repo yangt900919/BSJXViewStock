@@ -6,6 +6,8 @@ import com.linkpal.model.Billorder;
 import com.linkpal.model.Billorderentry;
 import com.linkpal.model.Page;
 import com.linkpal.service.IBillOrderService;
+import com.linkpal.util.ExcelUtil;
+import com.linkpal.util.GlobalVarContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,6 +137,87 @@ public class BillOrderServiceImpl implements IBillOrderService {
     @Override
     public float getPushDownQty(Integer fentryid,Integer fid) {
         return IBillOrderDao.getPushDownQty(fentryid,fid);
+    }
+
+    @Override
+    public List<Map<String, Object>> saveBillOrder(Map map) {
+        return IBillOrderDao.saveBillOrder(map);
+    }
+
+    @Override
+    public void importInfo(InputStream in, MultipartFile file) throws ImportException {
+
+        List<List<Object>> listob=null;
+
+        try {
+            listob= ExcelUtil.getListByExcel(in,file.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(listob==null||listob.size()<=1)
+        {
+
+            throw  new ImportException("未关联到任何数据!");
+        }
+        else
+        {
+            try {
+
+                List colname=new ArrayList<>();
+                //List coldata=new ArrayList<>();
+                int x=0;
+                int y=0;
+                int row=0;
+                for(int i=0;i<listob.size();i++)
+                {
+                    if( listob.get(i).contains("供应商/供应工厂")&& listob.get(i).contains("物料"))
+                    {
+                        for(int j=0;j<listob.get(i).size();j++)
+                        {
+                            if(listob.get(i).get(j).toString().equals("供应商/供应工厂"))
+                            {
+                                x=j;
+                            }
+                            if(listob.get(i).get(j).toString().equals("物料"))
+                            {
+                                y=j;
+                            }
+                        }
+                        row=i;
+                        colname.addAll(listob.get(i));
+                        break;
+                    }
+
+                    // System.out.println( );
+                }
+                List<Map<String,Object>> list=new ArrayList<>();
+                for(int i=row+1;i<listob.size();i++)
+                {
+                    if(!(listob.get(i).contains("供应商/供应工厂")&& listob.get(i).contains("物料")))
+                    {
+                        if(listob.get(i).get(x)!=null&&listob.get(i).get(y)!=null&&!(listob.get(i).get(x).toString().equals("*")))
+                        {
+                            Map map=new HashMap();
+                            for(int j=0;j<listob.get(i).size();j++)
+                            {
+
+                                map.put(colname.get(j).toString().trim(),listob.get(i).get(j));
+                            }
+                            map.put("creatorid", GlobalVarContext.user.getFid());
+                           // list.add(map);
+                            saveBillOrder(map);
+                        }
+                    }
+                }
+
+
+                //System.out.println(list);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

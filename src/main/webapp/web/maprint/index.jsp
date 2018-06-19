@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="push" id="checkall" onclick="checkall()">全选
+  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
   </th>
 
   <th >编号</th>
@@ -101,7 +101,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <c:forEach items="${maprintlist }" var="map">
   <tr>
   <td>
-    <input type="checkbox" name=push class="push" value=${map.fid}>
+    <input type="checkbox" name=push class="check" value=${map.fid}>
   </td>
   <td>${map.fbillno }</td>
   <td>${map.material.materialnumber }</td>

@@ -47,19 +47,19 @@
 
 		<%--<div class="col-md-9 col-sm-9 col-xs-9" >
 		</div>--%>
-		<div class="col-md-5 col-sm-5 col-xs-6" >
+		<div class="col-md-8 col-sm-8 col-xs-7" >
 			<div class=row>
 
-				<div class="col-md-3 col-sm-3 col-xs-3" >  <a class="btn btn-primary btn-sm"  href="billorder/create">
+				<div class="col-md-2 col-sm-2 col-xs-2" >  <a class="btn btn-primary btn-sm"  href="billorder/create">
 					<span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-				<div class="col-md-3 col-sm-3 col-xs-3"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('billorder')">
+				<div class="col-md-2 col-sm-2 col-xs-2"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('billorder')">
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 					删除</a>
 				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">  <button class="btn btn-primary btn-sm"  onclick="filter('billorder')">
+				<div class="col-md-2 col-sm-2 col-xs-2">  <button class="btn btn-info btn-sm"  onclick="filter('billorder')">
 					<span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</button>
 				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
+				<div class="col-md-2 col-sm-2 col-xs-2">
 
 					<button class="btn btn-success btn-sm"  onclick="pushDown('billorder','order')">
 					<span class="glyphicon   glyphicon-hand-down " aria-hidden="true"></span>下推</button>
@@ -86,6 +86,9 @@
 							<li><a href="#">Separated link</a></li>
 						</ul>
 					</div>--%>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">  <button class="btn btn-warning btn-sm"  onclick="$('#modal-container-137535').modal({backdrop: 'static', keyboard: false});">
+					<span class="glyphicon glyphicon-import" aria-hidden="true"></span>导入</button>
 				</div>
 			</div>
 
@@ -233,5 +236,6 @@
 	</div>
 
 <jsp:include page="condition.jsp"></jsp:include>
+<jsp:include page="orderimport.jsp"></jsp:include>
 </body>
 </html>

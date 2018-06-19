@@ -3,6 +3,7 @@ package com.linkpal.controller;
 import com.linkpal.model.Inventory;
 import com.linkpal.model.Page;
 import com.linkpal.service.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,7 @@ public class OperateLogController {
     ISCabinetService scabinetService;
 
     @RequestMapping(value = "/operatelog/index")
+    @RequiresPermissions("operatelog:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/operatelog/index");
@@ -51,7 +53,8 @@ public class OperateLogController {
 
     @RequestMapping(value = "/operatelog/getList")
     @ResponseBody
-    private ModelAndView getPageList(HttpServletRequest request,@RequestParam Map<String, String> params)
+    @RequiresPermissions("operatelog:view")
+    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
         Map map=operatelogService.getPageList(request, params);

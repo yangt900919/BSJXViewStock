@@ -7,6 +7,7 @@ import com.linkpal.service.*;
 import com.linkpal.service.IGsPrintService;
 import com.linkpal.util.StringUtil;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,7 @@ public class GsPrintController
 
 
     @RequestMapping(value = "/gsprint/getList")
+	@RequiresPermissions("gsprint:view")
     public ModelAndView getList(HttpServletRequest request,GsPrint gsprint)
     {
 
@@ -73,6 +75,7 @@ public class GsPrintController
     }
     
     @RequestMapping(value = "/gsprint/create")
+	@RequiresPermissions("gsprint:create")
     public ModelAndView Create()
     {
     	ModelAndView mav=new ModelAndView("web/gsprint/edit");
@@ -104,6 +107,7 @@ public class GsPrintController
     }
     
     @RequestMapping(value = "/gsprint/edit")
+	@RequiresPermissions("gsprint:edit")
     public ModelAndView Edit(int ID)
     {
     	ModelAndView mav=new ModelAndView("web/gsprint/edit");
@@ -118,12 +122,14 @@ public class GsPrintController
     }
     
     @RequestMapping(value = "/gsprint/delete")
+	@RequiresPermissions("gsprint:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
     	gsprintService.delete(ID);
 		return  getList(request,(GsPrint) request.getSession().getAttribute("GsPrint")) ;
     }
     
     @RequestMapping(value = "/gsprint/deleteBatch")
+	@RequiresPermissions("gsprint:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
     	gsprintService.deleteBatch(ids);
@@ -131,6 +137,7 @@ public class GsPrintController
     }
 
 	@RequestMapping(value = "/gsprint/print")
+	@RequiresPermissions("gsprint:print")
 	public ModelAndView Print(HttpServletRequest request,Integer[] qrcodes)
 	{
 		ModelAndView mav= getList(request,(GsPrint) request.getSession().getAttribute("GsPrint"));

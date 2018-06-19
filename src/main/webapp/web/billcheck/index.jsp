@@ -54,7 +54,7 @@
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 					删除</a>
 				</div>
-				<div class="col-md-2 col-sm-2 col-xs-2">  <button class="btn btn-primary btn-sm"  onclick="filter('billcheck')">
+				<div class="col-md-2 col-sm-2 col-xs-2">  <button class="btn btn-info btn-sm"  onclick="filter('billcheck')">
 					<span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</button>
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-2">

@@ -3,7 +3,9 @@ package com.linkpal.controller;
 import com.alibaba.fastjson.JSON;
 import com.linkpal.model.Cabinet;
 import com.linkpal.model.Page;
+import com.linkpal.model.Scabinet;
 import com.linkpal.service.ICabinetService;
+import com.linkpal.service.ISCabinetService;
 import com.linkpal.service.IStockService;
 import com.linkpal.util.CheckOnlyContext;
 import com.linkpal.util.StringUtil;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +31,9 @@ public class CabinetController  {
 
     @Autowired
     IStockService stockService;
+
+    @Autowired
+    ISCabinetService scabinetService;
 
     @RequestMapping(value = "/cabinet/index")
     public String Index()
@@ -113,6 +120,28 @@ public class CabinetController  {
         if(ID==0)model=new Cabinet();
         else model=cabinetService.getDetail(ID);
         out.println( coc.CheckOnly(model.getFnumber(), cabinetService, param, ID));
+    }
+
+    @RequestMapping(value = "/cabinet/print")
+    public ModelAndView Print(HttpServletRequest request,Integer[] qrcodes)
+    {
+        ModelAndView mav=  getList(request,(Cabinet) request.getSession().getAttribute("Cabinet"));
+        //ModelAndView mav=new ModelAndView("web/maboxprint/maboxprint");
+        List<Map<String,Object>> mpboxlist=new ArrayList<>();
+        for(Integer code:qrcodes)
+        {
+            Cabinet cabinet=cabinetService.getDetail(code);
+           /* Scabinet scabinet=new Scabinet();
+            scabinet.setCabinet(cabinet);
+            scabinet.setFcabinetid(cabinet.getFid());*/
+          Map map=new HashMap();
+          map.put("cabprint",cabinet);
+          map.put("sclist",cabinetService.getScabinetList(code));
+            mpboxlist.add(map);
+        }
+        mav.addObject("iscprint",mpboxlist.size());
+        mav.addObject("cplist", mpboxlist);
+        return mav;
     }
 /*
     @Override

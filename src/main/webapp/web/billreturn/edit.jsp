@@ -300,14 +300,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <div class="form-group">
   <div class="col-sm-offset-5 col-sm-7">
   <button ${disabled} type="submit" class="btn btn-primary">
-  <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   提交</button>
+  <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 <c:if test="${billreturn.fid>0}">
       <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billreturn',${billreturn.fid})">
           <span class="glyphicon glyphicon-print" aria-hidden="true" ></span>  打印</button>
 </c:if>
    <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
 
- <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  返回</button>
+ <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
    </div>
    </div>
   </form>

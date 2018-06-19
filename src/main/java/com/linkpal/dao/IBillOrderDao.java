@@ -23,4 +23,6 @@ public interface IBillOrderDao extends IBaseDao<Billorder> {
 
 
     float getPushDownQty( Integer fentryid,Integer fid);
+
+    List<Map<String,Object>> saveBillOrder(Map map);
 }

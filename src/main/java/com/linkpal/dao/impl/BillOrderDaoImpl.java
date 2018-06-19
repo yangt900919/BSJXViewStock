@@ -178,4 +178,9 @@ public class BillOrderDaoImpl implements IBillOrderDao {
     public float getPushDownQty(Integer fentryid,Integer fid) {
         return billorderMapper.getPushDownQty(fentryid,fid);
     }
+
+    @Override
+    public List<Map<String, Object>> saveBillOrder(Map map) {
+        return billorderMapper.saveBillOrder(map);
+    }
 }

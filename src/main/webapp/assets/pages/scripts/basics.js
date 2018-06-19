@@ -156,10 +156,24 @@ function DeleteBatch(url)
 var pageNow=1;
 function PrintqrCode(url)
 {
-    if(confirm("确认批量打印?"))
-	{
+    /*if(confirm("确认批量打印?"))
+	{*/
 var qrcodes=[];
         $("input[name='push']:checkbox:checked").each(function () {
+            qrcodes.push($(this).val());
+        });
+
+        location.href = url+"/print?qrcodes=" + qrcodes+"&pageNow="+pageNow+"&condition=1";
+    /*}*/
+
+}
+
+function scPrint(url)
+{
+    if(confirm("确认批量打印?"))
+    {
+        var qrcodes=[];
+        $("input[name='check']:checkbox:checked").each(function () {
             qrcodes.push($(this).val());
         });
 
@@ -345,28 +359,42 @@ function adjust(ID)
 	
 	function Bind()
 {
-	var id=$("#FID").val();
+	var id=$("#fid").val();
 	var ids = [];
           $("input[name='check']:checkbox:checked").each(function () {
               ids.push($(this).val());
           });
-           location.href = "User/Bind?ID="+id+"&rids=" + ids;
+           location.href = "user/bind?ID="+id+"&rids=" + ids;
 }
 	
-	function auth(ID)
+	function bindrole(ID)
 	{
-		location.href="Authority?ID="+ID;
+		location.href="bindrole?ID="+ID;
 		}
-	
-	function doAuth()
+
+		function initpsw(ID)
+        {
+            if(confirm("确认初始化密码!"))
+            {
+                location.href="initpsw?ID="+ID;
+            }
+        }
+
+function auth(ID)
+{
+    location.href="authority?ID="+ID;
+}
+
+
+function doAuth()
 	{
 		
-		var id=$("#FID").val();
+		var id=$("#fid").val();
 		var ids = [];
 	          $("input[name='check']:checkbox:checked").each(function () {
 	              ids.push($(this).val());
 	          });
-	           location.href = "doAuthority?ID="+id+"&pids=" + ids;
+	           location.href = "doauthority?ID="+id+"&pids=" + ids;
 	}
 	function getGSInfo()
 	{

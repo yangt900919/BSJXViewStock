@@ -189,35 +189,43 @@
                       <c:forEach items="${map.billcheckentries}" var="entry" varStatus="ste">
                         <%--  <div id="code${ste.index}" class="code"></div>--%>
                       <table border="1" cellspacing="0" style="text-align: center; width:400px;font-size:15px" >
-                          <tr style="height: 60px;">
-                              <td width="60px">编号</td><td>${map.fnumber}</td><td width="60px">批号</td><td width="100px">${entry.fbatch}</td>
+                          <tr style="height: 50px;">
+                              <td width="60px">编号</td><td>${map.fnumber}</td>
+                              <td colspan="2" rowspan="3"> <img id="image${ste.index}"  src="" /></td>
+
+                          </tr>
+                          <tr style="height: 50px;">
+                              <td width="60px">批号</td><td width="160px">${entry.fbatch}</td>
+                          </tr>
+                          <tr style="height: 50px;">
+                              <td>物料编码</td><td >${entry.fMaterial.materialnumber}</td>
                           </tr>
                           <tr style="height: 60px;">
-                              <td>物料编码</td><td >${entry.fMaterial.materialnumber}</td><td colspan="2" rowspan="3"> <img id="image${ste.index}"  src="" /></td>
+                              <td>物料名称</td><td colspan="3">${entry.fMaterial.materialname}</td>
                           </tr>
-                          <tr style="height: 60px;">
-                              <td>物料名称</td><td width="160px">${entry.fMaterial.materialname}</td>
-                          </tr>
-                          <tr style="height: 60px;">
+                     <%--     <tr style="height: 60px;">
                               <td>规格型号</td><td>${entry.fMaterial.materialmodel}</td>
-                          </tr>
-                          <tr style="height: 60px;">
-                              <td>保质期</td><td>${entry.fguartime}</td><td>生产日期</td><td>
+                          </tr>--%>
+                          <tr style="height: 50px;">
+                              <td>保质期</td><td>${entry.fguartime}</td><td width="60px">生产日期</td><td>
                                    <fmt:formatDate value="${entry.fdate}" pattern="yyyy-MM-dd"></fmt:formatDate>
                                  <%-- ${entry.fdate}--%>
                           </td>
                           </tr>
                           <tr style="height: 60px;">
-                              <td>合格数量</td><td>${entry.feligqty}</td><td>到货日期</td><td>
+                              <td>供货单位</td><td >
+                                  ${map.supplier.suppliername}
+                          </td>
+                             <%-- <td>合格数量</td><td></td>--%><td>到货日期</td><td>
                                    <fmt:formatDate value="${entry.fdeltime}" pattern="yyyy-MM-dd"></fmt:formatDate>
                       <%--            ${entry.fdeltime}--%>
                           </td>
                           </tr>
-                          <tr style="height: 60px;">
+                          <%--<tr style="height: 60px;">
                               <td>供货单位</td><td colspan="3">
                                   ${map.supplier.suppliername}
                           </td>
-                          </tr>
+                          </tr>--%>
                       </table>
                       <div style="page-break-after: always"></div>
                  <script>
@@ -226,8 +234,8 @@
                           str=toUtf8(str);
                           $("#code${ste.index}").qrcode({
                               render: "canvas", //table方式
-                              width:130, //宽度
-                              height:130, //高度
+                              width:120, //宽度
+                              height:120, //高度
                               text: str //任意内容
                           });
                           var canvas  = document.getElementsByTagName("canvas");

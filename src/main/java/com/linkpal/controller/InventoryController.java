@@ -1,8 +1,11 @@
 package com.linkpal.controller;
 
+import com.linkpal.model.Billorder;
 import com.linkpal.model.Inventory;
 import com.linkpal.model.Page;
 import com.linkpal.service.*;
+import com.linkpal.util.GlobalVarContext;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,7 @@ public class InventoryController {
     ISCabinetService scabinetService;
 
     @RequestMapping(value = "/inventory/index")
+    @RequiresPermissions("inventory:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/inventory/index");
@@ -53,7 +57,8 @@ public class InventoryController {
 
     @RequestMapping(value = "/inventory/getList")
     @ResponseBody
-    private ModelAndView getPageList(HttpServletRequest request,@RequestParam Map<String, String> params)
+    @RequiresPermissions("inventory:view")
+    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
         Map map=inventoryService.getPageList(request, params);
@@ -71,6 +76,9 @@ public class InventoryController {
       //  request.getSession().setAttribute("inventoryMap", m);
         return mav;
     }
+
+
+
 
 
 

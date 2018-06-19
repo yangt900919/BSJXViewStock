@@ -43,10 +43,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         删除</a>
            </div>
-        <%--     <div class="col-md-4 col-sm-4 col-xs-4">  <a class="btn btn-info"  onclick="filter('cabinet')" href="javascript:;">
-        <span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</a>
-           </div> 
-        </div>--%>
+            <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="scPrint('cabinet')">
+                <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                打印</a>
+            </div>
       
     </div>
    </div>
@@ -118,5 +118,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <jsp:include page="../../page.jsp"></jsp:include>
        <jsp:include page="../../web/shared/modal.jsp"></jsp:include>
    </div>
+<c:if test="${iscprint>0}">
+    <jsp:include page="maprint.jsp"></jsp:include>
+</c:if>
   </body>
 </html>

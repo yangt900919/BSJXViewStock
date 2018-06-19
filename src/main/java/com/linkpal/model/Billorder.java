@@ -51,6 +51,8 @@ public class Billorder implements Serializable {
 
     private List<Billorderentry> billorderentries;
 
+    private String fbuyer;
+
     private static final long serialVersionUID = 1L;
 
     public  Billorder()
@@ -219,5 +221,13 @@ public class Billorder implements Serializable {
 
     public void setBillorderentries(List<Billorderentry> billorderentries) {
         this.billorderentries = billorderentries;
+    }
+
+    public String getFbuyer() {
+        return fbuyer;
+    }
+
+    public void setFbuyer(String fbuyer) {
+        this.fbuyer = fbuyer;
     }
 }

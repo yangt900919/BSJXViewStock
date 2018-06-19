@@ -80,7 +80,7 @@ public class PermissionDaoImpl implements IPermissionDao {
 
     @Override
     public int getTotalNum(Permission t) {
-        PermissionExample example=new PermissionExample();
+        /*PermissionExample example=new PermissionExample();
 
         if(t.getFnumber()!=null||!(t.getFnumber().equals("")))
         {
@@ -88,6 +88,7 @@ public class PermissionDaoImpl implements IPermissionDao {
         }
         if(t.getFname()!=null||!(t.getFname().equals("")))
             example.createCriteria().andFnameLike("%"+t.getFname()+"%");
-        return (int) permissionMapper.countByExample(example);
+        return (int) permissionMapper.countByExample(example);*/
+        return permissionMapper.getTotalNum(t);
     }
 }

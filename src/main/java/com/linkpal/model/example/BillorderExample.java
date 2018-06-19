@@ -235,6 +235,77 @@ public class BillorderExample {
             return (Criteria) this;
         }
 
+
+        public Criteria andFbuyerIsNull() {
+            addCriterion("fbuyer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerIsNotNull() {
+            addCriterion("fbuyer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerEqualTo(String value) {
+            addCriterion("fbuyer =", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerNotEqualTo(String value) {
+            addCriterion("fbuyer <>", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerGreaterThan(String value) {
+            addCriterion("fbuyer >", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerGreaterThanOrEqualTo(String value) {
+            addCriterion("fbuyer >=", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerLessThan(String value) {
+            addCriterion("fbuyer <", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerLessThanOrEqualTo(String value) {
+            addCriterion("fbuyer <=", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerLike(String value) {
+            addCriterion("t0.fbuyer like", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerNotLike(String value) {
+            addCriterion("fbuyer not like", value, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerIn(List<String> values) {
+            addCriterion("fbuyer in", values, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerNotIn(List<String> values) {
+            addCriterion("fbuyer not in", values, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerBetween(String value1, String value2) {
+            addCriterion("fbuyer between", value1, value2, "fbuyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andFbuyerNotBetween(String value1, String value2) {
+            addCriterion("fbuyer not between", value1, value2, "fbuyer");
+            return (Criteria) this;
+        }
+
         public Criteria andFsupplieridIsNull() {
             addCriterion("fsupplierid is null");
             return (Criteria) this;

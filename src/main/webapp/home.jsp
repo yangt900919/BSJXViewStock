@@ -147,7 +147,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </a>
                 <ul class="dropdown-menu dropdown-menu-default">
                      <li>
-                        <a href="/Account/Auth/ModifyPwd?TB_iframe=true&KeepThis=true&height=380&width=500" class="thickbox" title="修改密码">
+                        <a href="web/user/updatepsw.jsp"  title="修改密码" target="myiframe" >
                             <i class=" icon-lock">
                             </i> 修改密码
                         </a>
@@ -188,11 +188,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
         <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-          <!--   <li class="sidebar-toggler-wrapper">
+   <%--       <li class="sidebar-toggler-wrapper">
                 Begin 响应式开关
                 <div class="sidebar-toggler"></div>
                 End 响应式开关
-            </li> -->
+            </li>--%>
             
             <c:forEach items="#{menuList }" var="map">
             
@@ -228,8 +228,59 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </c:choose>
             </c:forEach>
 
-               
-                
+
+<%--            <c:forEach items="${menuList }" var="map">
+                <c:set var="flag" value="${fn:length(menuList) }"></c:set>
+                <c:forEach items="${ pList}" var="per">
+                    <c:if test="${per.fname==map.main.name  }">
+                        <c:set var="flag" value="${fn:length(menuList)-1 }"></c:set>
+                    </c:if>
+                </c:forEach>
+                <c:if test="${flag==fn:length(menuList)-1 }">
+                    <c:choose>
+                        <c:when test="${fn:length(map.sub)==0 }">
+
+                            <li class="">
+
+                                <a href="${map.main.url }" title="${map.main.info }" class="nav-link nav-toggle " target="myiframe" >
+                                    <i class="${map.main.icon }"></i>
+                                    <span class="title">${map.main.name }</span>
+                                </a>
+                            </li>
+
+                        </c:when>
+                        <c:otherwise>
+
+                            <li class="nav-item">
+                                <a href="javascript:;" title="${map.main.info }" class="nav-link nav-toggle ">
+                                    <i class="${map.main.icon }"></i>
+                                    <span class="title">${map.main.name }</span>
+                                    <span class='arrow'></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <c:forEach items="#{map.sub }" var="sm">
+                                        <c:set var="flag_sub" value="${fn:length(map.sub) }"></c:set>
+                                        <c:forEach items="${ pList}" var="per">
+                                            <c:if test="${per.fname==sm.name  }">
+                                                <c:set var="flag_sub" value="${fn:length(map.sub)-1 }"></c:set>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${flag_sub==fn:length(map.sub)-1 }">
+                                            <li class="nav-item start ">
+                                                <a href="${sm.url }" class="nav-link sub_menu_item" title="${sm.info }" target="myiframe">•&nbsp;&nbsp;&nbsp;${sm.name }</a>
+                                            </li>
+                                        </c:if>
+                                    </c:forEach>
+                                </ul>
+                            </li>
+
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+            </c:forEach>--%>
+
+
+
         </ul>
         <!-- End 侧边栏菜单 -->
     </div>

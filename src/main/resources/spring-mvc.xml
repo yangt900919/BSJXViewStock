@@ -14,7 +14,24 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
-
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		  depends-on="lifecycleBeanPostProcessor" />
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	<bean
+			class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.apache.shiro.authz.UnauthorizedException">
+					/unauthorized
+				</prop>
+				<!--<prop key="org.apache.shiro.authz.UnauthenticatedException">
+					/login
+				</prop>-->
+			</props>
+		</property>
+	</bean>
 	<mvc:annotation-driven />
 	
 	<!-- the mvc resources tag does the magic -->
@@ -33,14 +50,20 @@
 		p:prefix="/" p:suffix=".html" />
 
 	       <!--&lt;!&ndash; 配置拦截器 &ndash;&gt;-->
-	    <mvc:interceptors>
-	        <!--&lt;!&ndash; 多个拦截器，顺序执行 &ndash;&gt;-->
-	         <!--&lt;!&ndash; 配置登陆拦截器 &ndash;&gt;-->
+	  <!--  <mvc:interceptors>
+	        &lt;!&ndash;&lt;!&ndash; 多个拦截器，顺序执行 &ndash;&gt;&ndash;&gt;
+	         &lt;!&ndash;&lt;!&ndash; 配置登陆拦截器 &ndash;&gt;&ndash;&gt;
 	         <mvc:interceptor>
 	          <mvc:mapping path="/" />
 	             <mvc:mapping path="/**"/>
 				 <mvc:exclude-mapping path="/supplier"/>
 	             <bean class="com.linkpal.filter.LoginHandlerIntercepter"></bean>
 	         </mvc:interceptor>
-	    </mvc:interceptors>
+	    </mvc:interceptors>-->
+
+<!--	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		  depends-on="lifecycleBeanPostProcessor"/>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager"/>-->
+<!--	</bean>-->
 </beans>

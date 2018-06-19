@@ -6,6 +6,7 @@ import com.linkpal.util.DateUtil;
 import com.linkpal.util.GlobalVarContext;
 import com.linkpal.util.InitBinderUtil;
 import com.linkpal.util.MapUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -44,6 +45,7 @@ public class BillCheckController {
     IBillStockService billStockService;
 
     @RequestMapping(value = "/billcheck/index")
+    @RequiresPermissions("billcheck:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/billcheck/index");
@@ -57,6 +59,7 @@ public class BillCheckController {
 
     @RequestMapping(value = "/billcheck/getList")
     @ResponseBody
+    @RequiresPermissions("billcheck:view")
     public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
@@ -76,6 +79,7 @@ public class BillCheckController {
     }
 
     @RequestMapping(value = "/billcheck/create")
+    @RequiresPermissions("billcheck:create")
     public ModelAndView Create(HttpServletRequest request)
     {
         ModelAndView mav=new ModelAndView("web/billcheck/edit");
@@ -115,6 +119,7 @@ public class BillCheckController {
     }
 
     @RequestMapping(value = "/billcheck/edit")
+    @RequiresPermissions("billcheck:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/billcheck/edit");
@@ -145,12 +150,14 @@ public class BillCheckController {
     }
 
     @RequestMapping(value = "/billcheck/delete")
+    @RequiresPermissions("billcheck:delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
         billcheckService.delete(ID);
         return getList(request, (Map<String, String>) request.getSession().getAttribute("Billcheck")) ;
     }
 
     @RequestMapping(value = "/billcheck/deleteBatch")
+    @RequiresPermissions("billcheck:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         billcheckService.deleteBatch(ids);
@@ -158,6 +165,7 @@ public class BillCheckController {
     }
 
     @RequestMapping(value = "/billcheck/audit")
+    @RequiresPermissions("billcheck:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billcheck billcheck=billcheckService.getDetail(ID);
         billcheck.setFchuid(GlobalVarContext.user.getFid());
@@ -168,6 +176,7 @@ public class BillCheckController {
     }
 
     @RequestMapping(value = "/billcheck/unaudit")
+    @RequiresPermissions("billcheck:unaudit")
     public ModelAndView UnAudit(HttpServletRequest request, int ID) throws Exception {
         Billcheck billcheck=billcheckService.getDetail(ID);
         billcheck.setFchuid(0);
@@ -179,6 +188,7 @@ public class BillCheckController {
 
 
     @RequestMapping(value = "/billcheck/pushdown")
+    @RequiresPermissions("billcheck:push")
     public ModelAndView PushDown(HttpServletRequest request,Integer[] ids)
     {
         ModelAndView mav=new ModelAndView("web/billstock/edit");
@@ -200,7 +210,7 @@ public class BillCheckController {
             billstockentry.setMaterial(materialService.getDetail(billcheckentry.getFmaid()));
             billstockentry.setFstockid(billcheckentry.getFstockid());
             billstockentry.setStock(stockService.getDetail(billcheckentry.getFstockid()));
-            billstockentry.setFqty(billcheckentry.getFqty()-billcheckService.getPushDownQty(billcheckentry.getFentryid(),billcheckentry.getFbillid()));
+            billstockentry.setFqty(billcheckentry.getFeligqty()-billcheckService.getPushDownQty(billcheckentry.getFentryid(),billcheckentry.getFbillid()));
             billstockentry.setFbatch(billcheckentry.getFbatch());
             billstockentries.add(billstockentry);
         }
@@ -231,6 +241,7 @@ public class BillCheckController {
     }
 
     @RequestMapping(value = "/billcheck/maprint")
+    @RequiresPermissions("billcheck:maprint")
     public ModelAndView maPrint(HttpServletRequest request,Integer[] qrcodes)
     {
         ModelAndView mav= getList(request,(Map<String, String>) request.getSession().getAttribute("Billcheck"));
@@ -272,6 +283,7 @@ public class BillCheckController {
 
 
     @RequestMapping(value = "/billcheck/print")
+    @RequiresPermissions("billcheck:print")
     public ModelAndView Print(int ID)
     {
         ModelAndView mav=Edit(ID);

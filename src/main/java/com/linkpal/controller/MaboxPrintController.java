@@ -7,6 +7,7 @@ import com.linkpal.service.IMaPrintService;
 import com.linkpal.service.IMaPrintService;
 import com.linkpal.service.ISupplierService;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class MaboxPrintController
 
 
     @RequestMapping(value = "/maboxprint/getList")
+	@RequiresPermissions("maboxprint:view")
     public ModelAndView getList(HttpServletRequest request,MaPrint maprint)
     {
 
@@ -54,6 +56,7 @@ public class MaboxPrintController
     }
     
     @RequestMapping(value = "/maboxprint/create")
+	@RequiresPermissions("maboxprint:create")
     public ModelAndView Create()
     {
     	ModelAndView mav=new ModelAndView("web/maboxprint/edit");
@@ -82,6 +85,7 @@ public class MaboxPrintController
     }
     
     @RequestMapping(value = "/maboxprint/edit")
+	@RequiresPermissions("maboxprint:edit")
     public ModelAndView Edit(int ID)
     {
     	ModelAndView mav=new ModelAndView("web/maboxprint/edit");
@@ -93,12 +97,14 @@ public class MaboxPrintController
     }
     
     @RequestMapping(value = "/maboxprint/delete")
+	@RequiresPermissions("maboxprint:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
     	maboxprintService.delete(ID);
 		return  getList(request,(MaPrint) request.getSession().getAttribute("MaboxPrint")) ;
     }
     
     @RequestMapping(value = "/maboxprint/deleteBatch")
+	@RequiresPermissions("maboxprint:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
     	maboxprintService.deleteBatch(ids);
@@ -106,6 +112,7 @@ public class MaboxPrintController
     }
 
 	@RequestMapping(value = "/maboxprint/print")
+	@RequiresPermissions("maboxprint:print")
 	public ModelAndView Print(HttpServletRequest request,Integer[] qrcodes)
 	{
 		ModelAndView mav= getList(request,(MaPrint) request.getSession().getAttribute("MaboxPrint"));

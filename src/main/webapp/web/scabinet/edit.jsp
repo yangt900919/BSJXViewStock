@@ -131,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <div class=col-sm-9>
      <div class="input-group">
          <input $ type="text"  onfocus="clearBasics('fcabinettypeid')"  class="form-control" id="cabinettype" name="cabinettypename"  placeholder="储柜类型" value=${scabinet.cabinettype.fname}>
-         <input type="hidden" class="form-control" id="fcabinettypeid" name=fcabinettypeid  placeholder="" value=${scabinet.fstockid}>
+         <input type="hidden" class="form-control" id="fcabinettypeid" name=fcabinettypeid  placeholder="" value=${scabinet.fcabinettypeid}>
          <span class="input-group-btn">
            <button class="btn btn-primary" type="button" onclick="showBasics('cabinettype','fcabinettypeid','cabinettype')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
@@ -169,10 +169,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
    <div class="form-group">
   <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
-  <!--  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
+      <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+
+          <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
    </div>
    </div>
     </div>
