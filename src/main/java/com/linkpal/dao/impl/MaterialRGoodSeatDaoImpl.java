@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component("MaterialRGoodSeatDaoImpl")
 public class MaterialRGoodSeatDaoImpl implements IMaterialRGoodSeatDao {
@@ -79,5 +80,10 @@ public class MaterialRGoodSeatDaoImpl implements IMaterialRGoodSeatDao {
     public int getTotalNum(Materialrgoodseat t) {
 
        return  materialrgoodseatMapper.getTotalNum(t);
+    }
+
+    @Override
+    public void ajustGoodsSeat(Map map) {
+        materialrgoodseatMapper.ajustGoodsSeat(map);
     }
 }

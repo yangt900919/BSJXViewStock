@@ -24,13 +24,13 @@
         <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
         <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
     </association>
-    <association property="stock" javaType="com.linkpal.model.Stock">
+   <!-- <association property="stock" javaType="com.linkpal.model.ERPStock">
         <id column="fid" jdbcType="INTEGER" property="fid" />
         <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
         <result column="stockName" jdbcType="VARCHAR" property="stockname" />
         <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
         <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
-    </association>
+    </association>-->
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -385,7 +385,7 @@
     stock.fid, stock.stockNumber, stock.stockName, stock.stockAddress, stock.stockTel,
     supplier.supplierName, supplier.supplierNumber FROM T_VS_BillEntry t
     LEFT JOIN T_VS_Material material ON material.fid = t.fmaid
-    LEFT JOIN T_VS_Stock stock ON stock.fid = t.fstockid
+    LEFT JOIN T_VS_ERPStock stock ON stock.fid = t.fstockid
     WHERE fbillid = #{fbillid,jdbcType=INTEGER}
   </select>
   <select id="getContextShowEntryByNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -393,7 +393,7 @@
     stock.fid, stock.stockNumber, stock.stockName, stock.stockAddress, stock.stockTel,
     supplier.supplierName, supplier.supplierNumber FROM T_VS_BillEntry t
     LEFT JOIN T_VS_Material material ON material.fid = t.fmaid
-    LEFT JOIN T_VS_Stock stock ON stock.fid = t.fstockid
+    LEFT JOIN T_VS_ERPStock stock ON stock.fid = t.fstockid
     WHERE fbillid = (SELECT fbillid FROM T_VS_Bill WHERE fnumber = #{fnumber,jdbcType=VARCHAR})
   </select>
   <select id="getDetailByID" parameterType="java.lang.Integer" resultMap="BaseResultMap">

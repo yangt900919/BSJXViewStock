@@ -4,7 +4,7 @@
          id="com.linkpal" version="3.0">
     <display-name>BSJX</display-name>
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>login.do</welcome-file>
     </welcome-file-list>
 
     <filter>
@@ -56,10 +56,7 @@
         <param-name>log4jRefreshInterval</param-name>
         <param-value>600000</param-value>
     </context-param>
-    <context-param>
-        <param-name/>
-        <param-value/>
-    </context-param>
+
     <servlet>
         <servlet-name>spring-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

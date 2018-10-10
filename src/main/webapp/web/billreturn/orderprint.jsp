@@ -75,7 +75,7 @@
                 <tr style="height: 45px;">
                     <td>${map.material.materialnumber}</td>
                     <td>${map.material.materialname}</td>
-                    <td>${map.stock.stockname}</td>
+                    <td>${map.stock.fname}</td>
                     <td>${map.fqty}</td>
 
 

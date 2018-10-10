@@ -18,6 +18,12 @@ public class User implements Serializable {
 
     private List<Role> roles;
 
+    private String stock;
+
+    private String stockid;
+
+    private List<ERPStock> erpStocks;
+
     private static final long serialVersionUID = 1L;
 
     public User()
@@ -71,5 +77,29 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public String getStockid() {
+        return stockid;
+    }
+
+    public void setStockid(String stockid) {
+        this.stockid = stockid;
+    }
+
+    public List<ERPStock> getErpStocks() {
+        return erpStocks;
+    }
+
+    public void setErpStocks(List<ERPStock> erpStocks) {
+        this.erpStocks = erpStocks;
     }
 }

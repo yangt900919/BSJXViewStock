@@ -80,7 +80,7 @@
                     <td>${map.fMaterial.materialnumber}</td>
                     <td>${map.fMaterial.materialname}</td>
                     <td>${map.fMaterial.materialunit}</td>
-                    <td>${map.fStock.stockname}</td>
+                    <td>${map.fStock.fname}</td>
                     <td>${map.fbatch}</td>
                     <td>${map.fqty}</td>
                     <td>${map.feligqty}

@@ -1,6 +1,8 @@
 package com.linkpal.model;
 
-public class GsPrint {
+import java.io.Serializable;
+
+public class GsPrint implements Serializable {
 
     private Integer fid;
 

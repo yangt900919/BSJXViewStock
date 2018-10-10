@@ -135,5 +135,10 @@ public class BillCheckServiceImpl implements IBillCheckService {
         return IBillCheckDao.initAutoboxno(fonumber);
     }
 
+    @Override
+    public void BillCheckRewrite_Order(Map map) {
+        IBillCheckDao.BillCheckRewrite_Order(map);
+    }
+
 
 }

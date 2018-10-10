@@ -33,4 +33,6 @@ public interface IBillCheckService extends  IBaseService<Billcheck> {
     float getPushDownQty( Integer fentryid,Integer fid);
 
     String initAutoboxno( String fonumber);
+
+    void BillCheckRewrite_Order(Map map);
 }

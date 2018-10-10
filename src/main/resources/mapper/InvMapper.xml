@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.InvMapper">
+<!--  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
   <resultMap id="BaseResultMap" type="com.linkpal.model.Inv">
     <id column="FID" jdbcType="INTEGER" property="fid" />
     <result column="fname" jdbcType="VARCHAR" property="fname" />
@@ -14,6 +15,7 @@
       <result column="FMaterialID" jdbcType="INTEGER" property="fmaterialid" />
       <result column="FGoodseatID" jdbcType="INTEGER" property="fgoodseatid" />
       <result column="FQty" jdbcType="DOUBLE" property="fqty" />
+      <result column="FinvQty" jdbcType="DOUBLE" property="finvqty" />
       <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
 
       <association property="material" javaType="com.linkpal.model.Material">
@@ -91,7 +93,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-   t0.*,t1.*,t1.fid Feid,t2.fid mID,t2.materialnumber mNumber,t2.materialname mName,
+   t0.*,t1.*,t1.fid Feid,  (select isnull(SUM(a.fqty),0) from T_VS_Inventory a where a.fmaid=t1.FMaterialID and a.fgoodseatid=t1.FGoodseatID)FinvQty,t2.fid mID,t2.materialnumber mNumber,t2.materialname mName,
     t2.materialmodel mModel,t2.materialunit mUnit,t3.fid gID,t3.fnumber gNumber
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.InvExample" resultMap="BaseResultMap">
@@ -102,9 +104,9 @@
     'true' as QUERYID,
     <include refid="Base_Column_List" />
     from T_VS_Inv t0
-    inner join t_vs_inventry t1 on t0.fid=t1.fparentid
-    inner join t_vs_material t2 on t1.fmaterialid=t2.fid
-    inner join t_vs_goodseat t3 on t1.fgoodseatid=t3.fid
+    left join t_vs_inventry t1 on t0.fid=t1.fparentid
+    left join t_vs_material t2 on t1.fmaterialid=t2.fid
+    left join t_vs_goodseat t3 on t1.fgoodseatid=t3.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -116,9 +118,9 @@
     select 
     <include refid="Base_Column_List" />
     from T_VS_Inv t0
-    inner join t_vs_inventry t1 on t0.fid=t1.fparentid
-    inner join t_vs_material t2 on t1.fmaterialid=t2.fid
-    inner join t_vs_goodseat t3 on t1.fgoodseatid=t3.fid
+    left join t_vs_inventry t1 on t0.fid=t1.fparentid
+    left join t_vs_material t2 on t1.fmaterialid=t2.fid
+    left join t_vs_goodseat t3 on t1.fgoodseatid=t3.fid
     where t0.FID = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

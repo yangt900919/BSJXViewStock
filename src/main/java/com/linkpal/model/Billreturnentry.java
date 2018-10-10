@@ -1,6 +1,7 @@
 package com.linkpal.model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Billreturnentry implements Serializable {
@@ -16,7 +17,7 @@ public class Billreturnentry implements Serializable {
 
     private Integer fstockid;
 
-    private Stock stock;
+    private ERPStock stock;
 
     private Double fqty;
 
@@ -69,7 +70,7 @@ public class Billreturnentry implements Serializable {
     }
 
     public Double getFqty() {
-        return fqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(fqty));
     }
 
     public void setFqty(Double fqty) {
@@ -77,7 +78,7 @@ public class Billreturnentry implements Serializable {
     }
 
     public Double getFreqty() {
-        return freqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(freqty));
     }
 
     public void setFreqty(Double freqty) {
@@ -108,11 +109,11 @@ public class Billreturnentry implements Serializable {
         this.material = material;
     }
 
-    public Stock getStock() {
+    public ERPStock getStock() {
         return stock;
     }
 
-    public void setStock(Stock stock) {
+    public void setStock(ERPStock stock) {
         this.stock = stock;
     }
 }

@@ -71,8 +71,8 @@ Page Header
         display: block;
         width: 800px;
         height: 66px;
-        padding-left: 29px;
-        padding-right: 29px;
+        padding-left: 27px;
+        padding-right: 27px;
     }
 
 .page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .page-logo {
@@ -829,14 +829,15 @@ Page sidebar
                 border: 0px;
                 padding-left: 15px;
                 padding-right: 15px;
-                height: 35px;
-                line-height: 35px;
+                height: 45px;
+                line-height: 45px;
                 text-decoration: none;
-                font-size: 14px;
-                font-weight: 350;
-                background-color: #eff2fa;
-                border:2px solid;
-border-radius:25px;
+                font-size: 14.5px;
+            /*    font-weight: 350;*/
+                background-color: #fbfafb;
+                font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+
+/*border-radius:25px;*/
             }
 
                 .page-sidebar .page-sidebar-menu > li > a > i {
@@ -871,13 +872,13 @@ border-radius:25px;
                 }
 
             .page-sidebar .page-sidebar-menu > li.open > a {
-                font-size: 13px;
+                font-size: 14.5px;
             }
 
             .page-sidebar .page-sidebar-menu > li.active > a {
                 border: none;
                 text-shadow: none;
-                font-size: 13px;
+                font-size: 14.5px;
             }
 
 /*.page-sidebar .page-sidebar-menu > li.active > a > .selected {

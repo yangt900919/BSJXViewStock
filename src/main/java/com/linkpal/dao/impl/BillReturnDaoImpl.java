@@ -41,7 +41,10 @@ public class BillReturnDaoImpl implements IBillReturnDao {
 
     @Override
     public boolean create(Billreturn billreturn) throws Exception {
-        try{ billreturnMapper.insert(billreturn);}
+        try{
+            Billreturn bg=getDetail(billreturn.getFnumber());
+            if(bg!=null) billreturn.setFnumber(getAutoNumber());
+            billreturnMapper.insert(billreturn);}
         catch (Exception e){e.printStackTrace();}
         Billreturn b=getDetail(billreturn.getFnumber());
         int i=1;

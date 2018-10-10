@@ -80,7 +80,7 @@
                     <td>${map.material.materialnumber}</td>
                     <td>${map.material.materialname}</td>
                     <td>${map.material.materialunit}</td>
-                    <td>${map.estock.stockname}</td>
+                    <td>${map.estock.fname}</td>
                     <td>${map.flot}</td>
                     <td>${map.fapplyqty}</td>
                     <td>${map.frealqty}

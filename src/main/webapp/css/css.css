@@ -1,0 +1,34 @@
+/*
+* @Author: Administrator
+* @Date:   2018-02-23 15:01:25
+* @Last Modified by:   Administrator
+* @Last Modified time: 2018-02-24 14:36:27
+*/
+/*PUBLIC*/
+*{font:"Microsoft YaHei","Arial Narrow",HELVETICA;margin:0;padding:0;}
+body{ background: #0946ab;}
+.greenWord{color:#1a7a78;}
+.south{width: 5.6%; height: 70%;float: right;position:absolute;right: 2%; top: 11%; }
+.south img{ height: 100%;}
+/*No PUBLIC*/
+.header{height: 113px;font-size: 47px; color: #ffffff; background: url("../assets/pages/img/page/top.jpg") no-repeat ; background-size: 100% 100%;position: relative;}
+.header p{float: left;}
+.allBlock{}
+.block-1{float: left;border-right:dashed yellow;border-bottom:dashed yellow;}
+.block-2{float: right;border-left:dashed yellow;border-bottom:dashed yellow;}
+.warning{display: block;float: left;color:#eaeaea;font-weight: normal;width: 50%;text-align:center;}
+.block-3{border-top:dashed yellow;float: left;}
+.allblock li{float: left;height:86%;margin-top:2%;background:#fff;list-style-type: none;}
+.allblock li:hover{background: #abc1e4;cursor: pointer;}
+.allblock li div{margin-left: auto;margin-right: auto;border:solid 3px #0a44ab;margin-top: 10px;color:#0a44ab;text-align: center;font-weight:bold;}
+.allblock li div span{line-height: 14px;display: block;padding-top:9px;width: 90%; margin-left: auto;margin-right: auto; }
+.allblock .disabled{background: #bfbfbf;}
+.allblock .disabled:hover{background: #bfbfbf;cursor: default;}
+.allblock li p{width: 80%;margin-top:15%;margin-left:10%;text-align: center;}
+.allblock li .bloTit{width: 20%; margin-left: auto;margin-right: auto;margin-top:40%;color:black;}
+.allblock li .noTitle{width:35%; margin-left: auto;margin-right: auto;margin-top:10%; color:black;}
+.allblock .pai{ box-shadow: 7px -5px 3px #b95a1a; background: #ff7a1a;}
+.allblock .pai div{margin-left: auto;margin-right: auto;border:solid 3px #be5407;margin-top: 10px;color:#1a7a78;text-align: center;font-weight:bold;}
+.allblock .pai div span{color: #fff;}
+.allblock .pai:hover{background: #ff974c;}
+.door{float: right;}

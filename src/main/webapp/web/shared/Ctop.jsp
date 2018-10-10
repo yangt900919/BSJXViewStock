@@ -18,7 +18,7 @@
     <meta http-equiv="description" content="This is my page">
     <jsp:include page="resource.jsp"></jsp:include>
     <link rel="stylesheet" href="assets/pages/css/page/page.css"/>
-    <link rel="stylesheet" href="assets/pages/css/page/stock_layout.css"/>
+   <%-- <link rel="stylesheet" href="assets/pages/css/page/stock_layout.css"/>--%>
 
     <style type="text/css">
 
@@ -39,18 +39,26 @@
   </div>
   </div>
 </nav> -->
-<div class=container-fiuld align="center">
-    <div class="row main-top">
-        <div class=box_bp ><div class="page_title" >
-           宝鸡石油机械有限公司-物资公司精益化库房
+<div class="container-fluid main-top" >
+    <div class="row ">
+        <div class="col-md-6 col-xs-6 col-sm-6" align="left" >
+            <img src="assets/pages/img/page/logo.png" alt="" height="80%" >
+        </div>
+        <div class="col-md-6 col-xs-6 col-sm-6 buttons" align="right" >
+            <a class="btn btn-default " id=home href="C.jsp">首页</a>
+            <a class="btn btn-default" id=back href="javaScript:void(0)" onclick="javascript:history.go(-1);">返回</a>
+        </div>
+    </div>
+  <%--  <div class="row main-top">
+        <div class=box_bp align="left"><div class="page_title" >
+
         </div></div>
         <div class="box_bp flag" >
             <div class="page_button ">
-               <%-- <a class="btn btn-default " id=home href="mainMenu">首页</a>--%>
-                <a class="btn btn-default" id=back href="javaScript:void(0)" onclick="javascript:history.go(-1);">返回</a>
+
             </div>
         </div>
-    </div>
+    </div>--%>
 </div>
 </body>
 </html>

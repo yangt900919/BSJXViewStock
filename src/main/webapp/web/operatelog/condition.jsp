@@ -98,10 +98,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fmaterialid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
+                               <input  type="text" readonly onfocus="clearBasics('fmaterialid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
                                <input type="hidden" class="form-control" id="fmaterialid" name=fmaterialid  placeholder="" value=${model.fmaterialid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('ma','fmaterialid','material')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('ma','fmaterialid','material')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -110,15 +110,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            </div>
 
            <div class="form-group">
-               <label for="fstockid" class="col-md-4 col-sm-4 col-xs-4">仓库</label>
+               <label for="ferpstockid" class="col-md-4 col-sm-4 col-xs-4">仓库</label>
                <div class="col-md-8 col-sm-8 col-xs-8">
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="fstock"  placeholder="" value=${model.fstock}>
-                               <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${model.fstockid}>
+                               <input  type="text" readonly onfocus="clearBasics('ferpstockid')"  class="form-control" id="erpstock" name="fstock"  placeholder="" value=${model.fstock}>
+                               <input type="hidden" class="form-control" id="ferpstockid" name=ferpstockid  placeholder="" value=${model.ferpstockid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('erpstock','ferpstockid','erpstock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -134,10 +134,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="fgoodseat"  placeholder="" value=${model.fgoodseat}>
+                               <input  type="text" readonly onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="fgoodseat"  placeholder="" value=${model.fgoodseat}>
                                <input type="hidden" class="form-control" id="fgoodseatid" name=fgoodseatid  placeholder="" value=${model.fgoodseatid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -158,7 +158,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       </div>
       </div></div>
       <div class="modal-footer">
-      <button class="btn btn-primary" onclick="querySubmit('operatelog/getList','opform','operatelog')">查 询</button>
+      <button class="btn btn-primary btn-sm" onclick="querySubmit('operatelog/getList','opform','operatelog')"> <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询</button>
       </div>
     </div>
   </div>

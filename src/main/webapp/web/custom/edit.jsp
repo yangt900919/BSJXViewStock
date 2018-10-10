@@ -19,11 +19,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	<jsp:include page="../../web/shared/resource.jsp"></jsp:include>
   <script type="text/javascript">
-  $(document).ready(function() {
+  /*$(document).ready(function() {
 	    $('#form').bootstrapValidator({
 //    live: 'disabled',
    message: 'This value is not valid',
-          feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+          feedbackIcons: {/!*输入框不同状态，显示图片的样式*!/
   valid: 'glyphicon glyphicon-ok',
   invalid: 'glyphicon glyphicon-remove',
   validating: 'glyphicon glyphicon-refresh'
@@ -34,7 +34,7 @@ validators: {
     notEmpty: {
         message: '编码不能为空'
     }
-,
+/!*,
 remote:
  {
  url: 'custom/CheckOnly',//验证地址
@@ -47,7 +47,7 @@ data: function(validator) {
 	      ID:${custom.fid}
    };
 }
- }
+ }*!/
 }
 },
 
@@ -61,14 +61,14 @@ validators: {
 
 }
 });
-});
+});*/
   </script>
   </head>
   
   <body>
-   <h3 class=title>
-   客户信息管理
-   </h3>
+   <div class=title>
+   &nbsp;客户信息管理
+   </div>
     <div class="container-fluid editpage-content">
   
    <form action="custom/save"  class="form-horizontal" method="post" id=form>
@@ -91,14 +91,14 @@ validators: {
   
   </div>
    <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">
-          <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+       <div class="col-sm-offset-3 col-sm-9">
+           <button type="submit" class="btn btn-primary btn-sm">
+               <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+           <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
 
-          <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
-   </div>
+               <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+       </div>
    </div>
   </form>
   </body>

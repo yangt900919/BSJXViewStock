@@ -16,7 +16,7 @@
 			left join T_VS_Supplier t1 on t.fsupplierid=t1.fid
 			left join T_VS_User t2 on t.fkeeperid=t2.fid
 			where t.fstatus=0 and t2.username=#{username} and isnull(t.fisqt,0)=0
-            order by t.fnumber
+			order by t.fnumber
 
 		</if>
 		<if test="billtype=='QTRKD'">
@@ -34,7 +34,7 @@
 			select t.fid,t.fnumber,convert(varchar,t.fdodate,23) fdate,isnull(t1.organizationName,'')
 			fdepart,isnull(t2.userName,'') fuser,t.fisqt from T_VS_BillGet t
 			left join T_VS_Organization t1 on t.fdepartmentid=t1.fid
-			left join T_VS_User t2 on t.fsenderid=t2.fid
+			left join T_VS_User t2 on t.fgeterid=t2.fid
 			where t.fstate=0 and t2.username=#{username} and isnull(t.fisqt,0)=0
 			order by fnumber
 		</if>
@@ -44,7 +44,7 @@
 			select t.fid,t.fnumber,convert(varchar,t.fdodate,23) fdate,isnull(t1.organizationName,'')
 			fdepart,isnull(t2.userName,'') fuser,t.fisqt from T_VS_BillGet t
 			left join T_VS_Organization t1 on t.fdepartmentid=t1.fid
-			left join T_VS_User t2 on t.fsenderid=t2.fid
+			left join T_VS_User t2 on t.fgeterid=t2.fid
 			where t.fstate=0 and t2.username=#{username} and isnull(t.fisqt,0)=1
 			order by fnumber
 		</if>
@@ -53,28 +53,27 @@
 			select t.fid,t.fbillno fsrc_number,t.fboxno,t.fbillid fsrc_billid,t.fentryid fsrc_entryid,t1.materialNumber manum,
 			t1.materialName maname,t1.materialUnit maunit,t.fqty from T_VS_Homogeneity t
 			inner join T_VS_Material t1 on t.fmaterialid=t1.fid
-           where t.fboxno=#{username}
+			where t.fboxno=#{username}
 		</if>
 
 		<if test="billtype=='PD'">
 			select t.fid,t.fname,t.fdate from T_VS_Inv t where t.fstate=0
 		</if>
 
-		<!--<if test="billtype=='MAGS'">
-
-			-select #{username} fid,'合计','','',ISNULL(SUM(t.fqty),0) fqty from T_VS_Inventory t
-		-	inner join T_VS_Material t1 on t.fmaid=t1.fid
-			-inner join T_VS_GoodSeat t2 on t.fgoodseatid=t2.FID
-			-where t1.materialnumber=#{username}
-
-			select #{username} fid,t.manum,t.maname,t.kw fgoodseat,t.fqty from wl$ t
-			where t.manum=#{username}
-		</if>-->
-
 		<if test="billtype=='MAGS'">
+
+			select #{username} fid,'合计','','',ISNULL(SUM(t.fqty),0) fqty from T_VS_Inventory t
+			inner join T_VS_Material t1 on t.fmaid=t1.fid
+			inner join T_VS_GoodSeat t2 on t.fgoodseatid=t2.FID
+			where t1.materialnumber=#{username}
+
+
+		</if>
+
+		<!--<if test="billtype=='MAGS'">
 			select #{username} fid,'合计','','',ISNULL(SUM(t.fqty),0) fqty from wl$ t
 			where t.manum=#{username}
-		</if>
+		</if>-->
 
 	</select>
 
@@ -82,12 +81,14 @@
 		<if test="billtype=='RKD' || billtype=='QTRKD'" >
 			select t.fbillid,t.fentryid,t1.materialNumber manum,t1.materialName maname,
 			t1.materialModel mamodel,t1.materialUnit maunit,t.fqty fqty,isnull(t.factqty,0) factqty,
-			case when isnull(t.factqty,0)=0 then '未上架' when t.factqty &gt; 0 and t.factqty &lt; t.fqty then '上架中' when t.fqty=t.factqty then '已上架' end
-			fstate,isnull(t2.stockname,'') fstock,dbo.getRecommandGS(t1.materialnumber,'RKD') fgoodseat,t.fonumber fsrc_number,t.fobillid fsrc_billid,t.foid fsrc_entryid  from T_VS_BillStockEntry t
+			case when isnull(t.factqty,0)=0 then '未上架' when t.factqty &gt; 0 and t.factqty &lt; t.fqty
+			then '上架中' when t.fqty=t.factqty then '已上架' end
+			fstate,isnull(t2.fnumber,'') fstock,dbo.getRecommandGS(t1.materialnumber,'RKD') fgoodseat,dbo.getRecommandDS(t1.materialnumber,'RKD') fdataseat,
+			t.fonumber fsrc_number,t.fobillid fsrc_billid,t.foid fsrc_entryid  from T_VS_BillStockEntry t
 			left join T_VS_Material t1 on t.fmaterialid=t1.fid
-			left join T_VS_Stock t2 on t.fstockid=t2.fid
+			left join T_VS_ERPStock t2 on t.fstockid=t2.fid
 			where t.fbillid=#{fid}
-            and t.fqty!=isnull(t.factqty,0)
+			and t.fqty!=isnull(t.factqty,0)
 
 		</if>
 		<if test="billtype=='LLD' || billtype=='QTLLD'">
@@ -95,42 +96,56 @@
 			select t.fbillid,t.fentryid,t1.materialNumber manum,t1.materialName maname,
 			t1.materialModel mamodel,t1.materialUnit maunit,t.fapplyqty fqty,isnull(t.frealqty,0) factqty,
 			case when isnull(t.frealqty,0)=0 then  '未下架' when  t.frealqty &gt; 0 and t.frealqty &lt; t.fapplyqty then '下架中' when
-			t.frealqty=t.fapplyqty then '已上架' end fstate,isnull(t2.stockname,'') fstock,dbo.getRecommandGS(t1.materialnumber,'LLD') fgoodseat,'' fsrc_number from T_VS_BillGetEntry t
+			t.frealqty=t.fapplyqty then '已上架' end fstate,isnull(t2.fnumber,'') fstock,dbo.getRecommandGS(t1.materialnumber,'LLD') fgoodseat,dbo.getRecommandDS(t1.materialnumber,'LLD') fdataseat,
+			'' fsrc_number from T_VS_BillGetEntry t
 			left join T_VS_Material t1 on t.fmaterialid=t1.fid
-			left join T_VS_Stock t2 on t.fsendstockid=t2.fid
+			left join T_VS_ERPStock t2 on t.fsendstockid=t2.fid
 			where t.fbillid=#{fid}
-            and isnull(t.frealqty,0)!=isnull(t.fapplyqty,0)
+			and isnull(t.frealqty,0)!=isnull(t.fapplyqty,0)
 
 		</if>
-		<if test="billtype=='MAGS'">
+		<!--<if test="billtype=='MAGS'">
 			select 1 fid,t.manum,t.maname,t.kw fgoodseat,t.fqty from wl$ t
 			where t.manum=#{fid}
-		</if>
-	<!--	<if test="billtype=='MAGS'">
-			-select t1.fid,t1.materialNumber manum,t1.materialname maname,t2.FNumber fgoodseat,ISNULL(SUM(t.fqty),0) fqty from T_VS_Inventory t
-			-inner join T_VS_Material t1 on t.fmaid=t1.fid
-			-inner join T_VS_GoodSeat t2 on t.fgoodseatid=t2.FID
-			-where t1.materialnumber=#{fid}
-			-group by t1.fid,t1.materialNumber,t1.materialname,t2.FNumber
-
-
 		</if>-->
+			<if test="billtype=='MAGS'">
+                select t1.fid,t1.materialNumber manum,t1.materialname maname,t2.FNumber fgoodseat,ISNULL(SUM(t.fqty),0) fqty from T_VS_Inventory t
+                inner join T_VS_Material t1 on t.fmaid=t1.fid
+                inner join T_VS_GoodSeat t2 on t.fgoodseatid=t2.FID
+                where t1.materialnumber=#{fid}
+                group by t1.fid,t1.materialNumber,t1.materialname,t2.FNumber
+
+
+            </if>
 	</select>
 
 
 	<select id="dataSave" statementType="CALLABLE"  resultType="java.util.Map"  parameterType="java.util.Map">
 		<if test="ftype=='czjl'">
-			exec Proc_SaveOperateLog #{_id},#{fnumber},#{fbillid},#{fentryid},#{fuser},#{fdate},#{fbilltype},#{manum}
-			,#{fqty},#{factqty},#{fgoodseat},#{fsrc_number},#{fdeviceid},#{fsrc_billid},#{fsrc_entryid}
+			exec Proc_SaveOperateLog #{_id},#{fnumber},#{fbillid},#{fentryid},#{fuser},#{fdate},
+			#{fbilltype},#{manum}
+			,#{fqty},#{factqty},#{fgoodseat},#{fsrc_number},#{fdeviceid}
+			,#{fsrc_billid},#{fsrc_entryid},#{fstock}
+		</if>
+		<if test="ftype=='zlczjl'">
+			exec Proc_SaveDataOperateLog #{fnumber},#{fbillid},#{fentryid},#{fuser},#{fdate},
+			#{fbilltype},#{manum}
+			,#{fdataseat},#{fstock}
 		</if>
 		<if test="ftype=='jskc'">
-			exec Proc_SaveInventory #{fsrc_number},#{manum},#{fgoodseat},#{fdate},#{fqty},#{fsrc_billid},#{fsrc_entryid}
+			exec Proc_SaveInventory #{fsrc_number},#{manum},#{fgoodseat},#{fdate},#{fqty}
+			,#{fsrc_billid},#{fsrc_entryid},#{fstock}
+		</if>
+
+		<if test="ftype=='zljskc'">
+			exec Proc_SavedataInventory #{manum},#{fdataseat},#{fdate},#{fqty}
+			,#{fstock},#{ftype}
 		</if>
 
 		<if test="ftype=='pd'">
 			exec Proc_SaveInvEntry #{fname},#{manum},#{fgoodseat},#{fqty}
 		</if>
 	</select>
-	
-	
+
+
 </mapper>

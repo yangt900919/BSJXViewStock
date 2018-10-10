@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.DsprintMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Dsprint">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fdataseatid" jdbcType="INTEGER" property="fdataseatid" />
+
+
+    <association property="dataseat" javaType="com.linkpal.model.Dataseat">
+      <id column="gID" property="fid"/>
+      <result column="gNumber" property="fnumber"/>
+      <association property="scabinet" javaType="com.linkpal.model.Datascabinet">
+        <id column="sID" property="fid"/>
+        <result column="sNumber" property="fnumber"/>
+        <result column="sName" property="fname"/>
+      </association>
+
+      <association property="cabinettype" javaType="com.linkpal.model.Datacabinettype">
+        <id column="ctID" property="fid"/>
+        <result column="ctNumber" property="fnumber"/>
+        <result column="ctName" property="fname"/>
+        <result column="ctrows" property="frows"/>
+        <result column="ctcolumns" property="fcolumns"/>
+      </association>
+
+      <association property="cabinet" javaType="com.linkpal.model.Datacabinet">
+        <id column="cID" property="fid"/>
+        <result column="cNumber" property="fnumber"/>
+        <result column="cName" property="fname"/>
+      </association>
+
+      <association property="stock" javaType="com.linkpal.model.Stock">
+        <id column="stID" property="fid"/>
+        <result column="stNumber" property="stocknumber"/>
+        <result column="stName" property="stockname"/>
+      </association>
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+  t0.*,  t1.fid gid,t1.fnumber gnumber,t2.fid sID,t2.fnumber sNumber,t2.fname sName,
+        t3.fid cID,t3.fnumber cNumber,t3.fname cName,t4.fid ctID,t4.fnumber ctnumber,
+        t4.fname ctname,t4.frows ctrows,t4.fcolumns ctcolumns,t5.fid stID,t5.stocknumber stNumber,
+        t5.stockname stName
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.DsprintExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_DsPrint t0
+    left join t_vs_dataseat t1 on t0.fdataseatid=t1.fid
+    left join t_vs_scabinet t2 on t1.fscabinetid=t2.fid
+    left join t_vs_cabinet t3 on t2.fcabinetid=t3.fid
+    left join t_vs_cabinettype t4 on t2.fcabinettypeid=t4.fid
+    left join t_vs_stock t5 on t2.fstockid=t5.fid
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_DsPrint t0
+    left join t_vs_dataseat t1 on t0.fdataseatid=t1.fid
+    left join t_vs_scabinet t2 on t1.fscabinetid=t2.fid
+    left join t_vs_cabinet t3 on t2.fcabinetid=t3.fid
+    left join t_vs_cabinettype t4 on t2.fcabinettypeid=t4.fid
+    left join t_vs_stock t5 on t2.fstockid=t5.fid
+    where t0.fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_DsPrint
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.DsprintExample">
+    delete from T_VS_DsPrint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Dsprint">
+    insert into T_VS_DsPrint ( fdataseatid)
+    values ( #{fdataseatid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Dsprint">
+    insert into T_VS_DsPrint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+
+      <if test="fdataseatid != null">
+        fdataseatid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="fdataseatid != null">
+        #{fdataseatid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.DsprintExample" resultType="java.lang.Long">
+    select count(*) from T_VS_DsPrint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_DsPrint
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fdataseatid != null">
+        fdataseatid = #{record.fdataseatid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_DsPrint
+    set fid = #{record.fid,jdbcType=INTEGER},
+      fdataseatid = #{record.fdataseatid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Dsprint">
+    update T_VS_DsPrint
+    <set>
+      <if test="fdataseatid != null">
+        fdataseatid = #{fdataseatid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Dsprint">
+    update T_VS_DsPrint
+    set fdataseatid = #{fdataseatid,jdbcType=INTEGER}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteBatch">
+    delete from T_VS_DsPrint where FID in (
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+
+  <select id="getList"  resultMap="BaseResultMap">
+    SELECT top ${pageSize} t0.*,  t1.fid gid,t1.fnumber gnumber,t2.fid sID,t2.fnumber sNumber,t2.fname sName,
+    t3.fid cID,t3.fnumber cNumber,t3.fname cName,t4.fid ctID,t4.fnumber ctnumber,
+    t4.fname ctname,t4.frows ctrows,t4.fcolumns ctcolumns,t5.fid stID,t5.stocknumber stNumber,
+    t5.stockname stName  from T_VS_DsPrint t0
+    left join t_vs_dataseat t1 on t0.fdataseatid=t1.fid
+    left join t_vs_scabinet t2 on t1.fscabinetid=t2.fid
+    left join t_vs_cabinet t3 on t2.fcabinetid=t3.fid
+    left join t_vs_cabinettype t4 on t2.fcabinettypeid=t4.fid
+    left join t_vs_stock t5 on t2.fstockid=t5.fid
+    where
+    t0.fid not in (
+    select top ${pageIndex} tt0.fid from T_VS_DsPrint tt0
+    left join t_vs_dataseat tt1 on tt0.fdataseatid=tt1.fid
+    left join t_vs_scabinet tt2 on tt1.fscabinetid=tt2.fid
+    left join t_vs_cabinet tt3 on tt2.fcabinetid=tt3.fid
+    left join t_vs_cabinettype tt4 on tt2.fcabinettypeid=tt4.fid
+    left join t_vs_stock tt5 on tt2.fstockid=tt5.fid
+
+    -- where and tt2.fcabinetid>19
+    <where>
+      <if test="t.fdataseatid>0 ">
+        and tt0.fdataseatid =#{t.fdataseatid}
+      </if>
+      <if test="t.fscabinetid>0">
+        and tt1.fscabinetid =#{t.fscabinetid} 		</if>
+      <if test="t.fcabinetid>0">
+        and tt2.fcabinetid =#{t.fcabinetid} 		</if>
+      <if test="t.fcabinettypeid>0">
+        and tt2.fcabinettypeid =#{t.fcabinettypeid} 		</if>
+      <if test="t.fstockid>0">
+        and tt2.fstockid =#{t.fstockid} 		</if>
+    </where>
+    order by tt0.fid
+    )
+
+    <if test="t.fdataseatid>0 ">
+      and t0.fdataseatid =#{t.fdataseatid}
+    </if>
+    <if test="t.fscabinetid>0">
+      and t1.fscabinetid =#{t.fscabinetid} 		</if>
+    <if test="t.fcabinetid>0">
+      and t2.fcabinetid =#{t.fcabinetid} 		</if>
+    <if test="t.fcabinettypeid>0">
+      and t2.fcabinettypeid =#{t.fcabinettypeid} 		</if>
+    <if test="t.fstockid>0">
+      and t2.fstockid =#{t.fstockid} 		</if>
+
+    --and t2.fcabinetid>19
+  </select>
+
+  <select id="getTotalNum" parameterType="com.linkpal.model.Dsprint" resultType="int">
+    SELECT count(*)
+    from T_VS_DsPrint tt0
+    left join t_vs_dataseat tt1 on tt0.fdataseatid=tt1.fid
+    left join t_vs_scabinet tt2 on tt1.fscabinetid=tt2.fid
+    left join t_vs_cabinet tt3 on tt2.fcabinetid=tt3.fid
+    left join t_vs_cabinettype tt4 on tt2.fcabinettypeid=tt4.fid
+    left join t_vs_stock tt5 on tt2.fstockid=tt5.fid
+
+
+    --where and tt2.fcabinetid>19
+    <where>
+      <if test="fdataseatid>0 ">
+        and tt0.fdataseatid =#{fdataseatid}
+      </if>
+      <if test="fscabinetid>0">
+        and tt1.fscabinetid =#{fscabinetid} 		</if>
+      <if test="fcabinetid>0">
+        and tt2.fcabinetid =#{fcabinetid} 		</if>
+      <if test="fstockid>0">
+        and tt2.fstockid =#{fstockid} 		</if>
+      <if test="fcabinettypeid>0">
+        and tt2.fcabinettypeid =#{fcabinettypeid} 		</if>
+
+    </where>
+
+  </select>
+  
+</mapper>

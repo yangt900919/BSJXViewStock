@@ -38,4 +38,8 @@ public interface UserMapper extends IBaseMapper<User>{
     public int deleteRoleUser(int id);
 
     public void roleuserBind(Map map);
+
+    public void deleteUserERPStock(int id);
+
+    public void saveUserErpStock(Map map);
 }

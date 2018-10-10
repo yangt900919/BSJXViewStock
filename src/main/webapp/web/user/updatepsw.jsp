@@ -43,9 +43,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
       }
   </script>
+  <script type="text/javascript">
+      $("#home", parent.document).removeClass("active");
+      $("#link", parent.document).empty();
+      $("#link", parent.document).addClass("active");
+      $("#link", parent.document).text("修改密码");
+  </script>
   <body>
      <h3 class=title>
-修改密码
+&nbsp;修改密码
    </h3>
     <div class="container-fluid editpage-content">
 
@@ -83,15 +89,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
 
-
        <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">
-          <!--  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
-   </div>
-   </div>
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+               <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
+
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
 </form>
   </body>
 

@@ -1,7 +1,6 @@
 package com.linkpal.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Inventory implements Serializable {
     private Integer fid;
@@ -18,6 +17,10 @@ public class Inventory implements Serializable {
 
     private Stock stock;
 
+    private Integer ferpstockid;
+
+    private ERPStock erpstock;
+
     private Integer fcabinetid;
 
     private Cabinet cabinet;
@@ -28,9 +31,10 @@ public class Inventory implements Serializable {
 
     private Double fqty;
 
-    private Date fdate;
 
-    private Date fmdate;
+    private String fdate;
+
+    private String fmdate;
 
     private Double fgperiod;
 
@@ -78,19 +82,19 @@ public class Inventory implements Serializable {
         this.fqty = fqty;
     }
 
-    public Date getFdate() {
+    public String getFdate() {
         return fdate;
     }
 
-    public void setFdate(Date fdate) {
+    public void setFdate(String fdate) {
         this.fdate = fdate;
     }
 
-    public Date getFmdate() {
+    public String getFmdate() {
         return fmdate;
     }
 
-    public void setFmdate(Date fmdate) {
+    public void setFmdate(String fmdate) {
         this.fmdate = fmdate;
     }
 
@@ -164,5 +168,21 @@ public class Inventory implements Serializable {
 
     public void setFbatch(String fbatch) {
         this.fbatch = fbatch;
+    }
+
+    public Integer getFerpstockid() {
+        return ferpstockid;
+    }
+
+    public void setFerpstockid(Integer ferpstockid) {
+        this.ferpstockid = ferpstockid;
+    }
+
+    public ERPStock getErpstock() {
+        return erpstock;
+    }
+
+    public void setErpstock(ERPStock erpstock) {
+        this.erpstock = erpstock;
     }
 }

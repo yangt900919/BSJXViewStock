@@ -55,26 +55,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	}
 	</style>
+      <script type="text/javascript">
+          $("#home", parent.document).removeClass("active");
+          $("#link", parent.document).empty();
+          $("#link", parent.document).addClass("active");
+          $("#link", parent.document).text("盘点内容");
+      </script>
   </head>
   
   <body>
    <div class=container-fluid>
-   <h3 class=title_index>
-盘点内容
-   </h3>
-   <div class="row">
-    <div class="col-md-2">
-      <%--  <div class=row>
-        <c:if test="${invscheme_export=='invscheme_export' }">
-        <div class="col-md-6 col-sm-6 col-xs-6"> <a class="btn btn-info" id="delete" href="javascript:;" onclick="exportExcel()">
-    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-        数据导出</a>
-           </div>
-      </c:if>  
-    </div>--%>
+   <div class=title_index>
+&nbsp;盘点内容
    </div>
+   <div class="row">
+       <div class="col-md-11 col-sm-11 col-xs-11">
+       </div>
+       <div class="col-md-1 col-sm-1 col-xs-1" >
+           <div class="buttongroups" >
+               <a class="btn btn-success btn-sm" onclick="location.href='inventory/getExportList'"
+                  href="javascript:;"> <span
+                       class="glyphicon   glyphicon-export" aria-hidden="true"></span>导出
+               </a>
+           </div>
+
+
+       </div>
    </div>
    <br>
+       <div class="table-responsive">
    <table class="table table-bordered table-hover table-striped " id=data width="90%">
   <thead class=thead>
   <tr>
@@ -84,10 +93,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <th >序号</th>
   <th >物料编码</th>
   <th>物料名称</th>
-  <th>规格型号</th>
+  <th>单位</th>
   <th>货位</th>
   <th>盘点数量</th>
- <%-- <th></th>--%>
+  <th>即时库存</th>
   </tr>
   </thead>
   <tbody>
@@ -106,6 +115,7 @@ ${map.material.materialname }
    <td>
    ${map.fqty }
   </td>
+      <td>${map.finvqty}</td>
      <%-- <td></td>--%>
 <%--   <td>
      <div class=e_show id="show${map.FID}">${map.FVsQty }</div>
@@ -123,6 +133,7 @@ ${map.material.materialname }
   </c:forEach>
   </tbody>
 </table>
+   </div>
    </div>
   </body>
 </html>

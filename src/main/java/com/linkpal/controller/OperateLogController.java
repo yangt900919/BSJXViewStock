@@ -1,8 +1,12 @@
 package com.linkpal.controller;
 
 import com.linkpal.model.Inventory;
+import com.linkpal.model.Operatelog;
 import com.linkpal.model.Page;
+import com.linkpal.model.User;
 import com.linkpal.service.*;
+import com.linkpal.util.DateUtil;
+import com.linkpal.util.GlobalVarContext;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +41,10 @@ public class OperateLogController {
     @Autowired
     ISCabinetService scabinetService;
 
+
+    @Autowired
+    IERPStockService erpstockService;
+
     @RequestMapping(value = "/operatelog/index")
     @RequiresPermissions("operatelog:view")
     public ModelAndView Index()
@@ -46,6 +54,7 @@ public class OperateLogController {
         mav.addObject("materiallist", materialService.getList());
         mav.addObject("goodseatlist", goodseatService.getList());
         mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", erpstockService.getList());
    /*     mav.addObject("cabinetlist", cabinetService.getList());
         mav.addObject("scabinetlist", scabinetService.getList());*/
         return mav;
@@ -57,16 +66,28 @@ public class OperateLogController {
     public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
     {
 
+        if(params.size()==0)
+        {
+            params.put("sdate", DateUtil.getDatePreM());
+            params.put("edate",DateUtil.getDateNow());
+
+        }
+
+        if(((User) request.getSession().getAttribute("user")).getUsername().equals("admin"))
+            params.put("fuser",null);
+        else
+            params.put("fuser",((User) request.getSession().getAttribute("user")).getUsername());
         Map map=operatelogService.getPageList(request, params);
         ModelAndView mav=new ModelAndView("web/operatelog/index");
 
-        mav.addObject("operateloglist", (List<Inventory>) map.get("list"));
+        mav.addObject("operateloglist", (List<Operatelog>) map.get("list"));
         mav.addObject("page", (Page) map.get("page"));
         mav.addObject("url", "operatelog/getList");
         mav.addObject("model",map.get("model"));
         mav.addObject("materiallist", materialService.getList());
         mav.addObject("goodseatlist", goodseatService.getList());
         mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", erpstockService.getList());
       /*  mav.addObject("cabinetlist", cabinetService.getList());
         mav.addObject("scabinetlist", scabinetService.getList());*/
       //  request.getSession().setAttribute("operatelogMap", m);
@@ -82,7 +103,7 @@ public class OperateLogController {
         if (operatelogService.create(obj)){
             response.getWriter().write("ok");
             response.getWriter().flush();
-            response.getWriter().close();
+            response.getWriter().cl ose();
         }
     }
 

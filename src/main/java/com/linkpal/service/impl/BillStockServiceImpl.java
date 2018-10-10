@@ -114,5 +114,10 @@ public class BillStockServiceImpl implements IBillStockService {
         return IBillStockDao.getAutoNumber();
     }
 
+    @Override
+    public void BillStockRewrite_Order(Map map) {
+        IBillStockDao.BillStockRewrite_Order(map);
+    }
+
 
 }

@@ -87,4 +87,9 @@ public class MaterialServiceImpl implements IMaterialService {
         PageList<Material> plist=new PageList<>();
         return plist.getPageList(materialDao,request,t,"Material");
     }
+
+    @Override
+    public List<Material> getnoStList() {
+        return materialDao.getnoStList();
+    }
 }

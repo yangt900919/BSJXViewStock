@@ -10,7 +10,7 @@
 <head>
     <base href="<%=basePath%>">
 
-    <title>宝鸡石油机械有限责任公司物资公司库房管理系统</title>
+    <title>宝石机械库房管理系统</title>
 
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -22,12 +22,15 @@
     <link rel="stylesheet" type="text/css" href=" assets/global/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href=" assets/pages/css/login.css" />
     <link rel="stylesheet" href="assets/global/plugins/bootstrapValidator/css/bootstrapValidator.css"/>
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/iconfont.css">
     <script type="text/javascript" src=" assets/global/plugins/jquery.min.js"></script>
     <script type="text/javascript" src=" assets/global/plugins/jquery.cookie.js"></script>
     <script type="text/javascript" src=" assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrapValidator/js/bootstrapValidator.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+
             $('#defaultForm').bootstrapValidator({
 //	        live: 'disabled',
                 message: 'This value is not valid',
@@ -93,10 +96,11 @@
     <img alt="" src="assets/pages/img/login/logo.png">
 
 </div>
-
-
+<div class=container-fluid>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-md-offset-2">
 <div class=page-content>
-    <div class=container-fluid>
+
         <c:if test="${msg!=''&&msg!=null }">
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -105,31 +109,36 @@
         </c:if>
 
 
-        <form action="Login" class="form-horizontal" id="defaultForm" method="post">
-            <div class="form-group has-feedback">
-                <input type="text" class="form-control" id="FName" name=FName placeholder="用户名" autofocus required value="${username }">
-                <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
-
+        <form action="Login" class="form-inline " id="defaultForm" method="post">
+            <div class="form-group has-icon">
+                <i class="icon iconfont icon-yonghu form-icon"></i>
+                <%--<span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>--%> <input type="text" class="form-control" id="FName" name=FName placeholder="用户名" autofocus required value="${username }">
             </div>
-            <div class="form-group has-feedback">
+            <div class="form-group has-icon">
+                <i class="icon iconfont icon-icon2 form-icon"></i>
                 <input type="password" class="form-control" id="FPassword" name=FPassword placeholder="密码" required>
-                <span class="glyphicon glyphicon glyphicon-lock form-control-feedback" aria-hidden="true"></span>
+              <%--  <span class="glyphicon glyphicon glyphicon-lock form-control-feedback" aria-hidden="true"></span>--%>
 
             </div>
 
             <div class="form-group">
-                <input type="checkbox" value="" id="checkbox" onclick="saveUserInfo()" >记住密码
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn">登录</button>
+                 <input type="checkbox" value="" id="checkbox" onclick="saveUserInfo()" >记住密码
+             </div>
+             <div class="form-group">
+                <button type="submit" class="btn">登&nbsp;录</button>
             </div>
         </form>
     </div>
 </div>
-<nav class="navbar navbar-default navbar-fixed-bottom page-foot">
+    </div>
+</div>
+<div class="page-foot">
+    2018&nbsp;©&nbsp; <a href="http://www.linkpal.cn" title="技术支持：陕西立邦软件有限公司" target="_blank">陕西立邦软件有限公司</a>&nbsp;&nbsp;版权所有
+</div>
+<%--<nav class="navbar navbar-default navbar-fixed-bottom page-foot">
     <div class="container">
         2018&nbsp;©&nbsp;陕西立邦软件有限公司
     </div>
-</nav>
+</nav>--%>
 </body>
 </html>

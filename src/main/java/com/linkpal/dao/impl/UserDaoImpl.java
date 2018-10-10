@@ -89,6 +89,16 @@ userMapper.roleuserBind(map);
     }
 
     @Override
+    public void deleteUserERPStock(int id) {
+        userMapper.deleteUserERPStock(id);
+    }
+
+    @Override
+    public void saveUserErpStock(Map map) {
+        userMapper.saveUserErpStock(map);
+    }
+
+    @Override
     public List<User> getTipList(String fnumber) {
         UserExample example = new UserExample();
         example.createCriteria().andUsernameLike("%" + fnumber + "%");

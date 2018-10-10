@@ -14,6 +14,7 @@ import javax.ws.rs.POST;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.linkpal.model.User;
 import com.linkpal.service.IDataSyncService;
 import com.linkpal.service.IUserService;
 import com.linkpal.util.GlobalVarContext;
@@ -109,10 +110,12 @@ public class DataSyncController
 		boolean authorized = userService.isAuthorizedUser(username, password)>0? true:false;
 
 		if (authorized) {
+			User user=userService.getDetail(username);
 			Map map=new HashMap();
 			map.put("state",0);
 			map.put("message","成功");
-			map.put("data"," ");
+			map.put("data",user.getErpStocks());
+			System.out.println(JSON.toJSONString(map));
 			out.println(JSON.toJSONString(map));
 		} else {
 			Map map=new HashMap();

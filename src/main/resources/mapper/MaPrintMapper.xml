@@ -6,7 +6,7 @@
 
  -->
 <mapper namespace="com.linkpal.map.MaPrintMapper">
-
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
     <resultMap type="com.linkpal.model.MaPrint" id="BaseResultMap">
         <id column="fid" property="fid"/>
         <result column="fbillno" property="fbillno"/>
@@ -154,7 +154,7 @@
         select top ${pageSize} t.fid,ISNULL(t.fbillno,'')fbillno,isnull(t.fboxno,'') fboxno,ISNULL(t.fbatch,'') fbatch,
         ISNULL(t.fsupplierid,0)fsupplierid,isnull(t1.supplierNumber,'') sunumber,isnull(t1.supplierName,'') suname from t_vs_maprint t
         left join t_vs_supplier t1 on t.fsupplierid=t1.fid
-        where t.fid not IN (                                                                       kk
+        where t.fid not IN (
         select top ${pageIndex} tt.fid from T_VS_MaPrint tt
         where tt.fmaterialid is NULL
         <if test="t.fboxno!=null and t.fboxno!=''">

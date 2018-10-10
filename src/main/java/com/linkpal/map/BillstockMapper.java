@@ -39,4 +39,6 @@ public interface BillstockMapper {
     int getTotalNum(Map map);
 
     int deleteBatch(Integer[] ids);
+
+    void BillStockRewrite_Order(Map map);
 }

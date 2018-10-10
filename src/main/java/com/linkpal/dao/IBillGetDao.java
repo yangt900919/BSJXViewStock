@@ -13,4 +13,8 @@ public interface IBillGetDao extends IBaseDao<Billget> {
     int getTotalNum(Map map);
 
     String getAutoNumber();
+
+    void updateDepart(Map map);
+
+    float getInventoryQty(Integer fmaid);
 }

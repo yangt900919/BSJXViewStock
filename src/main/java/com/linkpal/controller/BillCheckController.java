@@ -33,13 +33,19 @@ public class BillCheckController {
     @Autowired
     IMaterialService materialService;
     @Autowired
-    IStockService stockService;
+    IERPStockService stockService;
     @Autowired
     IUserService userService;
     @Autowired
     ISupplierService supplierService;
     @Autowired
     ICustomService customService;
+
+    @Autowired
+    IBillGetService billGetService;
+
+    @Autowired
+    IOrganizationService organizationService;
 
     @Autowired
     IBillStockService billStockService;
@@ -51,7 +57,7 @@ public class BillCheckController {
         ModelAndView mav=new ModelAndView("web/billcheck/index");
         mav.addObject("model",new HashMap<>());
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         return mav;
@@ -60,9 +66,21 @@ public class BillCheckController {
     @RequestMapping(value = "/billcheck/getList")
     @ResponseBody
     @RequiresPermissions("billcheck:view")
-    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
+    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, Object> params)
     {
 
+        if(params==null)params=new HashMap<>();
+        if(params.size()==0)
+        {
+            params.put("sdate", DateUtil.getDatePreM());
+            params.put("edate",DateUtil.getDateNow());
+            params.put("fstatus",-1);
+        }
+        
+        if(((User) request.getSession().getAttribute("user")).getUsername().equals("admin"))
+            params.put("creatorid",null);
+        else
+            params.put("creatorid",((User) request.getSession().getAttribute("user")).getFid());
         Map<String, Object> m=billcheckService.getPageList(request, params);
         ModelAndView mav=new ModelAndView("web/billcheck/index");
         mav.addObject("billchecklist", (List<Billcheck>) m.get("list"));
@@ -70,9 +88,10 @@ public class BillCheckController {
         mav.addObject("url", "billcheck/getList");
         mav.addObject("model",m.get("model"));
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
+
         if(request!=null)
        GlobalVarContext.request=request;
         return mav;
@@ -84,13 +103,13 @@ public class BillCheckController {
     {
         ModelAndView mav=new ModelAndView("web/billcheck/edit");
         Billcheck billcheck=new Billcheck();
-        User user= GlobalVarContext.user;
+        User user= ((User) request.getSession().getAttribute("user"));
         billcheck.setCreator(user);
         billcheck.setFcruid(user.getFid());
         billcheck.setFnumber(billcheckService.getAutoNumber());
         mav.addObject("billcheck",billcheck);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         mav.addObject("readcheck","readonly");
@@ -115,7 +134,7 @@ public class BillCheckController {
 
         }
 
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billcheck")) ;
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billcheck")) ;
     }
 
     @RequestMapping(value = "/billcheck/edit")
@@ -127,7 +146,7 @@ public class BillCheckController {
         mav.addObject("billcheck",billcheck);
         mav.addObject("billcheck",billcheck);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         if(billcheck.getFstatus()==1) {
@@ -153,7 +172,7 @@ public class BillCheckController {
     @RequiresPermissions("billcheck:delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
         billcheckService.delete(ID);
-        return getList(request, (Map<String, String>) request.getSession().getAttribute("Billcheck")) ;
+        return getList(request, (Map<String,Object>) request.getSession().getAttribute("Billcheck")) ;
     }
 
     @RequestMapping(value = "/billcheck/deleteBatch")
@@ -161,18 +180,39 @@ public class BillCheckController {
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         billcheckService.deleteBatch(ids);
-        return getList(request, (Map<String, String>) request.getSession().getAttribute("Billcheck")) ;
+        return getList(request, (Map<String,Object>) request.getSession().getAttribute("Billcheck")) ;
     }
 
     @RequestMapping(value = "/billcheck/audit")
     @RequiresPermissions("billcheck:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billcheck billcheck=billcheckService.getDetail(ID);
-        billcheck.setFchuid(GlobalVarContext.user.getFid());
+        billcheck.setFchuid(((User) request.getSession().getAttribute("user")).getFid());
         billcheck.setFchetime(new Date());
         billcheck.setFstatus(1);
         billcheckService.update(billcheck);
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billcheck"));
+        ModelAndView mav=null;
+        Map map=new HashMap();
+
+        map.put("fid",billcheck.getFid());
+        map.put("fuserid",billcheck.getFchuid());
+        map.put("fstate",billcheck.getFstatus());
+        billcheckService.BillCheckRewrite_Order(map);
+        if(billcheck.getFisinout()==1) {
+            mav = getList(request, (Map<String, Object>) request.getSession().getAttribute("Billcheck"));
+            mav.addObject("orgnizationlist", organizationService.getList());
+            mav.addObject("customlist", customService.getList());
+            //if(billcheck.getFisinout()==1)
+            mav.addObject("fisinout", billcheck.getFisinout());
+            mav.addObject("fbillid", billcheck.getFid());
+        }
+        else
+        {
+            mav=Edit(billcheck.getFid());
+        }
+        //else
+            //mav
+        return  mav;
     }
 
     @RequestMapping(value = "/billcheck/unaudit")
@@ -183,8 +223,30 @@ public class BillCheckController {
         billcheck.setFchetime(null);
         billcheck.setFstatus(0);
         billcheckService.update(billcheck);
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billcheck"));
+        Map map=new HashMap();
+        map.put("fid",billcheck.getFid());
+        map.put("fuserid",billcheck.getFchuid());
+        map.put("fstate",billcheck.getFstatus());
+        billcheckService.BillCheckRewrite_Order(map);
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billcheck"));
     }
+
+    @RequestMapping(value = "/billcheck/unchecked")
+    @RequiresPermissions("billcheck:unchecked")
+    public ModelAndView UnChecked(HttpServletRequest request, int ID) throws Exception {
+        Billcheck billcheck=billcheckService.getDetail(ID);
+        billcheck.setFstatus(1);
+        for(Billcheckentry e :billcheck.getBillcheckentries())
+        {
+            e.setFeligqty(null);
+            e.setFunqty(null);
+            e.setFreason(null);
+            e.setFresult(null);
+        }
+        billcheckService.update(billcheck);
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billcheck"));
+    }
+
 
 
     @RequestMapping(value = "/billcheck/pushdown")
@@ -197,7 +259,7 @@ public class BillCheckController {
         billstock.setFsupplierid(billcheck.getFsupplierid());
         billstock.setSupplier(supplierService.getDetail(billcheck.getFsupplierid()));
         billstock.setFstockid(billcheckService.getentryDetail(ids[0]).getFstockid());
-        billstock.setStock(stockService.getDetail(billcheckService.getentryDetail(ids[0]).getFstockid()));
+        billstock.setStock(stockService.getById(billcheckService.getentryDetail(ids[0]).getFstockid()));
         List<Billstockentry> billstockentries=new ArrayList<>();
         for(Integer id:ids)
         {
@@ -209,15 +271,17 @@ public class BillCheckController {
             billstockentry.setFmaterialid(billcheckentry.getFmaid());
             billstockentry.setMaterial(materialService.getDetail(billcheckentry.getFmaid()));
             billstockentry.setFstockid(billcheckentry.getFstockid());
-            billstockentry.setStock(stockService.getDetail(billcheckentry.getFstockid()));
+            billstockentry.setStock(stockService.getById(billcheckentry.getFstockid()));
             billstockentry.setFqty(billcheckentry.getFeligqty()-billcheckService.getPushDownQty(billcheckentry.getFentryid(),billcheckentry.getFbillid()));
             billstockentry.setFbatch(billcheckentry.getFbatch());
             billstockentries.add(billstockentry);
         }
         billstock.setBillstockentries(billstockentries);
-        User user= GlobalVarContext.user;
+        User user= ((User) request.getSession().getAttribute("user"));
         billstock.setCreator(user);
         billstock.setFuserid(user.getFid());
+        billstock.setFkeeperid(user.getFid());
+        billstock.setKeeper(user);
         billstock.setFnumber(billStockService.getAutoNumber());
         billstock.setFstatus(0);
         billstock.setFboxno(billcheck.getFboxno());
@@ -228,10 +292,15 @@ public class BillCheckController {
         map.put("edate",DateUtil.getDateNow());
         map.put("pageIndex",0);
         map.put("pageSize",20);
+        map.put("fstatus",-1);
+        if(((User) request.getSession().getAttribute("user")).getUsername().equals("admin"))
+            map.put("creatorid",null);
+        else
+            map.put("creatorid",((User) request.getSession().getAttribute("user")).getFid());
         request.getSession().setAttribute("Billstock",map);
         mav.addObject("billstock",billstock);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         mav.addObject("readonly","");
@@ -244,7 +313,7 @@ public class BillCheckController {
     @RequiresPermissions("billcheck:maprint")
     public ModelAndView maPrint(HttpServletRequest request,Integer[] qrcodes)
     {
-        ModelAndView mav= getList(request,(Map<String, String>) request.getSession().getAttribute("Billcheck"));
+        ModelAndView mav= getList(request,(Map<String,Object>) request.getSession().getAttribute("Billcheck"));
         //ModelAndView mav=new ModelAndView("web/maprint/maprint");
         List<Billcheck> mplist=new ArrayList<>();
         for(Integer code:qrcodes)
@@ -257,6 +326,7 @@ public class BillCheckController {
             b.setBillcheckentries(bel);
 
             mplist.add(b);
+
         }
         mav.addObject("isprint",mplist.size());
         mav.addObject("mplist", mplist);
@@ -289,6 +359,15 @@ public class BillCheckController {
         ModelAndView mav=Edit(ID);
         mav.addObject("iscprint",1);
         return mav;
+    }
+
+    @RequestMapping(value = "/billcheck/updatedepart")
+    @ResponseBody
+    public ModelAndView updateDepart(HttpServletRequest request,@RequestParam Map<String,Object> params)
+    {
+        billGetService.updateDepart(params);
+        return getList(request, (Map<String,Object>) request.getSession().getAttribute("Billcheck"));
+
     }
 
 

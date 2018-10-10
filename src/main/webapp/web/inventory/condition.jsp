@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div class="col-md-6 col-sm-8 col-xs-8">
        <form action=""  class="form-horizontal"  id=inform>
      
-         <div class="form-group">
+     <%--    <div class="form-group">
     <label for="sdate" class="col-md-4 col-sm-4 col-xs-4">开始时间</label>
      
     <div class="col-md-8 col-sm-8 col-xs-8">
@@ -58,17 +58,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <input type="date" class="form-control" id="edate" name="edate" placeholder="结束时间" value=${model.edate }>
     </div>
     </div></div>
-  </div>
+  </div>--%>
            <div class="form-group">
                <label for="fmaid" class="col-md-4 col-sm-4 col-xs-4">物料</label>
                <div class="col-md-8 col-sm-8 col-xs-8">
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fmaid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
+                               <input  type="text" readonly onfocus="clearBasics('fmaid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
                                <input type="hidden" class="form-control" id="fmaid" name=fmaid  placeholder="" value=${model.fmaid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('ma','fmaid','material')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('ma','fmaid','material')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -77,21 +77,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            </div>
 
            <div class="form-group">
-               <label for="fstockid" class="col-md-4 col-sm-4 col-xs-4">仓库</label>
+               <label for="ferpstockid" class="col-md-4 col-sm-4 col-xs-4">仓库</label>
                <div class="col-md-8 col-sm-8 col-xs-8">
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stockname}>
-                               <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${model.fstockid}>
+                               <input  type="text" readonly onfocus="clearBasics('ferpstockid')"  class="form-control" id="erpstock" name="stockname"  placeholder="" value=${model.stockname}>
+                               <input type="hidden" class="form-control" id="ferpstockid" name=ferpstockid  placeholder="" value=${model.ferpstockid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('erpstock','ferpstockid','erpstock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
                    </div>
                </div>
            </div>
+
+         <div class="form-group">
+             <label for="fstate" class="col-md-4 col-sm-4 col-xs-4">库存状态</label>
+             <div class="col-md-8 col-sm-8 col-xs-8">
+                 <div class=row>
+                     <div class="col-md-10 col-sm-10 col-xs-10">
+                         <select class="form-control" id="fstate" name="fstate" >
+                             <option value="zj">质检</option>
+                             <option value="hg">合格</option>
+                             <option value="rk">入库</option>
+                         </select>
+                     </div></div>
+                 <script type="text/javascript">
+                     $("#fstate").val("${model.fstate}");
+                 </script>
+                     </div>
+
+                 </div>
+
 
            <div class="form-group">
                <label for="fcabinetid" class="col-md-4 col-sm-4 col-xs-4">柜列</label>
@@ -99,10 +118,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="" value=${model.cabinetname}>
+                               <input  type="text" readonly onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="" value=${model.cabinetname}>
                                <input type="hidden" class="form-control" id="fcabinetid" name=fcabinetid  placeholder="" value=${model.fcabinetid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -116,10 +135,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fscabinetid')"  class="form-control" id="scabinet" name="scabinetname"  placeholder="" value=${model.scabinetname}>
+                               <input  type="text" readonly onfocus="clearBasics('fscabinetid')"  class="form-control" id="scabinet" name="scabinetname"  placeholder="" value=${model.scabinetname}>
                                <input type="hidden" class="form-control" id="fscabinetid" name=fscabinetid  placeholder="" value=${model.fscabinetid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('scabinet','fscabinetid','scabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('scabinet','fscabinetid','scabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -133,10 +152,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <div class=row>
                        <div class="col-md-10 col-sm-10 col-xs-10">
                            <div class="input-group">
-                               <input  type="text"  onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="goodseatname"  placeholder="" value=${model.goodseatname}>
+                               <input  type="text" readonly onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="goodseatname"  placeholder="" value=${model.goodseatname}>
                                <input type="hidden" class="form-control" id="fgoodseatid" name=fgoodseatid  placeholder="" value=${model.fgoodseatid}>
                                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                        </div>
 
@@ -149,7 +168,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       </div>
       </div></div>
       <div class="modal-footer">
-      <button class="btn btn-primary" onclick="querySubmit('inventory/getList','inform','inventory')">查 询</button>
+      <button class="btn btn-primary btn-sm" onclick="querySubmit('inventory/getList','inform','inventory')"><span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询</button>
       </div>
     </div>
   </div>

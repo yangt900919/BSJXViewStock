@@ -5,6 +5,7 @@ import com.linkpal.map.BillcheckMapper;
 import com.linkpal.map.BillcheckentryMapper;
 import com.linkpal.model.Billcheck;
 import com.linkpal.model.Billcheckentry;
+import com.linkpal.model.Billget;
 import com.linkpal.model.example.BillcheckExample;
 import com.linkpal.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class BillCheckDaoImpl implements IBillCheckDao {
 
     @Override
     public boolean create(Billcheck billcheck) throws Exception {
+        Billcheck bg=getDetail(billcheck.getFnumber());
+        if(bg!=null) billcheck.setFnumber(getAutoNumber());
         billcheckMapper.insert(billcheck);
         Billcheck b=getDetail(billcheck.getFnumber());
         int i=1;
@@ -180,5 +183,10 @@ if(billcheckentries1.size()>billcheckentries.size())
     public String initAutoboxno( String fonumber)
     {
         return billcheckMapper.initAutoboxno(fonumber);
+    }
+
+    @Override
+    public void BillCheckRewrite_Order(Map map) {
+        billcheckMapper.BillCheckRewrite_Order(map);
     }
 }

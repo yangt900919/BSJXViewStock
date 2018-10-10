@@ -67,9 +67,9 @@ validators: {
   </head>
   
   <body>
-   <h3 class=title>
-   物料信息管理
-   </h3>
+   <div class=title>
+   &nbsp;物料信息管理
+   </div>
     <div class="container-fluid editpage-content">
   
    <form action="material/save"  class="form-horizontal" method="post" id=form>
@@ -79,26 +79,33 @@ validators: {
   <div class="form-group">
     <label for="materialnumber" class=col-sm-3>物料编码</label>
     <div class=col-sm-9>
+        <div class=row>
+            <div class="col-md-10 col-sm-10 col-xs-10">
     <input type="text" class="form-control" id="materialnumber" name="materialnumber" placeholder="物料编码" value=${material.materialnumber }>
-  </div>
+            </div></div></div>
   </div>
   <div class="form-group">
     <label for="materialname" class=col-sm-3>物料名称</label>
     <div class=col-sm-9>
+        <div class=row>
+            <div class="col-md-10 col-sm-10 col-xs-10">
     <input type="text" class="form-control" id="materialname" name="materialname" placeholder="物料名称" value=${material.materialname }>
+            </div></div></div>
   </div>
-  </div>
-   <div class="form-group">
+<%--   <div class="form-group">
     <label for="materialmodel" class=col-sm-3>规格型号</label>
     <div class=col-sm-9>
     <input type="text" class="form-control" id="materialmodel" name="materialmodel" placeholder="规格型号" value=${material.materialmodel }>
   </div>
-  </div>
+  </div>--%>
 
        <div class="form-group">
            <label for="materialunit" class=col-sm-3>计量单位</label>
            <div class=col-sm-9>
+               <div class=row>
+                   <div class="col-md-10 col-sm-10 col-xs-10">
                <input type="text" class="form-control" id="materialunit" name="materialunit" placeholder="计量单位" value=${material.materialunit }>
+                   </div></div>
            </div>
        </div>
       
@@ -111,10 +118,10 @@ validators: {
   </div>
    <div class="form-group">
   <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
+  <button type="submit" class="btn btn-primary btn-sm">
       <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+      <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
 
           <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
    </div>

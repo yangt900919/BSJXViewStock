@@ -28,9 +28,11 @@ public class Operatelog implements Serializable {
 
     private String fstock;
 
+    private String ferpstock;
+
     private String fgoodseat;
 
-    private Date fmdate;
+    private String fmdate;
 
     private Double fgperiod;
 
@@ -144,11 +146,11 @@ public class Operatelog implements Serializable {
         this.fgoodseat = fgoodseat == null ? null : fgoodseat.trim();
     }
 
-    public Date getFmdate() {
+    public String getFmdate() {
         return fmdate;
     }
 
-    public void setFmdate(Date fmdate) {
+    public void setFmdate(String fmdate) {
         this.fmdate = fmdate;
     }
 
@@ -214,5 +216,13 @@ public class Operatelog implements Serializable {
 
     public void setFsrc_entryid(Integer fsrc_entryid) {
         this.fsrc_entryid = fsrc_entryid;
+    }
+
+    public String getFerpstock() {
+        return ferpstock;
+    }
+
+    public void setFerpstock(String ferpstock) {
+        this.ferpstock = ferpstock;
     }
 }

@@ -38,4 +38,8 @@ public interface BillgetMapper {
 
     String getAutoNumber();
 
+    void updateDepart(Map map);
+
+    float getInventoryQty(Integer fmaid);
+
 }

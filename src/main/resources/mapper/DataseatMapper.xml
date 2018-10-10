@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.DataseatMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Dataseat">
+    <id column="FID" jdbcType="INTEGER" property="fid" />
+    <result column="FNumber" jdbcType="VARCHAR" property="fnumber" />
+    <result column="FSCabinetID" jdbcType="INTEGER" property="fscabinetid" />
+    <result column="FRemark" jdbcType="NVARCHAR" property="fremark" />
+    <result column="FState" jdbcType="INTEGER" property="fstate" />
+    <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
+
+
+    <association property="scabinet" javaType="com.linkpal.model.Datascabinet">
+      <id column="sID" property="fid"/>
+      <result column="sNumber" property="fnumber"/>
+      <result column="sName" property="fname"/>
+    </association>
+
+    <association property="cabinet" javaType="com.linkpal.model.Datacabinet">
+      <id column="cID" property="fid"/>
+      <result column="cNumber" property="fnumber"/>
+      <result column="cName" property="fname"/>
+    </association>
+    <association property="cabinettype" javaType="com.linkpal.model.Datacabinettype">
+      <id column="ctID" property="fid"/>
+      <result column="ctNumber" property="fnumber"/>
+      <result column="ctName" property="fname"/>
+      <result column="frows" property="frows"/>
+      <result column="fcolumns" property="fcolumns"/>
+    </association>
+
+
+    <association property="stock" javaType="com.linkpal.model.Stock">
+      <id column="stID" property="fid"/>
+      <result column="stNumber" property="stocknumber"/>
+      <result column="stName" property="stockname"/>
+    </association>
+
+
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+     t0.FID, t0.FNumber, t0.FSCabinetID, t0.FRemark, t0.FState, t0.FCreateTime,t1.fid sID,t1.fnumber sNumber,t1.fname sName,
+    t2.fid cID,t2.fnumber cNumber,t2.fname cName,t3.fid ctID,t3.fnumber ctNumber,t3.fname ctName,t3.frows,t3.fcolumns,t4.fid stID,t4.stocknumber stNumber,
+    t4.stockname stName
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.DataseatExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_DataSeat t0
+    left join t_vs_datascabinet t1 on t0.fscabinetid=t1.fid
+    left join t_vs_datacabinet t2 on t1.fcabinetid=t2.fid
+    left join t_vs_datacabinettype t3 on t1.fcabinettypeid=t3.fid
+    left join t_vs_stock t4 on t1.fstockid=t4.fid
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_DataSeat t0
+    left join t_vs_datascabinet t1 on t0.fscabinetid=t1.fid
+    left join t_vs_datacabinet t2 on t1.fcabinetid=t2.fid
+    left join t_vs_datacabinettype t3 on t1.fcabinettypeid=t3.fid
+    left join t_vs_stock t4 on t1.fstockid=t4.fid
+    where t0.FID = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_DataSeat
+    where FID = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.DataseatExample">
+    delete from T_VS_DataSeat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Dataseat">
+    insert into T_VS_DataSeat ( FNumber, FSCabinetID,
+      FRemark, FState, FCreateTime
+      )
+    values ( #{fnumber,jdbcType=VARCHAR}, #{fscabinetid,jdbcType=INTEGER},
+      #{fremark,jdbcType=NVARCHAR}, #{fstate,jdbcType=INTEGER}, #{fcreatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Dataseat">
+    insert into T_VS_DataSeat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        FID,
+      </if>
+      <if test="fnumber != null">
+        FNumber,
+      </if>
+      <if test="fscabinetid != null">
+        FSCabinetID,
+      </if>
+      <if test="fremark != null">
+        FRemark,
+      </if>
+      <if test="fstate != null">
+        FState,
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fnumber != null">
+        #{fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fscabinetid != null">
+        #{fscabinetid,jdbcType=INTEGER},
+      </if>
+      <if test="fremark != null">
+        #{fremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="fstate != null">
+        #{fstate,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatetime != null">
+        #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.DataseatExample" resultType="java.lang.Long">
+    select count(*) from T_VS_DataSeat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_DataSeat
+    <set>
+      <if test="record.fid != null">
+        FID = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fnumber != null">
+        FNumber = #{record.fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fscabinetid != null">
+        FSCabinetID = #{record.fscabinetid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fremark != null">
+        FRemark = #{record.fremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.fstate != null">
+        FState = #{record.fstate,jdbcType=INTEGER},
+      </if>
+      <if test="record.fcreatetime != null">
+        FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_DataSeat
+    set FID = #{record.fid,jdbcType=INTEGER},
+      FNumber = #{record.fnumber,jdbcType=VARCHAR},
+      FSCabinetID = #{record.fscabinetid,jdbcType=INTEGER},
+      FRemark = #{record.fremark,jdbcType=NVARCHAR},
+      FState = #{record.fstate,jdbcType=INTEGER},
+      FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Dataseat">
+    update T_VS_DataSeat
+    <set>
+      <if test="fnumber != null">
+        FNumber = #{fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fscabinetid != null">
+        FSCabinetID = #{fscabinetid,jdbcType=INTEGER},
+      </if>
+      <if test="fremark != null">
+        FRemark = #{fremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="fstate != null">
+        FState = #{fstate,jdbcType=INTEGER},
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Dataseat">
+    update T_VS_DataSeat
+    set FNumber = #{fnumber,jdbcType=VARCHAR},
+      FSCabinetID = #{fscabinetid,jdbcType=INTEGER},
+      FRemark = #{fremark,jdbcType=NVARCHAR},
+      FState = #{fstate,jdbcType=INTEGER},
+      FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP}
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+
+
+  <delete id="deleteBatch">
+    delete from T_VS_dataSeat where fid in (
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+
+  <select id="getList" resultMap="BaseResultMap">
+    select top ${pageSize} <include refid="Base_Column_List" /> from T_VS_dataSeat  t0
+    left join t_vs_datascabinet t1 on t0.fscabinetid=t1.fid
+    left join t_vs_datacabinet t2 on t1.fcabinetid=t2.fid
+    left join t_vs_datacabinettype t3 on t1.fcabinettypeid=t3.fid
+    left join t_vs_stock t4 on t1.fstockid=t4.fid
+    where
+    t0.fnumber not in (
+    select top ${pageIndex} tt.fnumber from T_VS_dataSeat tt
+    left join t_vs_datascabinet tt1 on tt.fscabinetid=tt1.fid
+
+    <where>
+      <if test="t.fnumber!=null and t.fnumber!= '' ">
+        and tt.FNumber like '%${t.fnumber}%' 		</if>
+      <!--<if test="t.fname!=null and t.fname!= '' ">
+        and tt.FName like '%${t.fname}%'
+      </if>-->
+      <if test="t.fscabinetid>0">
+        and tt.fscabinetid =#{t.fscabinetid} 		</if>
+      <if test="t.fcabinetid>0">
+        and tt1.fcabinetid =#{t.fcabinetid} 		</if>
+      <if test="t.fstockid>0">
+        and tt1.fstockid =#{t.fstockid} 		</if>
+    </where>
+
+
+
+    order by tt.fnumber
+    )
+
+    <if test="t.fnumber!=null and t.fnumber!= '' ">
+      and t0.FNumber like '%${t.fnumber}%' 		</if>
+    <!-- <if test="t.fname!=null and t.fname!= '' ">
+       and t0.FName like '%${t.fname}%'
+     </if>-->
+    <if test="t.fscabinetid>0">
+      and t0.fscabinetid =#{t.fscabinetid} 		</if>
+    <if test="t.fcabinetid>0">
+      and t1.fcabinetid =#{t.fcabinetid} 		</if>
+    <if test="t.fstockid>0">
+      and t1.fstockid =#{t.fstockid} 		</if>
+
+
+
+    order by t0.fnumber
+  </select>
+
+
+  <select id="getTotalNum" parameterType="com.linkpal.model.Goodseat" resultType="int">
+    select count(*) from T_VS_dataSeat tt
+    left join t_vs_datascabinet tt1 on tt.fscabinetid=tt1.fid
+
+    <where>
+      <if test="fnumber!=null and fnumber!= '' ">
+        and tt.FNumber like '%${fnumber}%' 		</if>
+      <!--<if test="t.fname!=null and t.fname!= '' ">
+        and tt.FName like '%${t.fname}%'
+      </if>-->
+      <if test="fscabinetid>0">
+        and tt.fscabinetid =#{fscabinetid} 		</if>
+      <if test="fcabinetid>0">
+        and tt1.fcabinetid =#{fcabinetid} 		</if>
+      <if test="fstockid>0">
+        and tt1.fstockid =#{fstockid} 		</if>
+    </where>
+
+  </select>
+
+
+</mapper>

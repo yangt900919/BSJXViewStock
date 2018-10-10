@@ -22,9 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   <h3 class=title>
-  盘点方案信息管理
-   </h3>
+   <div class=title>
+  &nbsp;盘点方案信息管理
+   </div>
     <div class="container-fluid editpage-content">
   
    <form action="inv/save"  class="form-horizontal" method="post" id=form>
@@ -48,16 +48,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <input type="hidden" readonly class="form-control" id="fstate" name="fstate" placeholder="日期" value=${inv.fstate }>
 
 
-   <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">
-          <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+               <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
 
-          <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
-   </div>
-   </div>
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
   </form>
   </body>
 </html>

@@ -68,12 +68,266 @@ public class InventoryServiceImpl implements IInventoryService {
 
     @Override
     public int updateQty(Map map) {
-        return 0;
+        return inventoryDao.updateQty(map);
     }
 
     @Override
     public List<Inventory> getExportList(Map map) {
-        return null;
+        return inventoryDao.getExportList(map);
+    }
+
+    @Override
+    public Map<String, Object> getMaPageList(HttpServletRequest request, Map map) {
+
+        Map m=new HashMap();
+        List<Inventory> list=null;
+        String pageNow = request.getParameter("pageNow");
+        String condition=request.getParameter("condition");
+        HttpSession session=request.getSession();
+        if(condition==null || "".equals(condition))
+        {
+            session.setAttribute("Inventory", map);
+        }
+        else
+        {
+            map=(Map) session.getAttribute("Inventory");
+        }
+        Page page = null;
+        int totalCount=inventoryDao.getMaTotalNum(map);
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+        } else {
+            page = new Page(totalCount, 1);
+        }
+        map.put("pageIndex", page.getStartPos());
+        map.put("pageSize", page.getPageSize());
+        list=inventoryDao.getMaList(map);
+        m.put("list", list);
+        m.put("page", page);
+        m.put("model", map);
+        return m;
+    }
+
+
+    @Override
+    public int getMaTotalNum(Map map) {
+        return 0;
+    }
+
+    @Override
+    public List<Inventory> getMaExportList(Map map) {
+        return inventoryDao.getExportList(map);
+    }
+
+    @Override
+    public Map<String, Object> getMgPageList(HttpServletRequest request, Map map) {
+
+        Map m=new HashMap();
+        List<Inventory> list=null;
+        String pageNow = request.getParameter("pageNow");
+        String condition=request.getParameter("condition");
+        HttpSession session=request.getSession();
+        if(condition==null || "".equals(condition))
+        {
+            session.setAttribute("Inventory", map);
+        }
+        else
+        {
+            map=(Map) session.getAttribute("Inventory");
+        }
+        Page page = null;
+        int totalCount=inventoryDao.getMgTotalNum(map);
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+        } else {
+            page = new Page(totalCount, 1);
+        }
+        map.put("pageIndex", page.getStartPos());
+        map.put("pageSize", page.getPageSize());
+        list=inventoryDao.getMgList(map);
+        m.put("list", list);
+        m.put("page", page);
+        m.put("model", map);
+        return m;
+    }
+
+    @Override
+    public int getMgTotalNum(Map map) {
+        return 0;
+    }
+
+    @Override
+    public List<Inventory> getMgExportList(Map map) {
+        return inventoryDao.getMgExportList(map);
+    }
+
+    @Override
+    public List<Inventory> getInventoryDetail(Map map) {
+        return inventoryDao.getInventoryDetail(map);
+    }
+
+    @Override
+    public Map<String, Object> getZJPageList(HttpServletRequest request, Map map) {
+        Map m=new HashMap();
+        List<Map<String,Object>> list=null;
+        String pageNow = request.getParameter("pageNow");
+        String condition=request.getParameter("condition");
+        HttpSession session=request.getSession();
+        if(condition==null || "".equals(condition))
+        {
+            session.setAttribute("Inventory", map);
+        }
+        else
+        {
+            map=(Map) session.getAttribute("Inventory");
+        }
+        Page page = null;
+        int totalCount=inventoryDao.getZJTotalNum(map);
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+        } else {
+            page = new Page(totalCount, 1);
+        }
+        map.put("pageIndex", page.getStartPos());
+        map.put("pageSize", page.getPageSize());
+        list=inventoryDao.getZJList(map);
+        m.put("list", list);
+        m.put("page", page);
+        m.put("model", map);
+        return m;
+    }
+
+    @Override
+    public int getZJTotalNum(Map map) {
+        return 0;
+    }
+
+    @Override
+    public List<Map<String, Object>> getZJExportList(Map map) {
+        return inventoryDao.getZJExportList(map);
+    }
+
+    @Override
+    public Map<String, Object> getZJMaPageList(HttpServletRequest request, Map map) {
+        Map m=new HashMap();
+        List<Map<String,Object>> list=null;
+        String pageNow = request.getParameter("pageNow");
+        String condition=request.getParameter("condition");
+        HttpSession session=request.getSession();
+        if(condition==null || "".equals(condition))
+        {
+            session.setAttribute("Inventory", map);
+        }
+        else
+        {
+            map=(Map) session.getAttribute("Inventory");
+        }
+        Page page = null;
+        int totalCount=inventoryDao.getZJMaTotalNum(map);
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+        } else {
+            page = new Page(totalCount, 1);
+        }
+        map.put("pageIndex", page.getStartPos());
+        map.put("pageSize", page.getPageSize());
+        list=inventoryDao.getZJMaList(map);
+        m.put("list", list);
+        m.put("page", page);
+        m.put("model", map);
+        return m;
+    }
+
+    @Override
+    public int getZJMaTotalNum(Map map) {
+        return 0;
+    }
+
+    @Override
+    public List<Map<String, Object>> getZJMaExportList(Map map) {
+        return inventoryDao.getZJMaExportList(map);
+    }
+
+    @Override
+    public Map<String, Object> getHGPageList(HttpServletRequest request, Map map) {
+        Map m=new HashMap();
+        List<Map<String,Object>> list=null;
+        String pageNow = request.getParameter("pageNow");
+        String condition=request.getParameter("condition");
+        HttpSession session=request.getSession();
+        if(condition==null || "".equals(condition))
+        {
+            session.setAttribute("Inventory", map);
+        }
+        else
+        {
+            map=(Map) session.getAttribute("Inventory");
+        }
+        Page page = null;
+        int totalCount=inventoryDao.getHGTotalNum(map);
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+        } else {
+            page = new Page(totalCount, 1);
+        }
+        map.put("pageIndex", page.getStartPos());
+        map.put("pageSize", page.getPageSize());
+        list=inventoryDao.getHGList(map);
+        m.put("list", list);
+        m.put("page", page);
+        m.put("model", map);
+        return m;
+    }
+
+    @Override
+    public int getHGTotalNum(Map map) {
+        return 0;
+    }
+
+    @Override
+    public List<Map<String, Object>> getHGExportList(Map map) {
+        return inventoryDao.getHGExportList(map);
+    }
+
+    @Override
+    public Map<String, Object> getHGMaPageList(HttpServletRequest request, Map map) {
+        Map m=new HashMap();
+        List<Map<String,Object>> list=null;
+        String pageNow = request.getParameter("pageNow");
+        String condition=request.getParameter("condition");
+        HttpSession session=request.getSession();
+        if(condition==null || "".equals(condition))
+        {
+            session.setAttribute("Inventory", map);
+        }
+        else
+        {
+            map=(Map) session.getAttribute("Inventory");
+        }
+        Page page = null;
+        int totalCount=inventoryDao.getHGMaTotalNum(map);
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+        } else {
+            page = new Page(totalCount, 1);
+        }
+        map.put("pageIndex", page.getStartPos());
+        map.put("pageSize", page.getPageSize());
+        list=inventoryDao.getHGMaList(map);
+        m.put("list", list);
+        m.put("page", page);
+        m.put("model", map);
+        return m;
+    }
+
+    @Override
+    public int getHGMaTotalNum(Map map) {
+        return 0;
+    }
+
+    @Override
+    public List<Map<String, Object>> getHGMaExportList(Map map) {
+        return inventoryDao.getHGExportList(map);
     }
 
   /*  @Override

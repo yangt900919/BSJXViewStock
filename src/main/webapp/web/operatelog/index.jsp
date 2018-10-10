@@ -62,6 +62,10 @@
 		$("#inform").attr('action', "Inventory/Export"); //通过jquery为action属性赋值
 		$("#inform").submit();
 	}
+    $("#home", parent.document).removeClass("active");
+    $("#link", parent.document).empty();
+    $("#link", parent.document).addClass("active");
+    $("#link", parent.document).text("操作记录信息管理");
 </script>
 <style type="text/css">
 .e_show {
@@ -77,16 +81,45 @@
 <body>
 
 	<div class=container-fluid>
-		<h3 class=title_index>操作记录信息管理</h3>
+		<div class=title_index>&nbsp;操作记录信息管理</div>
 		<div class="row">
-			<div class=col-md-2>
-				<div class=row>
-					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-info" onclick="filter('operatelog')"
-							href="javascript:;"> <span
-							class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤
-						</a>
+
+
+			<div class="col-md-11 col-sm-11 col-xs-11">
+				<form class="form-inline" action="operatelog/getList">
+
+					<div class="form-group">
+						<label for="fnumer" >入库/领料单据编码</label>
+
+									<input type="text" class="form-control" id="fnumer" name="fnumer"  value=${model.fnumer }>
+
 					</div>
+
+					<div class="form-group">
+						<label for="fmaid" >物料</label>
+
+						<div class="input-group">
+							<input  type="text" readonly onfocus="clearBasics('fmaid1')"  class="form-control" id="material1" name="materialname"  placeholder="" value=${model.materialname}>
+							<input type="hidden" class="form-control" id="fmaid1" name=fmaid  placeholder="" value=${model.fmaid}>
+							<span class="input-group-btn">
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('ma','fmaid1','material1')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                                </span></div>
+
+					</div>
+
+
+					<button type="submit" class="btn btn-primary btn-sm ">
+						<span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
+					</button>
+
+				</form>
+			</div>
+			<div class="col-md-1 col-sm-1 col-xs-1">
+				<div class="buttongroups"><a class="btn btn-info btn-sm" onclick="filter('operatelog')"
+				   href="javascript:;"> <span
+						class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤
+				</a></div>
+
 				<%--	<c:if test="${invscheme_export=='invscheme_export' }">
 						<div class="col-md-4 col-sm-4 col-xs-4">
 							<a class="btn btn-info" id="delete" href="javascript:;"
@@ -97,10 +130,10 @@
 						</div>
 					</c:if>
 				</div>--%>
+
 			</div>
 		</div>
-		</div>
-		<br>
+
 		<div class="table-responsive">
 		<table class="table table-bordered table-hover table-striped ">
 			<thead class=thead>
@@ -112,7 +145,7 @@
 					<th>单据类型</th>
 					<th >物料编码</th>
 					<th>物料名称</th>
-					<th >规格型号</th>
+					<th >计量单位</th>
 					<th>上/下架数量</th>
 					<th >已上/下架数量</th>
 					<th >仓库</th>
@@ -136,17 +169,21 @@
 						<td>${map.material.materialnumber }</td>
 						   <td>${map.material.materialname }</td>
 						<td>
-						${map.material.materialmodel}
+						${map.material.materialunit}
 						</td>
 						<td>
 							${map.fqty}
 						</td>
 						<td>${map.facqty}</td>
 
-						<td>${map.fstock}</td>
+						<td>${map.ferpstock}</td>
 						<td>${map.fgoodseat}</td>
 						<td>	<fmt:formatDate value="${map.fmdate}" pattern="yyyy-MM-dd"></fmt:formatDate></td>
-						<td>${map.fgperiod}</td>
+						<td>
+                            <c:if test="${map.fgperiod!=null && map.fgperiod>0 }">
+                              ${map.fgperiod}
+                            </c:if>
+                        </td>
 						<td>${map.fbatch}</td>
 					<%--	<td>${map.fsrc_number}</td>--%>
 							<%-- <td>${map.FSdate }</td> --%>

@@ -33,76 +33,66 @@
             { initStartDate("sdate");
                 initDate("edate");}
         });
+        $("#home", parent.document).removeClass("active");
+        $("#link", parent.document).empty();
+        $("#link", parent.document).addClass("active");
+        $("#link", parent.document).text("退换货单信息管理");
 	</script>
 </head>
 
 <body>
-
+<jsp:include page="condition.jsp"></jsp:include>
 <div class=container-fluid>
-	<h3 class=title_index>
-		退换货单信息管理
-	</h3>
+	<div class=title_index>
+		&nbsp;退换货单信息管理
+	</div>
 	<div >
 	<div class="row">
 
-		<%--<div class="col-md-9 col-sm-9 col-xs-9" >
-		</div>--%>
-		<div class="col-md-5 col-sm-5 col-xs-6" >
-			<div class=row>
-
-				<div class="col-md-3 col-sm-3 col-xs-3" >  <a class="btn btn-primary btn-sm"  href="billreturn/create">
-					<span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-				<div class="col-md-3 col-sm-3 col-xs-3"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('billreturn')">
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					删除</a>
+		<div class="col-md-9 col-sm-9 col-xs-9" >
+			<form class="form-inline" action="billreturn/getList">
+				<div class="form-group">
+					<label for="fnumber">单据编号</label>
+					<input type="text" class="form-control" id="fnumber" name="fnumber" placeholder="" value=${model.fnumber }>
 				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">  <button class="btn btn-info btn-sm"  onclick="filter('billreturn')">
-					<span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</button>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
 
-					<%--<button class="btn btn-success btn-sm"  onclick="pushDown('billreturn','order')">
-					<span class="glyphicon   glyphicon-hand-down " aria-hidden="true"></span>下推</button>--%>
-				<%--	<div class="btn-group">
-					<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="glyphicon   glyphicon-hand-down"></span>下推 <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a href="1">收货通知请捡单</a></li>
-					&lt;%&ndash;	<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#">Separated link</a></li>&ndash;%&gt;
-					</ul></div>--%>
 
-					<!-- Single button -->
-					<%--<div class="btn-group open">
-						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Success <span class="caret"></span></button><div class="dropdown-backdrop"></div>
-						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-						</ul>
-					</div>--%>
-				</div>
+				<input type="hidden" name="fstate" value="-1"/>
+				<button type="submit" class="btn btn-primary btn-sm ">
+					<span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
+				</button>
+			</form>
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-3" >
+
+
+			<div class="buttongroups" >  <button class="btn btn-info btn-sm"  onclick="filter('billreturn')">
+				<span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</button>
 			</div>
+			<div class="buttongroups" > <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('billreturn')">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				删除</a>
+			</div>
+				<div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="billreturn/create">
+					<span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
+
+
+
 
 		</div>
 
 	</div>
 	</div>
-		<hr>
-	<div class="table-responsive">
 
-		<table class="table  table-hover table-bordered ">
+	<div class="table-responsive" style="height: 70% !important;">
+
+		<table class="table  table-hover           table-bordered ">
 			<thead >
 			<tr>
 
                <%-- <th  >&nbsp;&nbsp;分录选择&nbsp;&nbsp;</th>--%>
                 <th  >
-					&nbsp;&nbsp;   <input type="checkbox"  class="check" id="checkall" onclick="checkall()">单据选择(全选)&nbsp;&nbsp;
+					&nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()">&nbsp;
                 </th>
                 <th  data-fixed="true">单据编号</th>
                 <th >业务日期</th>
@@ -127,12 +117,12 @@
 				<c:forEach items="${map.billreturnentries}" var="entry" >
 
 						<tr >
-
+							<td >
+								<input type="checkbox" name=check class="check" value=${map.fid}>
+							</td>
 					<c:if test="${i==0}">
 
-						<td rowspan="${map.billreturnentries.size()}">
-							<input type="checkbox" name=check class="check" value=${map.fid}>
-						</td>
+
 						<td rowspan="${map.billreturnentries.size()}">
 							${map.fnumber}
 						</td>
@@ -170,7 +160,7 @@
 							</td>
 						
 							<td >
-									${entry.stock.stockname}
+									${entry.stock.fnumber}
 							</td>
 							<c:if test="${i==0}">
 
@@ -200,7 +190,7 @@
 	</div>
 		<jsp:include page="../../page.jsp"></jsp:include>
 	</div>
+<jsp:include page="../shared/modal.jsp"></jsp:include>
 
-<jsp:include page="condition.jsp"></jsp:include>
 </body>
 </html>

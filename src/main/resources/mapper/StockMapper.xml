@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.StockMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Stock">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
@@ -8,6 +9,7 @@
     <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
     <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
     <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="fcreatetime" jdbcType="TIMESTAMP" property="fcreatetime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    fid, stockNumber, stockName, stockAddress, stockTel,flag
+    fid, stockNumber, stockName, stockAddress, stockTel,flag,fcreatetime
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.StockExample" resultMap="BaseResultMap">
     select
@@ -103,9 +105,9 @@
   </delete>
   <insert id="insert" parameterType="com.linkpal.model.Stock">
     insert into T_VS_Stock (stockNumber, stockName,
-    stockAddress, stockTel,flag)
+    stockAddress, stockTel,flag,fcreatetime)
     values (#{stocknumber,jdbcType=VARCHAR}, #{stockname,jdbcType=VARCHAR},
-    #{stockaddress,jdbcType=VARCHAR}, #{stocktel,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR})
+    #{stockaddress,jdbcType=VARCHAR}, #{stocktel,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{fcreatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Stock">
     insert into T_VS_Stock
@@ -128,6 +130,9 @@
       <if test="flag != null">
         flag
       </if>
+      <if test="fcreatetime != null">
+        fcreatetime
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="stocknumber != null">
@@ -144,6 +149,9 @@
       </if>
       <if test="flag != null">
         #{flag,jdbcType=VARCHAR}
+      </if>
+      <if test="fcreatetime != null">
+        #{fcreatetime,jdbcType=TIMESTAMP}
       </if>
     </trim>
   </insert>
@@ -174,6 +182,12 @@
       <if test="record.stocktel != null">
         stockTel = #{record.stocktel,jdbcType=VARCHAR},
       </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.fcreatetime != null">
+        fcreatetime = #{record.fcreatetime,jdbcType=TIMESTAMP}
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -185,7 +199,8 @@
     stockName = #{record.stockname,jdbcType=VARCHAR},
     stockAddress = #{record.stockaddress,jdbcType=VARCHAR},
     stockTel = #{record.stocktel,jdbcType=VARCHAR},
-    flag = #{record.flag,jdbcType=VARCHAR}
+    flag = #{record.flag,jdbcType=VARCHAR},
+    fcreatetime = #{record.fcreatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -206,7 +221,10 @@
         stockTel = #{stocktel,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
-        flag = #{stocktel,jdbcType=VARCHAR}
+        flag = #{stocktel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fcreatetime != null">
+        fcreatetime = #{record.fcreatetime,jdbcType=TIMESTAMP}
       </if>
     </set>
     where fid = #{fid,jdbcType=INTEGER}
@@ -217,7 +235,8 @@
     stockName = #{stockname,jdbcType=VARCHAR},
     stockAddress = #{stockaddress,jdbcType=VARCHAR},
     stockTel = #{stocktel,jdbcType=VARCHAR},
-    flag = #{stocktel,jdbcType=VARCHAR}
+    flag = #{stocktel,jdbcType=VARCHAR},
+    fcreatetime = #{record.fcreatetime,jdbcType=TIMESTAMP}
     where fid = #{fid,jdbcType=INTEGER}
   </update>
   <select id="getPageList" parameterType="map" resultMap="BaseResultMap">
@@ -267,7 +286,7 @@
   </select>
   <delete id="deleteBatch">
     delete from T_VS_Stock where FID in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )

@@ -76,9 +76,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-     <h3 class=title>
-  物料二维码打印管理
-   </h3>
+     <div class=title>
+  &nbsp;物料二维码打印管理
+   </div>
     <div class="container-fluid editpage-content">
 
    <form action="maprint/save"  class="form-horizontal" method="post" id=form>
@@ -95,10 +95,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          <label for="material" class=col-sm-3>物料</label>
          <div class=col-sm-9>
            <div class="input-group">
-               <input  type="text"  onfocus="clearBasics('fmaterialid')"  class="form-control" id="ma" name="materialname"  placeholder="" value="${maprint.material.materialname}">
+               <input  type="text" readonly onfocus="clearBasics('fmaterialid')"  class="form-control" id="ma" name="materialname"  placeholder="" value="${maprint.material.materialname}">
                <input type="hidden" class="form-control" id="fmaterialid" name=fmaterialid  placeholder="" value="${maprint.fmaterialid}">
                <span class="input-group-btn">
-         <button class="btn btn-primary" type="button" onclick="showBasics('ma','fmaterialid','ma')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('ma','fmaterialid','ma')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
            </div></div>
      </div>
@@ -141,25 +141,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          <label for="supplier" class=col-sm-3>供货单位</label>
          <div class=col-sm-9>
          <div class="input-group">
-             <input  type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="供货单位" value="${maprint.supplier.suppliername}">
+             <input  type="text"readonly  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="供货单位" value="${maprint.supplier.suppliername}">
              <input type="hidden" class="form-control" id="fsupplierid" name=fsupplierid  placeholder="" value="${maprint.fsupplierid}">
              <span class="input-group-btn">
-         <button class="btn btn-primary" type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
          </div></div>
      </div>
 
-   <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">
-          <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+               <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
 
-          <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
-   </div>
-   </div>
-    </div>
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
   </form>
   
   </div>

@@ -24,18 +24,66 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		 showCondition("goodsseat",'${goodsSeatList }'); 
 	 });
+     $("#home", parent.document).removeClass("active");
+     $("#link", parent.document).empty();
+     $("#link", parent.document).addClass("active");
+     $("#link", parent.document).text("货位信息管理");
 	</script>
   </head>
   
   <body>
 
    <div class=container-fluid>
-   <h3 class=title_index>
-  货位信息管理
-   </h3>
+   <div class=title_index>
+  &nbsp;货位信息管理
+   </div>
    <div class="row">
+       <div class="col-md-9 col-sm-9 col-xs-9">
+           <form class="form-inline" action="goodseat/getList">
+               <div class="form-group">
+                   <label for="fnumber">编码</label>
+                   <input type="text" class="form-control" id="fnumber" name="fnumber" placeholder="" value=${model.fnumber }>
+               </div>
+               <div class="form-group">
+                   <label for="fscabinetid">储柜</label>
+                   <div class="input-group">
+                       <input $ type="text" readonly  onfocus="clearBasics('fscabinetid')"  class="form-control" id="scabinet" name="scabinetname"  placeholder="" value=${model.scabinet.fname}>
+                       <input type="hidden" class="form-control" id="fscabinetid" name=fscabinetid  placeholder="" value=${model.fscabinetid}>
+                       <span class="input-group-btn">
+           <button class="btn btn-primary btn-sm " type="button" onclick="showBasics('scabinet','fscabinetid','scabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+      </span>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label for="fcabinetid">柜列</label>
+                   <div class="input-group">
+                       <input $ type="text" readonly  onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="" value=${model.cabinet.fname}>
+                       <input type="hidden" class="form-control" id="fcabinetid" name=fcabinetid  placeholder="" value=${model.fcabinetid}>
+                       <span class="input-group-btn">
+           <button class="btn btn-primary btn-sm " type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+      </span>
+                   </div>
+               </div>
+
+               <div class="form-group">
+                   <label for="fstockid">仓库</label>
+                   <div class="input-group">
+                       <input $ type="text" readonly onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stock.stockname}>
+                       <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${model.fstockid}>
+                       <span class="input-group-btn">
+           <button class="btn btn-primary btn-sm " type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+      </span>
+                   </div>
+               </div>
+
+               <button type="submit" class="btn btn-primary btn-sm ">
+                   <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
+               </button>
+           </form>
+       </div>
        <div class="col-md-3 col-sm-3 col-xs-3" >
         <div class=row>
+            <div class="col-md-8 col-sm-8 col-xs-8"></div>
      <%-- <c:if test="${goodsSeat_delete=='goodsSeat_delete' }">--%>
              <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('goodseat')">
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -50,56 +98,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       
     </div>
    </div>
-       <div class="col-md-9 col-sm-9 col-xs-3">
-           <form class="form-inline" action="goodseat/getList">
-               <div class="form-group">
-                   <label for="fnumber">编码</label>
-                   <input type="text" class="form-control" id="fnumber" name="fnumber" placeholder="" value=${model.fnumber }>
-               </div>
-               <div class="form-group">
-                   <label for="fscabinetid">储柜</label>
-                   <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fscabinetid')"  class="form-control" id="scabinet" name="scabinetname"  placeholder="" value=${model.scabinet.fname}>
-                       <input type="hidden" class="form-control" id="fscabinetid" name=fscabinetid  placeholder="" value=${model.fscabinetid}>
-                       <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('scabinet','fscabinetid','scabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
-      </span>
-                   </div>
-               </div>
-               <div class="form-group">
-                   <label for="fcabinetid">柜列</label>
-                   <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="" value=${model.cabinet.fname}>
-                       <input type="hidden" class="form-control" id="fcabinetid" name=fcabinetid  placeholder="" value=${model.fcabinetid}>
-                       <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
-      </span>
-                   </div>
-               </div>
 
-               <div class="form-group">
-                   <label for="fstockid">仓库</label>
-                   <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stock.stockname}>
-                       <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${model.fstockid}>
-                       <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
-      </span>
-                   </div>
-               </div>
-
-               <button type="submit" class="btn btn-primary btn-sm ">
-                   <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
-               </button>
-           </form>
-       </div>
    </div>
-<hr>
+
    <table class="table table-bordered table-hover table-striped ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
   <th >货位编码</th>
 <!--   <th >货位名称</th> -->
@@ -114,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <c:forEach items="${goodseatlist }" var="map">
   <tr>
   <td>
-    <input type="checkbox" name=check class="check" value=${map.fnumber}>
+    <input type="checkbox" name=check class="check" value=${map.fid}>
   </td>
   <td>${map.fnumber }</td>
  <%--  <td>${map.FName }</td> --%>

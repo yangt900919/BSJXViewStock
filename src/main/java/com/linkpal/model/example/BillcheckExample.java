@@ -725,6 +725,67 @@ public class BillcheckExample {
             return (BillcheckExample.Criteria) this;
         }
 
+        public BillcheckExample.Criteria andFisinoutIsNull() {
+            addCriterion("fisinout is null");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutIsNotNull() {
+            addCriterion("fisinout is not null");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutEqualTo(Integer value) {
+            addCriterion("fisinout =", value, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutNotEqualTo(Integer value) {
+            addCriterion("fisinout <>", value, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutGreaterThan(Integer value) {
+            addCriterion("fisinout >", value, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutGreaterThanOrEqualTo(Integer value) {
+            addCriterion("fisinout >=", value, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutLessThan(Integer value) {
+            addCriterion("fisinout <", value, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutLessThanOrEqualTo(Integer value) {
+            addCriterion("fisinout <=", value, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutIn(List<Integer> values) {
+            addCriterion("fisinout in", values, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutNotIn(List<Integer> values) {
+            addCriterion("fkeeperid not in", values, "fkeeperid");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutBetween(Integer value1, Integer value2) {
+            addCriterion("fisinout between", value1, value2, "fisinout");
+            return (BillcheckExample.Criteria) this;
+        }
+
+        public BillcheckExample.Criteria andFisinoutNotBetween(Integer value1, Integer value2) {
+            addCriterion("fisinout not between", value1, value2, "fisqt");
+            return (BillcheckExample.Criteria) this;
+        }
+
+
         public BillcheckExample.Criteria andFisqtIsNull() {
             addCriterion("fisqt is null");
             return (BillcheckExample.Criteria) this;
@@ -784,7 +845,11 @@ public class BillcheckExample {
             addCriterion("fisqt not between", value1, value2, "fisqt");
             return (BillcheckExample.Criteria) this;
         }
+
+
     }
+
+
 
     public static class Criteria extends GeneratedCriteria {
 

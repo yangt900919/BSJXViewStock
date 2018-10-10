@@ -2,9 +2,8 @@ package com.linkpal.service.impl;
 
 import com.linkpal.Excepetion.ImportException;
 import com.linkpal.dao.IBillOrderDao;
-import com.linkpal.model.Billorder;
-import com.linkpal.model.Billorderentry;
-import com.linkpal.model.Page;
+import com.linkpal.dao.IMaterialDao;
+import com.linkpal.model.*;
 import com.linkpal.service.IBillOrderService;
 import com.linkpal.util.ExcelUtil;
 import com.linkpal.util.GlobalVarContext;
@@ -28,6 +27,10 @@ public class BillOrderServiceImpl implements IBillOrderService {
     @Qualifier("BillOrderDaoImpl")
     @Autowired
     private IBillOrderDao IBillOrderDao;
+
+    @Qualifier("materialDaoImpl")
+    @Autowired
+    private IMaterialDao materialDao;
 
     @Override
     public boolean create(Billorder billget) throws Exception {
@@ -145,9 +148,13 @@ public class BillOrderServiceImpl implements IBillOrderService {
     }
 
     @Override
-    public void importInfo(InputStream in, MultipartFile file) throws ImportException {
+    public Map<String,Object> importInfo(InputStream in, MultipartFile file,HttpServletRequest request) throws ImportException {
 
         List<List<Object>> listob=null;
+
+        String rs="";
+
+        List<Material> malist=new ArrayList<>();
 
         try {
             listob= ExcelUtil.getListByExcel(in,file.getOriginalFilename());
@@ -168,6 +175,7 @@ public class BillOrderServiceImpl implements IBillOrderService {
                 //List coldata=new ArrayList<>();
                 int x=0;
                 int y=0;
+                int z=0;
                 int row=0;
                 for(int i=0;i<listob.size();i++)
                 {
@@ -183,6 +191,10 @@ public class BillOrderServiceImpl implements IBillOrderService {
                             {
                                 y=j;
                             }
+                            if(listob.get(i).get(j).toString().equals("采购凭证"))
+                            {
+                                z=j;
+                            }
                         }
                         row=i;
                         colname.addAll(listob.get(i));
@@ -194,19 +206,52 @@ public class BillOrderServiceImpl implements IBillOrderService {
                 List<Map<String,Object>> list=new ArrayList<>();
                 for(int i=row+1;i<listob.size();i++)
                 {
-                    if(!(listob.get(i).contains("供应商/供应工厂")&& listob.get(i).contains("物料")))
+                    if(!(listob.get(i).contains("供应商/供应工厂")&& listob.get(i).contains("物料")&& listob.get(i).contains("采购凭证")))
                     {
-                        if(listob.get(i).get(x)!=null&&listob.get(i).get(y)!=null&&!(listob.get(i).get(x).toString().equals("*")))
+                        if(listob.get(i).size()>0&&listob.get(i).get(x)!=null&&listob.get(i).get(y)!=null&&listob.get(i).get(z)!=null&&!(listob.get(i).get(x).toString().equals("*")))
                         {
                             Map map=new HashMap();
                             for(int j=0;j<listob.get(i).size();j++)
                             {
 
+                                if(colname.get(j).toString().trim().equals("订单数量"))
+                                {
+                                    colname.remove(j);
+                                    colname.add(j,"数量");
+                                }
                                 map.put(colname.get(j).toString().trim(),listob.get(i).get(j));
                             }
-                            map.put("creatorid", GlobalVarContext.user.getFid());
-                           // list.add(map);
-                            saveBillOrder(map);
+                            map.put("creatorid", ((User)request.getSession().getAttribute("user")).getFid());
+                            list.add(map);
+
+                        }
+                    }
+                }
+
+                for(int i=0;i<list.size();i++)
+                {
+                    int flag=0;
+                   for(int j=0;j<list.size();j++)
+                   {
+                       if(list.get(i).get("采购凭证").toString().equals(list.get(j).get("采购凭证").toString()))flag++;
+                   }
+                   list.get(i).put("flag",flag);
+                }
+
+                for(int i=0;i<list.size();i++)
+                {
+                    List<Map<String,Object>> rlist= saveBillOrder(list.get(i));
+
+                    if(rlist.size()>0)
+                    {
+                        if(!(rlist.get(0).get("message").toString().equals("成功")))
+                        {
+                            if(!(rs.equals(rlist.get(0).get("message").toString())))
+                            rs=rs+rlist.get(0).get("message").toString();
+                        }
+                        if(rlist.get(0).get("state").toString().equals("500"))
+                        {
+                            malist.add(materialDao.getDetail(Integer.parseInt(rlist.get(0).get("data").toString())));
                         }
                     }
                 }
@@ -218,6 +263,16 @@ public class BillOrderServiceImpl implements IBillOrderService {
                 e.printStackTrace();
             }
         }
+        Map map=new HashMap();
+        if(rs.equals("")) rs="导入成功";
+        map.put("rs",rs);
+        map.put("malist",malist);
+        return map;
+    }
+
+    @Override
+    public void updateStock(Map map) {
+        IBillOrderDao.updateStock(map);
     }
 
 

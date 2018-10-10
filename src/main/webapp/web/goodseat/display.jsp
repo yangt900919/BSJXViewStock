@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>货位展示</title>
+    <title>物料明细</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -23,22 +23,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     $(function () {
     	  $('[data-toggle="popover"]').popover();
     		$("#goodsseat").modal({backdrop:'static',keyborad:false});
+
+   /*     $('#table').dataTable( {
+            "language":{
+                "url":"assets/pages/scripts/Chinese.json"
+            },
+            "bLengthChange": false,
+            "bProcessing": true,
+            "bSortClasses":true,
+            "sPaginationType": "full_numbers",
+            "pageLength":15,
+            "bSort":true
+        });*/
     	});
+
+
+
     </script>
   </head>
   
   <body >
-  <div class=container-fluid>
-      <jsp:include page="../../web/shared/top.jsp"></jsp:include>
+  <div >
+      <c:if test="${param.fstock=='A'}">
+          <jsp:include page="../../web/shared/Atop.jsp"></jsp:include>
+      </c:if>
+      <c:if test="${param.fstock=='B'}">
+          <jsp:include page="../../web/shared/Btop.jsp"></jsp:include>
+      </c:if>
+      <c:if test="${param.fstock=='C'}">
+          <jsp:include page="../../web/shared/Ctop.jsp"></jsp:include>
+      </c:if>
 
-      <br>
-      <table class="table table-bordered table-hover table-striped ">
+     <div class="row " style="margin: 20px">
+         <div class="col-md-12 col-xs-12 col-sm-12">
+             <%--<div class="table-responsive">--%>
+      <table class="table table-bordered  table-striped table_content" id="table">
           <thead >
           <tr>
 
               <th >物料编码</th>
               <th >物料名称</th>
-                <th >规格型号</th>
+           <%--     <th >规格型号</th>--%>
               <th>计量单位</th>
 
               <th>数量</th>
@@ -52,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                   <td>${map.materialnumber }</td>
                   <td class=wrap>${map.materialname }</td>
-                        <td class=wrap>${map.materialmodel }</td>
+                      <%--  <td class=wrap>${map.materialmodel }</td>--%>
                   <td class=wrap>${map.materialunit }</td>
 
                   <td>${map.maqty }</td>
@@ -61,7 +86,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </c:forEach>
           </tbody>
       </table>
-
+         </div>
+     </div>
   </div>
+<%--  </div>--%>
   </body>
 </html>

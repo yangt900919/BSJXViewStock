@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.RoleMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Role">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="roleName" jdbcType="VARCHAR" property="rolename" />
@@ -188,7 +189,7 @@
   </select>
 
   <select id="getList"  resultMap="BaseResultMap " >
-    SELECT  top ${pageSize} t0.*,t2.fid pID,t2.fnumber pNumber,t2.fname pName,t2.furl pUrl ,t2.fisnav pisNav from T_VS_Role t0
+    SELECT   t0.*,t2.fid pID,t2.fnumber pNumber,t2.fname pName,t2.furl pUrl ,t2.fisnav pisNav from T_VS_Role t0
     left join T_VS_RoleRPermission t1 on t0.fid=t1.froleid
     left join T_VS_Permission t2 on t1.FPermissionID=t2.fid
     where

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.InventryMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Inventry">
     <id column="FID" jdbcType="INTEGER" property="fid" />
     <result column="FParentID" jdbcType="INTEGER" property="fparentid" />
     <result column="FMaterialID" jdbcType="INTEGER" property="fmaterialid" />
     <result column="FGoodseatID" jdbcType="INTEGER" property="fgoodseatid" />
     <result column="FQty" jdbcType="DOUBLE" property="fqty" />
+    <result column="FinvQty" jdbcType="DOUBLE" property="finvqty" />
     <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -68,7 +70,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    FID, FParentID, FMaterialID, FGoodseatID, FQty, FCreateTime
+    FID, FParentID, FMaterialID, FGoodseatID, FQty,
+    (select isnull(SUM(a.fqty),0) from T_VS_Inventory a where a.fmaid=FMaterialID and a.fgoodseatid=FGoodseatID)FinvQty,
+    FCreateTime
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.InventryExample" resultMap="BaseResultMap">
     select

@@ -1,10 +1,15 @@
 package com.linkpal.controller;
 
 import com.linkpal.model.Inv;
+import com.linkpal.model.Inventory;
+import com.linkpal.model.Inventry;
 import com.linkpal.model.Page;
 import com.linkpal.service.IInvService;
 import com.linkpal.util.CheckOnlyContext;
+import com.linkpal.util.ExcelUtil;
+import com.linkpal.util.ExportUtil;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,5 +136,56 @@ public class InvController
 	{
 		invService.closeBatch(ids);
 		return getList(request,(Inv)request.getSession().getAttribute("Inv")) ;
+	}
+	@RequestMapping(value = "/inv/export")
+	public ModelAndView getExportList(int ID,HttpServletRequest request,HttpServletResponse response)
+	{
+
+		//Map<String,Object> map= (Map<String, Object>) request.getSession().getAttribute("Inventory");
+		List<Inventry> list=invService.getDetail(ID).getInventries();
+
+		//excel标题
+		String[] title = {"序号","物料编码","物料名称","单位","货位","盘点数量","即时库存"};
+
+		//List objs=new ArrayList();
+		//objs.add();
+		//excel文件名
+		String fileName = "物料盘点"+System.currentTimeMillis()+".xls";
+
+		//sheet名
+		String sheetName = "物料盘点";
+
+		//String content[]=b
+
+		String[][] content = new String[list.size()][];
+
+		for (int i = 0; i < list.size(); i++) {
+			content[i] = new String[title.length];
+			//PageData obj = list.get(i);
+			content[i][0] = String.valueOf(i+1);
+			content[i][1] = list.get(i).getMaterial().getMaterialnumber();
+			content[i][2] = list.get(i).getMaterial().getMaterialname();
+			content[i][3] = list.get(i).getMaterial().getMaterialunit();
+			content[i][4] = list.get(i).getGoodseat().getFnumber();
+			content[i][5] = String.valueOf(list.get(i).getFqty());
+			content[i][6] = String.valueOf(list.get(i).getFinvqty());
+
+		}
+
+		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+
+		//响应到客户端
+		try {
+			ExportUtil.setResponseHeader(response, fileName);
+			OutputStream os;
+			os = response.getOutputStream();
+			wb.write(os);
+			os.flush();
+			os.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return getEntryList(ID);
 	}
 }

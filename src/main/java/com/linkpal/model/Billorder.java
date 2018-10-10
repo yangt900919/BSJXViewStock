@@ -22,7 +22,7 @@ public class Billorder implements Serializable {
 
     private Integer frestockid;
 
-    private Stock restock;
+    private ERPStock restock;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fcreatetime;
@@ -175,11 +175,11 @@ public class Billorder implements Serializable {
         this.custom = custom;
     }
 
-    public Stock getRestock() {
+    public ERPStock getRestock() {
         return restock;
     }
 
-    public void setRestock(Stock restock) {
+    public void setRestock(ERPStock restock) {
         this.restock = restock;
     }
 

@@ -27,36 +27,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          pageNow=${page.pageNow};
 	 });
 
-
+     $("#home", parent.document).removeClass("active");
+     $("#link", parent.document).empty();
+     $("#link", parent.document).addClass("active");
+     $("#link", parent.document).text("物料二维码打印管理");
 	</script>
   </head>
   
   <body>
 <%--  <jsp:include page="condition.jsp"></jsp:include>--%>
    <div class=container-fluid>
-   <h3 class=title_index>
-  物料二维码打印管理
-   </h3>
-   <div class="row">
-       <div class="col-md-3 col-sm-3 col-xs-4" >
-        <div class=row>
-      <%--<c:if test="${maprint_add=='maprint_add' }">--%>
-        <div class="col-md-4 col-sm-4 col-xs-4" >  <a class="btn btn-primary btn-sm"  href="maprint/create">
-        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-     <%--   </c:if>
-        <c:if test="${maprint_delete=='maprint_delete' }">--%>
-             <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('maprint')">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        删除</a>
-           </div>
-          <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="PrintqrCode('maprint')">
-              <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
-              打印</a>
-          </div>
-      
-    </div>
+   <div class=title_index>
+  &nbsp;物料二维码打印管理
    </div>
-       <div class="col-md-9 col-sm-9 col-xs-3">
+   <div class="row">
+       <div class="col-md-6 col-sm-6 col-xs-6">
            <form class="form-inline" action="maprint/getList">
                <div class="form-group">
                    <label for="materialnumber">物料编码</label>
@@ -73,20 +58,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                </button>
            </form>
        </div>
+       <div class="col-md-6 col-sm-6 col-xs-6" >
+           <div class="buttongroups"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="PrintqrCode('maprint')">
+               <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+               打印</a>
+           </div>
+           <div class="buttongroups"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('maprint')">
+               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+               删除</a>
+           </div>
+        <div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="maprint/create">
+        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
+     <%--   </c:if>
+        <c:if test="${maprint_delete=='maprint_delete' }">--%>
+
+
+      
+
    </div>
-  <hr>
+
+   </div>
+
        <div class="table-responsive">
    <table class="table table-bordered table-hover  ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
 
   <th >编号</th>
    <th >物料编码</th>
   <th >物料名称</th>
-  <th >规格型号</th>
+<%--  <th >规格型号</th>--%>
   <th >批号</th>
   <th >保质期</th>
   <th >生产日期</th>
@@ -101,12 +105,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <c:forEach items="${maprintlist }" var="map">
   <tr>
   <td>
-    <input type="checkbox" name=push class="check" value=${map.fid}>
+    <input type="checkbox" name=check class="check" value=${map.fid}>
   </td>
   <td>${map.fbillno }</td>
   <td>${map.material.materialnumber }</td>
   <td>${map.material.materialname }</td>
-  <td>${map.material.materialmodel }</td>
+ <%-- <td>${map.material.materialmodel }</td>--%>
   <td>${map.fbatch }</td>
   <td>${map.fgperiod }</td>
   <td>${map.fmdate }</td>

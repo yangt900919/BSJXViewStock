@@ -18,47 +18,59 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<jsp:include page="/web/shared/resource.jsp"></jsp:include>
+      <script type="text/javascript">
+          $("#home", parent.document).removeClass("active");
+          $("#link", parent.document).empty();
+          $("#link", parent.document).addClass("active");
+          $("#link", parent.document).text("盘点方案信息管理");
+
+      </script>
   </head>
   
   <body>
    <div class=container-fluid>
-   <h3 class=title_index>
-盘点方案信息管理
-   </h3>
-   <div class="row">
-       <div class="col-md-3 col-sm-3 col-xs-3" >
-        <div class=row>
+   <div class=title_index>
+&nbsp;盘点方案信息管理
+   </div>
+       <div class="row">
+           <div class="col-md-9 col-sm-9 col-xs-9">
+               <form class="form-inline" action="inv/getList">
+                   <div class="form-group">
+                       <label for="fname">盘点方案名称</label>
+                       <input type="text" class="form-control" id="FName" name="FName" placeholder="" value=${model.fname }>
+                   </div>
+                   <button type="submit" class="btn btn-primary btn-sm" >
+                       <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
+                   </button>
+               </form>
+           </div>
+           <div class="col-md-3 col-sm-3 col-xs-3" >
 
-            <div class="col-md-4 col-sm-4 col-xs-4" >  <a class="btn btn-primary btn-sm"  href="inv/create">
-                <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
+               <div class="buttongroups">
+                   <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="CloseBatch('inv')">
+                       <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                       关闭</a>
+               </div>
+               <div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="inv/create">
+                   <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
 
-        <div class="col-md-4 col-sm-4 col-xs-4">
-        <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="CloseBatch('inv')">
-    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-        关闭</a>
-        </div>
+
+
 
            </div>
-              </div>
-    <div class="col-md-8 col-sm-8 col-xs-8 search">
-    <form class="form-inline" action="inv/getList">
-  <div class="form-group">
-    <label for="fname">盘点方案名称</label>
-    <input type="text" class="form-control" id="FName" name="FName" placeholder="" value=${model.fname }>
-  </div>
-  <button type="submit" class="btn btn-primary " >
-  <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
-</button>
-</form>
-    </div>
 
 
-   </div>
+
+           </div>
+
+       </div>
+
+       <div class="table-responsive">
    <table class="table table-bordered table-hover table-striped ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
   <th >序号</th>
   <th >盘点方案名称</th>
@@ -97,6 +109,7 @@ ${map.fdate }
   </c:forEach>
   </tbody>
 </table>
+       </div>
 <jsp:include page="../../page.jsp"></jsp:include>
    </div>
   </body>

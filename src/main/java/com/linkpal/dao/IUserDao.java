@@ -15,4 +15,8 @@ public interface IUserDao extends IBaseDao<User>{
 
     public void roleuserBind(Map map);
 
+    public  void deleteUserERPStock(int id);
+
+    public void saveUserErpStock(Map map);
+
 }

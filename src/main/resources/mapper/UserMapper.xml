@@ -5,12 +5,21 @@
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="userName" jdbcType="VARCHAR" property="username" />
     <result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
+    <result column="stock" jdbcType="VARCHAR" property="stock" />
+    <result column="stockid" jdbcType="INTEGER" property="stockid" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
 
     <collection property="roles" ofType="com.linkpal.model.Role">
       <result column="rID" property="fid"/>
       <result column="rName" property="rolename"/>
     </collection>
+
+    <collection property="erpStocks" ofType="com.linkpal.model.ERPStock">
+      <result column="erpID" property="fid"/>
+      <result column="erpName" property="fname"/>
+      <result column="erpNumber" property="fnumber"/>
+    </collection>
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +80,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    t0.*,t2.fid rID,t2.rolename rName
+    t0.*,t2.fid rID,t2.rolename rName,(select top 1 a.fnumber from T_VS_ERPStock a
+ inner join T_VS_UserRERPStock b on a.fid=b.ferpstockid
+ where b.fuserid=t0.fid)stock ,(select top 1 a.fid from T_VS_ERPStock a
+ inner join T_VS_UserRERPStock b on a.fid=b.ferpstockid
+ where b.fuserid=t0.fid)stockid,t3.fid erpID,t3.fname erpName,t3.fnumber erpNumber
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.UserExample" resultMap="BaseResultMap">
     select
@@ -83,7 +96,8 @@
     FROM t_vs_user t0
     left join t_vs_userrrole t1 on t0.fid=t1.fuserid
     left join t_vs_role t2 on t1.froleid=t2.fid
-
+    left join T_VS_UserRERPStock t4 on t0.fid=t4.fuserid
+    left join t_vs_erpstock t3 on t4.ferpstockid=t3.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -97,7 +111,8 @@
     FROM t_vs_user t0
     left join t_vs_userrrole t1 on t0.fid=t1.fuserid
     left join t_vs_role t2 on t1.froleid=t2.fid
-
+    left join T_VS_UserRERPStock t4 on t0.fid=t4.fuserid
+    left join t_vs_erpstock t3 on t4.ferpstockid=t3.fid
     where t0.fid = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -264,7 +279,16 @@
     WHERE fuserid=#{id}
   </delete>
 
+  <delete id="deleteUserERPStock" parameterType="int">
+    DELETE FROM T_VS_UserRERPStock
+    WHERE fuserid=#{id}
+  </delete>
+
   <insert id="roleuserBind" parameterType="java.util.Map">
     insert into t_vs_userrrole values(#{fuserid},#{froleid},getdate())
+  </insert>
+
+  <insert id="saveUserErpStock" parameterType="java.util.Map">
+    insert into T_VS_UserRERPStock values(#{fuserid},#{ferpstockid},getdate())
   </insert>
 </mapper>

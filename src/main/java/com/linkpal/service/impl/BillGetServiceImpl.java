@@ -115,5 +115,15 @@ public class BillGetServiceImpl implements IBillGetService {
         return IBillGetDao.getAutoNumber();
     }
 
+    @Override
+    public void updateDepart(Map map) {
+        IBillGetDao.updateDepart(map);
+    }
+
+    @Override
+    public float getInventoryQty(Integer fmaid) {
+        return IBillGetDao.getInventoryQty(fmaid);
+    }
+
 
 }

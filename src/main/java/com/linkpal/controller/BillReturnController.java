@@ -4,6 +4,7 @@ import com.linkpal.model.Billreturn;
 import com.linkpal.model.Page;
 import com.linkpal.model.User;
 import com.linkpal.service.*;
+import com.linkpal.util.DateUtil;
 import com.linkpal.util.GlobalVarContext;
 import com.linkpal.util.InitBinderUtil;
 import com.linkpal.util.StringUtil;
@@ -34,7 +35,7 @@ public class BillReturnController {
     @Autowired
     IMaterialService materialService;
     @Autowired
-    IStockService stockService;
+    IERPStockService stockService;
     @Autowired
     IUserService userService;
     @Autowired
@@ -46,7 +47,7 @@ public class BillReturnController {
         ModelAndView mav=new ModelAndView("web/billreturn/index");
         mav.addObject("model",new HashMap<>());
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         return mav;
@@ -55,9 +56,20 @@ public class BillReturnController {
     @RequestMapping(value = "/billreturn/getList")
     @ResponseBody
     @RequiresPermissions("billreturn:view")
-    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
+    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String,Object> params)
     {
+        if(params==null)params=new HashMap<>();
+        if(params.size()==0)
+        {
+            params.put("sdate", DateUtil.getDatePreM());
+            params.put("edate",DateUtil.getDateNow());
+            params.put("fstate",-1);
+        }
 
+        if(((User) request.getSession().getAttribute("user")).getUsername().equals("admin"))
+            params.put("creatorid",null);
+        else
+            params.put("creatorid",((User) request.getSession().getAttribute("user")).getFid());
         Map<String, Object> m=billReturnService.getPageList(request, params);
         ModelAndView mav=new ModelAndView("web/billreturn/index");
         mav.addObject("billreturnlist", (List<Billreturn>) m.get("list"));
@@ -65,7 +77,7 @@ public class BillReturnController {
         mav.addObject("url", "billreturn/getList");
         mav.addObject("model",m.get("model"));
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
 /*        if(request!=null)
@@ -79,13 +91,13 @@ public class BillReturnController {
     {
         ModelAndView mav=new ModelAndView("web/billreturn/edit");
         Billreturn billreturn=new Billreturn();
-        User user= GlobalVarContext.user;
+        User user= ((User) request.getSession().getAttribute("user"));
         billreturn.setCreator(user);
         billreturn.setFcreatorid(user.getFid());
         billreturn.setFnumber(billReturnService.getAutoNumber());
         mav.addObject("billreturn",billreturn);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         mav.addObject("readonly","");
@@ -123,7 +135,7 @@ public class BillReturnController {
        Billreturn billreturn=billReturnService.getDetail(ID);
         mav.addObject("billreturn",billreturn);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         if(billreturn.getFstate()==1) {
@@ -166,8 +178,9 @@ public class BillReturnController {
     @RequiresPermissions("billreturn:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billreturn billreturn=billReturnService.getDetail(ID);
-        billreturn.setFauditorid(GlobalVarContext.user.getFid());
+        billreturn.setFauditorid(((User) request.getSession().getAttribute("user")).getFid());
         billreturn.setFauditdate(new Date());
+        billreturn.setFstate(1);
         billReturnService.update(billreturn);
         return getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }
@@ -178,6 +191,7 @@ public class BillReturnController {
         Billreturn billreturn=billReturnService.getDetail(ID);
         billreturn.setFauditorid(0);
         billreturn.setFauditdate(null);
+        billreturn.setFstate(0);
         billReturnService.update(billreturn);
         return getList(request, (Map) request.getSession().getAttribute("Billreturn")) ;
     }

@@ -4,6 +4,7 @@ import com.linkpal.dao.IBillGetDao;
 import com.linkpal.dao.IBillStockDao;
 import com.linkpal.map.BillstockMapper;
 import com.linkpal.map.BillstockentryMapper;
+import com.linkpal.model.Billcheck;
 import com.linkpal.model.Billstock;
 import com.linkpal.model.Billstockentry;
 import com.linkpal.model.example.BillstockExample;
@@ -26,6 +27,9 @@ public class BillStockDaoImpl implements IBillStockDao {
 
     @Override
     public boolean create(Billstock billstock) throws Exception {
+
+        Billstock bg=getDetail(billstock.getFnumber());
+        if(bg!=null) billstock.setFnumber(getAutoNumber());
         billstockMapper.insert(billstock);
 
         Billstock b=getDetail(billstock.getFnumber());
@@ -155,5 +159,10 @@ public class BillStockDaoImpl implements IBillStockDao {
     @Override
     public String getAutoNumber() {
         return billstockMapper.getAutoNumber();
+    }
+
+    @Override
+    public void BillStockRewrite_Order(Map map) {
+        billstockMapper.BillStockRewrite_Order(map);
     }
 }

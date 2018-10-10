@@ -40,5 +40,7 @@ public interface IBillOrderService extends  IBaseService<Billorder> {
     float getPushDownQty( Integer fentryid,Integer fid);
     List<Map<String,Object>> saveBillOrder(Map map);
 
-    public void importInfo(InputStream in, MultipartFile file) throws ImportException;
+    public Map<String,Object> importInfo(InputStream in, MultipartFile file,HttpServletRequest request) throws ImportException;
+
+    void updateStock(Map map);
 }

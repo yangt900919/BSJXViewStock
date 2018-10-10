@@ -6,7 +6,7 @@
 
  -->
 <mapper namespace="com.linkpal.map.GsPrintMapper">
-
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
     <resultMap type="com.linkpal.model.GsPrint" id="BaseResultMap">
         <id column="fid" property="fid"/>
         <result column="fgoodseatid" property="fgoodseatid"/>
@@ -80,7 +80,7 @@
 
     <delete id="deleteBatch">
         delete from T_VS_GsPrint where FID in (
-        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+        <foreach collection="array" index="index" item="item" open="" separator="," close="">
             #{item}
         </foreach>
         )

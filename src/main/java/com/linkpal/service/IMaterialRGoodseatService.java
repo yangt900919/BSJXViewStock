@@ -11,4 +11,6 @@ public interface IMaterialRGoodseatService extends IBaseService<Materialrgoodsea
     public boolean deleteBatch(Integer[] ids);
 
     public Map<String,Object> getPageList(HttpServletRequest request, Materialrgoodseat t);
+
+    void ajustGoodsSeat(Map map);
 }

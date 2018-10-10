@@ -13,7 +13,7 @@
 <head>
     <title>Title</title>
     <jsp:include page="../../web/shared/resource.jsp"></jsp:include>
-<%--    <script type="text/javascript" src="assets/global/plugins/jquery.min.js"></script>--%>
+    <%--    <script type="text/javascript" src="assets/global/plugins/jquery.min.js"></script>--%>
     <script type="text/javascript" src="assets/pages/scripts/jquery.jqprint-0.3.js"></script>
     <script type="text/javascript" src="assets/pages/scripts/jquery.qrcode.js"></script>
 
@@ -32,17 +32,17 @@
             table{
                 border:darkblue;
             }
-         /*   table{
-                width:100px; !important;
-                !* height:100px; !important;*!
-                text-align: center ;
-                font-size: 20px;
-                border: 1px solid red;
-            }
-            .tr_height
-            {
-                height: 45px;
-            }*/
+            /*   table{
+                   width:100px; !important;
+                   !* height:100px; !important;*!
+                   text-align: center ;
+                   font-size: 20px;
+                   border: 1px solid red;
+               }
+               .tr_height
+               {
+                   height: 45px;
+               }*/
             .code{
                 display: none;
             }
@@ -53,45 +53,45 @@
             {
                 display: none;
             }
-          /*  table{
-                width:250px; !important;
-                !* height:100px; !important;*!
-                text-align: center ;
-                font-size: xx-small;
-            }
-            .tr_height
-            {
-                height: 45px;
-            }*/
+            /*  table{
+                  width:250px; !important;
+                  !* height:100px; !important;*!
+                  text-align: center ;
+                  font-size: xx-small;
+              }
+              .tr_height
+              {
+                  height: 45px;
+              }*/
             .code{
                 display: none;
             }
         }
     </style>
-<%--    <style>
-        @media screen
-        {
-            .noPrint
+    <%--    <style>
+            @media screen
             {
-                display: none;
-            }
+                .noPrint
+                {
+                    display: none;
+                }
 
-        }
-        @media print
-        {
-            #canvas
+            }
+            @media print
             {
-                display: none;
-            }
+                #canvas
+                {
+                    display: none;
+                }
 
-        }
-#image
-{
-   /* width: 100px;
-    height: 100px;
-    border :1px solid grey;*/
-}
-    </style>--%>
+            }
+    #image
+    {
+       /* width: 100px;
+        height: 100px;
+        border :1px solid grey;*/
+    }
+        </style>--%>
     <style>
 
     </style>
@@ -119,7 +119,7 @@
         return out;
     }
 
-var width=0;
+    var width=0;
     var height=0;
 </script>
 
@@ -136,65 +136,65 @@ var width=0;
     <div  align="center" id="image">
 
 
-       <c:forEach items="${gplist}" var="map" varStatus="st">
-          <%-- <div id="code${st.index}" class="code"></div>--%>
-        <%--   ${map.goodseat.cabinettype}--%>
-           <c:choose>
-               <c:when test="${map.goodseat.cabinettype.frows==1 && map.goodseat.cabinettype.fcolumns==1}">
+        <c:forEach items="${gplist}" var="map" varStatus="st">
+            <%-- <div id="code${st.index}" class="code"></div>--%>
+            <%--   ${map.goodseat.cabinettype}--%>
+            <c:choose>
+                <c:when test="${map.goodseat.cabinettype.frows==1 && map.goodseat.cabinettype.fcolumns==1}">
 
-                   <table border="1" cellspacing="0" style="text-align: center; width:400px;  font-size: 10px;" >
-                       <tr style="height: 55px;">
-                           <th width="100px">货位</th><td>${map.goodseat.fnumber}</td><td colspan="2" rowspan="3">
-                           <img id="image${st.index}" src />
-                       </td>
-                       </tr>
-                       <tr style="height: 45px;">
-                           <th width="100px">区位负责人</th><td width="155px">${map.fcharge}</td>
-                       </tr>
-                       <tr style="height: 45px;">
-                           <th width="100px">产品类型</th><td width="80px">${map.fmatype}</td>
-                       </tr>
+                    <table border="3" cellspacing="0" style="text-align: center; width:400px;  font-size: 10px;" >
+                        <tr style="height: 60px;">
+                            <td width="70px">货位</td><td>${map.goodseat.fnumber}</td><td colspan="2" rowspan="3">
+                            <img id="image${st.index}" src />
+                        </td>
+                        </tr>
+                        <tr style="height: 60px;">
+                            <td width="70px">区位负责人</td><td width="120px">${map.fcharge}</td>
+                        </tr>
+                        <tr style="height: 60px;">
+                            <td width="70px">产品类型</td><td width="120px">${map.fmatype}</td>
+                        </tr>
 
-                       <%--<tr style="height: 45px;">
-                           <th>供货单位</th><td colspan="3">
-                               ${map.supplier.suppliername}
-                       </td>
-                       </tr>--%>
-                   </table>
-                   <script>
-                       width=120;
-                       height=120;
-                   </script>
-               </c:when>
-               <c:otherwise>
-                   <img id=image${st.index} src="" />
-                   <div style='font-size:12px;margin: 8px auto;font-weight: bold'>
-                           ${map.goodseat.fnumber}
-                   </div>
-                   <script>
-                       width=95;
-                       height=95;
-                   </script>
-               </c:otherwise>
-           </c:choose>
+                            <%--<tr style="height: 60px;">
+                                <td>供货单位</td><td colspan="3">
+                                    ${map.supplier.suppliername}
+                            </td>
+                            </tr>--%>
+                    </table>
+                    <script>
+                        width=150;
+                        height=150;
+                    </script>
+                </c:when>
+                <c:otherwise>
+                    <img id=image${st.index} src="" />
+                    <div style='font-size:12px;margin: 8px auto;font-weight: bold'>
+                            ${map.goodseat.fnumber}
+                    </div>
+                    <script>
+                        width=95;
+                        height=95;
+                    </script>
+                </c:otherwise>
+            </c:choose>
 
 
-           <div style="page-break-after: always"></div>
-           <script>
-               var str="{\"fnumber\":\"${map.goodseat.fnumber}\",\"ftype\":\"h\"}";
-              //var str="123";
-               str=toUtf8(str);
-               $("#code${st.index}").qrcode({
-                   render: "canvas", //table方式
-                   width:width, //宽度
-                   height:height, //高度
-                   text: str //任意内容
-               });
-               var canvas  = document.getElementsByTagName("canvas");
-               document.getElementById("image${st.index}").src=canvas[${st.index}].toDataURL();
-           </script>
+            <div style="page-break-after: always"></div>
+            <script>
+                var str="{\"fnumber\":\"${map.goodseat.fnumber}\",\"ftype\":\"h\"}";
+                //var str="123";
+                str=toUtf8(str);
+                $("#code${st.index}").qrcode({
+                    render: "canvas", //table方式
+                    width:width, //宽度
+                    height:height, //高度
+                    text: str //任意内容
+                });
+                var canvas  = document.getElementsByTagName("canvas");
+                document.getElementById("image${st.index}").src=canvas[${st.index}].toDataURL();
+            </script>
 
-       </c:forEach>
+        </c:forEach>
 
     </div>
 </div>
@@ -203,8 +203,8 @@ var width=0;
 
 </body>
 <script>
-      $("#image").jqprint({debug:false,
-    importCSS:true,
+    $("#image").jqprint({debug:false,
+        importCSS:true,
         printContainer:true,
         operaSupport:false});
 </script>

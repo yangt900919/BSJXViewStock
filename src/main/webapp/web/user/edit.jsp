@@ -72,9 +72,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       }
   </script>
   <body>
-     <h3 class=title>
- 用户信息管理
-   </h3>
+     <div class=title>
+ &nbsp;用户信息管理
+   </div>
     <div class="container-fluid editpage-content">
 
    <form   class="form-horizontal" action="user/save" id="form" method="post">
@@ -107,15 +107,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
        <div class="form-group">
   <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary btn-sm">
           <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+      <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
 
           <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
    </div>
    </div>
 </form>
+    </div>
   </body>
 
 </html>

@@ -43,4 +43,6 @@ public interface BillorderMapper {
     float getPushDownQty(@Param("fentryid") Integer fentryid,@Param("fid") Integer fid);
 
     List<Map<String,Object>> saveBillOrder(Map map);
+
+    void updateStock(Map map);
 }

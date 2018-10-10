@@ -16,4 +16,8 @@ public interface IUserService extends IBaseService<User>{
     public Map<String, Object> getPageList(HttpServletRequest request, User t);
 
     public void RoleUserBind(int ID,Integer[] ids);
+
+    //public  void deleteUserERPStock(int id);
+
+    public  void UserBindStock(int id, Integer[] stockId);
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 文件的命名 表名 + Mapper -->
+
+<!-- namespace:接口包 + 接口名
+	
+ -->
+<mapper namespace="com.linkpal.map.ReportMapper">
+
+
+	<select id="getList" resultType="java.util.Map"  parameterType="java.util.Map">
+
+		<if test="type=='libage'">
+			exec Proc_Libage #{manum},#{fdate},#{fstockid}
+		</if>
+
+		<if test="type=='qrate'">
+			exec Proc_Qualified #{sdate},#{edate},#{fstockid}
+		</if>
+
+		<if test="type=='frenqucy'">
+			exec Proc_Frenqucy #{sdate},#{edate},#{fstockid}
+		</if>
+
+	</select>
+
+
+	<select id="getReportList" resultType="java.util.Map"  parameterType="java.util.Map">
+		<if test="type=='InventoryBalance'">
+			exec Proc_InventoryBalance #{sdate},#{edate},#{fmaid},#{ferpstockid},#{batchno},#{fstockid},#{fuserid}
+		</if>
+		<if test="type=='InventoryBalance_date'">
+			exec Proc_InventoryBalance_date #{sdate},#{edate},#{fmaid},#{ferpstockid},#{batchno},#{fstockid},#{fuserid}
+		</if>
+		<if test="type=='Inventorysummary'">
+			exec Proc_InventorySummary #{sdate},#{edate},#{fmaid},#{ferpstockid},#{batchno},#{fstockid},#{fuserid}
+		</if>
+		<if test="type==icstockbill">
+			exec Proc_ICStockBill #{sdate},#{edate},#{fmaid},#{ferpstockid},#{batchno},#{fstockid},#{fuserid}
+		</if>
+
+		<if test="type=='ga'">
+			exec Proc_GuaranteePeriod NULL,NULL,#{fstockid},#{fuserid}
+		</if>
+	</select>
+
+</mapper>

@@ -4,12 +4,14 @@ var id="";
 $(document).keydown(function(event){
     keyCode=event.keyCode;
 
-    //alert(keyCode);
+
     if(keyCode==8)
     {
-        //alert(bID+" "+keyCode);
+        /*alert(bName);*/
         $("#"+bID).val(0);
+        $("#"+bName).val("");
         bID="";
+        bName="";
     }
     /*if(keyCode==17)
 	{
@@ -80,8 +82,8 @@ function Delete(url,ID)
                     data: "ID=" +ID,
                     contentType: "application/json; charset=UTF-8",
                     success: function (result) {
-                    //	alert(result);
-                        if(result)
+                    	//alert(result);
+                        if(result=="true")
                         {
                             alert("单据已生成下游单据不能删除!");
                         }
@@ -114,7 +116,9 @@ function DeleteBatch(url)
 	var	bool=true;
 	var str="";
         $("input[name='check']:checkbox:checked").each(function () {
-            ids.push($(this).val());
+            ids.push(Number($(this).val().split(",")[0]));
+
+
             if($("#fstate"+$(this).val()).length>0)
 			{
 				if($("#fstate"+$(this).val()).text().trim()=="审核")
@@ -124,28 +128,42 @@ function DeleteBatch(url)
 				}
 				else
 				{
-                    $.ajax
-                    ({
-                        type: "get",
-                        url: url+"/checkrelation",
-                        data: "ID=" +$(this).val(),
-                        contentType: "application/json; charset=UTF-8",
-                        success: function (result) {
-                            if(result=="true")
-                            {
-                                bool=false;
-                                str="单据已生成下游单据不能删除!";
-                            }
+				    if(ids.length>0)
+                    {
+                        $.ajax
+                        ({
+                            type: "get",
+                            url: url+"/checkrelation",
+                            data: "ID=" +$(this).val(),
+                            contentType: "application/json; charset=UTF-8",
+                            success: function (result) {
+                                if(result=="true")
+                                {
+                                    bool=false;
+                                    str="单据已生成下游单据不能删除!";
+                                }
 
-                        },
-                        error: function (result, data) {
-                            //alert(data);
-                        }
-                    });
+                            },
+                            error: function (result, data) {
+                                //alert(data);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        bool=false;
+                        str="至少选择一条数据!";
+                    }
+
                 }
 			}
         });
-        if(bool)
+                if(ids.length==0)
+                {
+                    bool=false;
+                    str="至少选择一条数据!";
+                }
+        if(bool )
          location.href = url+"/deleteBatch?ids=" + ids;
         else
         	alert(str);
@@ -159,7 +177,7 @@ function PrintqrCode(url)
     /*if(confirm("确认批量打印?"))
 	{*/
 var qrcodes=[];
-        $("input[name='push']:checkbox:checked").each(function () {
+        $("input[name='check']:checkbox:checked").each(function () {
             qrcodes.push($(this).val());
         });
 
@@ -234,6 +252,7 @@ function getBasics(modal,IDval,nameval)
     $("#"+bID).val(IDval);
     $("#"+bName).val(nameval);
 
+    //alert(bName);
     if(modal=="goodseat")
 	{
         getGSInfo();
@@ -353,7 +372,7 @@ Date.prototype.format=function(fmt)
 
 function adjust(ID)
 {
-	location.href="ItemRGoodsSeat/adjustGoodsSeat?ID="+ID;
+	location.href="materialrgoodseat/adjustGoodseat?ID="+ID;
 	}
 	
 	
@@ -385,6 +404,26 @@ function auth(ID)
     location.href="authority?ID="+ID;
 }
 
+function defaultstock(ID,it)
+{
+    var rolename=$(it).parent().prev().text();
+    if(rolename.indexOf(".库管员")>-1){
+        location.href="defaultstock?ID="+ID;
+    }else{
+        alert('不是库管员不能设置仓库');
+    }
+
+
+}
+
+function BindStock(){
+    var id =$("#fid").val();
+    var ids =[];
+    $("input[name='check']:checkbox:checked").each(function(){
+        ids.push($(this).val());
+    });
+    location.href="user/bindStock?ID="+id+"&stockId="+ids;
+}
 
 function doAuth()
 	{

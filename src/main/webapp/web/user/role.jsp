@@ -25,13 +25,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     }
     </style>
     
-
+<script type="text/javascript">
+    $("#home", parent.document).removeClass("active");
+    $("#link", parent.document).empty();
+    $("#link", parent.document).addClass("active");
+    $("#link", parent.document).text("用户角色分配");
+</script>
   </head>
   
   <body>
-     <h3 class=title>
-  用户角色分配
-   </h3>
+     <div class=title>
+  &nbsp;用户角色分配
+   </div>
     <div class="container-fluid editpage-content">
 
    <form   class="form-horizontal" >
@@ -64,16 +69,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </script>
     </c:forEach>
   </div>
-   
 
-  <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-  <a  class="btn btn-primary" onclick="Bind()" href="javaScript:;">
-    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>   提交</a>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-    <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span> 返回</button>
-   </div>
-   </div>
+
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="button" class="btn btn-primary btn-sm" onclick="Bind()">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+               <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
+
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
 </form>
   </body>
 </html>

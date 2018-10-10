@@ -86,10 +86,10 @@
                                     <div class=row>
                                         <div class="col-md-10 col-sm-10 col-xs-10">
                                             <div class="input-group">
-                                                <input  type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="" value=${model.suppliername}>
+                                                <input readonly type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="" value=${model.suppliername}>
                                                 <input type="hidden" class="form-control" id="fsupplierid" name=fsupplierid  placeholder="" value=${model.fsupplierid}>
                                                 <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                                         </div>
 
@@ -105,10 +105,10 @@
                                     <div class=row>
                                         <div class="col-md-10 col-sm-10 col-xs-10">
                                             <div class="input-group">
-                                                <input  type="text"  onfocus="clearBasics('fmaid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
+                                                <input readonly type="text"  onfocus="clearBasics('fmaid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
                                                 <input type="hidden" class="form-control" id="fmaid" name=fmaid  placeholder="" value=${model.fmaid}>
                                                 <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="getmaterial('material','fmaid','','material','','')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="getmaterial('material','fmaid','','material','','')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                                         </div>
 
@@ -122,10 +122,10 @@
                                     <div class=row>
                                         <div class="col-md-10 col-sm-10 col-xs-10">
                                             <div class="input-group">
-                                                <input  type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stockname}>
+                                                <input readonly type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stockname}>
                                                 <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${model.fstockid}>
                                                 <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('erpstock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                                         </div>
 
@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="querySubmit('billreturn/getList','brform','billreturn')">查询</button>
+                <button class="btn btn-primary btn-sm" onclick="querySubmit('billreturn/getList','brform','billreturn')"><span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询</button>
             </div>
         </div>
     </div>

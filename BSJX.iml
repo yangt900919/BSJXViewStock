@@ -120,11 +120,7 @@
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-ehcache:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate.jsr303.tck:jsr303-tck:1.0.6.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.testng:testng:jdk15:5.8" level="project" />
-    <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.test-audit:jboss-test-audit-api:1.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.test-harness:jboss-test-harness-api:1.1.0-CR9" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.test-harness:jboss-test-harness:1.1.0-CR9" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache:2.10.4" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis.caches:mybatis-ehcache:1.1.0" level="project" />
   </component>
 </module>

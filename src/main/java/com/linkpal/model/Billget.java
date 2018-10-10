@@ -1,6 +1,6 @@
 package com.linkpal.model;
 
-import org.hibernate.jsr303.tck.tests.metadata.NotEmpty;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -14,7 +14,7 @@ public class Billget implements Serializable {
     private Integer fid;
 
 
-    @NotEmpty(message = "单据编号不能为空")
+
     private String fnumber;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -26,17 +26,17 @@ public class Billget implements Serializable {
 
     private Organization organization;
 
-    @NotEmpty(message = "仓库不能为空")
+
     private Integer fsendstockid;
 
-    private Stock stock;
+    private ERPStock stock;
 
-    @NotEmpty(message = "领料人不能为空")
+
     private Integer fgeterid;
 
     private User getuser;
 
-    @NotEmpty(message = "发料人不能为空")
+
     private Integer fsenderid;
 
     private User senduser;
@@ -207,11 +207,11 @@ public class Billget implements Serializable {
         this.organization = organization;
     }
 
-    public Stock getStock() {
+    public ERPStock getStock() {
         return stock;
     }
 
-    public void setStock(Stock stock) {
+    public void setStock(ERPStock stock) {
         this.stock = stock;
     }
 

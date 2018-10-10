@@ -81,9 +81,9 @@ validators: {
   </head>
   
   <body>
-   <h3 class=title>
-   储柜类型信息管理
-   </h3>
+   <div class=title>
+   &nbsp;储柜类型信息管理
+   </div>
     <div class="container-fluid editpage-content">
   
    <form action="cabinettype/save"  class="form-horizontal" method="post" id=form>
@@ -121,16 +121,16 @@ validators: {
   </div>
   
   </div>
-   <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">
-          <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-      <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+               <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
 
-          <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
-   </div>
-   </div>
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
   </form>
   </body>
 </html>

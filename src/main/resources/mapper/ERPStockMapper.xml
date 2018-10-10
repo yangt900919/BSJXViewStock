@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 文件的命名 表名 + Mapper -->
+
+<!-- namespace:接口包 + 接口名
+
+ -->
+<mapper namespace="com.linkpal.map.ERPStockMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+    <resultMap type="com.linkpal.model.ERPStock" id="BaseResultMap">
+        <id column="fid" property="fid"/>
+        <result column="fnumber" property="fnumber"/>
+        <result column="fname" property="fname"/>
+        <result column="fstockid" property="fstockid"/>
+        <result column="fcreatetime" property="fcreatetime"/>
+
+
+        <association property="stock" javaType="com.linkpal.model.Stock">
+            <id column="stID" property="fid"/>
+            <result column="stNumber" property="stocknumber"/>
+            <result column="stName" property="stockname"/>
+        </association>
+
+       
+    </resultMap>
+
+    <select id="getById" resultMap="BaseResultMap"  parameterType="int">
+       select t.*,t1.fid stID,t1.stockNumber stNumber,t1.stockName stName from t_Vs_erpstock t
+left join T_VS_Stock t1 on t.fstockid=t1.fid where t.FID=#{ID}
+    </select>
+
+    <insert id="add" parameterType="com.linkpal.model.ERPStock">
+        INSERT INTO T_VS_ERPStock(fnumber,fname
+           ,fstockid
+           ,fcreatetime
+           )
+        VALUES(#{fnumnber,jdbcType=VARCHAR},
+        #{fname,jdbcType=VARCHAR}
+           ,#{fstockid,jdbcType=INTEGER}
+           ,#{fcreatetime,jdbcType=TIMESTAMP}
+           )
+    </insert>
+
+    <update id="update" parameterType="com.linkpal.model.ERPStock">
+        UPDATE T_VS_ERPStock
+        SET fnumber = #{fnumber,jdbcType=VARCHAR},fname=#{fname,jdbcType=VARCHAR},
+        fstockid=#{fstockid,jdbcType=INTEGER},fcreatetime=#{fcreatetime,jdbcType=TIMESTAMP}
+        WHERE FID=#{fid}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM T_VS_ERPStock
+        WHERE FID=#{ID}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from T_VS_ERPStock where FID in (
+        <foreach collection="array" index="index" item="item" open="" separator="," close="">
+            #{item}
+        </foreach>
+        )
+
+    </delete>
+
+
+    <select id="getAllList"  resultMap="BaseResultMap">
+        select  t.*,t1.fid stID,t1.stockNumber stNumber,t1.stockName stName from t_Vs_erpstock t
+        left join T_VS_Stock t1 on t.fstockid=t1.fid
+    </select>
+    <select id="getList"  resultMap="BaseResultMap">
+        SELECT top ${pageSize} t.*,t1.fid stID,t1.stockNumber stNumber,t1.stockName stName from t_Vs_erpstock t
+        left join T_VS_Stock t1 on t.fstockid=t1.fid
+        where
+        t.fid not in (
+        select top ${pageIndex} tt.fid from T_VS_ERPStock tt
+
+
+   <where>
+       <if test="t.fnumber!=null and t.fnumber!= '' ">
+           and tt.fnumber like '%${t.fnumber}%' 		</if>
+       <if test="t.fname!=null and t.fname!= '' ">
+           and tt.fname like '%${t.fname}%'
+       </if>
+       <if test="t.fstockid>0 ">
+           and tt.fstockid=#{fstockid}
+       </if>
+   </where>
+
+--and (tt3.kw like '%18/%' or tt3.kw like '%19/%' or tt3.kw like '%20/%' or tt3.kw like '%24/%' or tt3.kw like '%25/%')
+       -- and (tt.fbillno not like '%426' or tt.fbillno not like '%482' or tt.fbillno not like '%521' or tt.fbillno not like '%483'
+      --  or tt.fbillno not like '%547' or tt.fbillno not like '%382' or tt.fbillno not like '%661' or tt.fbillno not like '%503')
+        order by tt.fid
+
+        )
+
+        <if test="t.fnumber!=null and t.fnumber!= '' ">
+            and t.fnumber like '%${t.fnumber}%' 		</if>
+        <if test="t.fname!=null and t.fname!= '' ">
+            and t.fname like '%${t.fname}%'
+        </if>
+        <if test="t.fstockid>0 ">
+            and t.fstockid=#{fstockid}
+        </if>
+       -- and (t3.kw like '%18/%' or t3.kw like '%19/%' or t3.kw like '%20/%' or t3.kw like '%24/%' or t3.kw like '%25/%')
+       -- and (t.fbillno not like '%426' or t.fbillno not like '%482' or t.fbillno not like '%521' or t.fbillno not like '%483'
+       -- or t.fbillno not like '%547' or t.fbillno not like '%382' or t.fbillno not like '%661' or t.fbillno not like '%503')
+        order by t.fid
+    </select>
+
+    <select id="getTotalNum" parameterType="com.linkpal.model.Material" resultType="int">
+        SELECT count(*)
+     from T_VS_ERPStock tt
+
+
+    <where>
+        <if test="fnumber!=null and fnumber!= '' ">
+            and tt.fnumber like '%${fnumber}%' 		</if>
+        <if test="fname!=null and fname!= '' ">
+            and tt.fname like '%${fname}%'
+        </if>
+        <if test="fstockid>0 ">
+            and tt.fstockid=#{fstockid}
+        </if>
+    </where>
+    </select>
+
+
+</mapper>

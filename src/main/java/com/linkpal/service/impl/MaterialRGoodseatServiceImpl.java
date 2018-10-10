@@ -36,6 +36,11 @@ public class MaterialRGoodseatServiceImpl implements IMaterialRGoodseatService {
     }
 
     @Override
+    public void ajustGoodsSeat(Map map) {
+        materialRGoodSeatDao.ajustGoodsSeat(map);
+    }
+
+    @Override
     public boolean create(Materialrgoodseat materialrgoodseat) throws Exception {
         return materialRGoodSeatDao.create(materialrgoodseat);
     }

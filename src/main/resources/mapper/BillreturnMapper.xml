@@ -47,12 +47,12 @@
         <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
         <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
       </association>
-      <association property="stock" javaType="com.linkpal.model.Stock">
+      <association property="stock" javaType="com.linkpal.model.ERPStock">
         <id column="fstid" jdbcType="INTEGER" property="fid" />
-        <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
-        <result column="stockName" jdbcType="VARCHAR" property="stockname" />
-        <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
-        <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+        <result column="stockNumber" jdbcType="VARCHAR" property="fnumber" />
+        <result column="stockName" jdbcType="VARCHAR" property="fname" />
+    <!--    <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
+        <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />-->
       </association>
     </collection>
 
@@ -119,7 +119,7 @@
     t0.*,t1.fid feid,t1.fbillid,t1.fentryid,t1.fmaterialid,t1.fnote,t1.fqty,t1.fredate,t1.freqty,t1.fstockid,
 t3.fid suid,t3.supplierNumber sunumber,t3.supplierName suname,
 t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.materialNumber,t9.materialName,t9.materialModel,
-      t9.materialUnit,t10.fid fstid,t10.stockNumber,t10.stockName,t10.stockAddress,t10.stockTel
+      t9.materialUnit,t10.fid fstid,t10.fnumber,t10.fname
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.BillreturnExample" resultMap="BaseResultMap">
     select
@@ -134,7 +134,7 @@ t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.ma
     left join T_VS_User t5 on t0.fcreatorid=t5.fid
     left join T_VS_User  t6 on t0.fauditdate=t6.fid
     left join T_VS_Material t9 on t1.fmaterialid=t9.fid
-    left join T_VS_Stock t10 on t1.fstockid=t10.fid
+    left join T_VS_ERPStock t10 on t1.fstockid=t10.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -151,7 +151,7 @@ t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.ma
     left join T_VS_User t5 on t0.fcreatorid=t5.fid
     left join T_VS_User  t6 on t0.fauditdate=t6.fid
     left join T_VS_Material t9 on t1.fmaterialid=t9.fid
-    left join T_VS_Stock t10 on t1.fstockid=t10.fid
+    left join T_VS_ERPStock t10 on t1.fstockid=t10.fid
     where t0.fid = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -367,11 +367,24 @@ t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.ma
     left join T_VS_User t5 on t0.fcreatorid=t5.fid
     left join T_VS_User  t6 on t0.fauditdate=t6.fid
     left join T_VS_Material t9 on t1.fmaterialid=t9.fid
-    left join T_VS_Stock t10 on t1.fstockid=t10.fid
-    where t0.fid not IN (
-    select top ${pageIndex} tt0.fid from T_VS_Billreturn tt0
+    left join T_VS_ERPStock t10 on t1.fstockid=t10.fid
+    where t1.fid not IN (
+    select top ${pageIndex} tt1.fid from T_VS_Billreturn tt0
     left join T_VS_BillreturnEntry tt1 on tt0.fid=tt1.fbillid
-    where CONVERT(varchar,tt0.fbizdate,23) between #{sdate} and #{edate}
+
+    <where>
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcreatedate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcreatedate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcreatedate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="creatorid!=null">
+      and tt0.fcreatorid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and tt0.fnumber like '%${fnumber}%'
     </if>
@@ -392,10 +405,21 @@ t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.ma
     <if test="fstockid>0">
       and tt1.fstockid =#{fstockid}
     </if>
-
-   
+    </where>
+   order by tt0.fid desc,tt1.fid
     )
-    and CONVERT(varchar,t0.fbizdate,23) between #{sdate} and #{edate}
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t0.fcreatedate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t0.fcreatedate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t0.fcreatedate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="creatorid!=null">
+      and t0.fcreatorid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and t0.fnumber like '%${fnumber}%'
     </if>
@@ -417,13 +441,25 @@ t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.ma
     </if>
 
    
-    order by t0.fid
+    order by t0.fid desc,t1.fid
   </select>
   <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
 
     select count(*) from T_VS_Billreturn tt0
     left join T_VS_BillreturnEntry tt1 on tt0.fid=tt1.fbillid
-    where CONVERT(varchar,tt0.fbizdate,23) between #{sdate} and #{edate}
+  <where>
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcreatedate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcreatedate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcreatedate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="creatorid!=null">
+      and tt0.fcreatorid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and tt0.fnumber like '%${fnumber}%'
     </if>
@@ -444,7 +480,7 @@ t5.fid crid,t5.username crname,t6.fid auid,t6.username auname,t9.fid fmaid,t9.ma
     <if test="fstockid>0">
       and tt1.fstockid =#{fstockid}
     </if>
-
+  </where>
   </select>
 
   <delete id="deleteBatch">

@@ -3,6 +3,7 @@ package com.linkpal.controller;
 import com.linkpal.model.Page;
 import com.linkpal.model.Role;
 import com.linkpal.model.User;
+import com.linkpal.service.IERPStockService;
 import com.linkpal.service.IRoleService;
 import com.linkpal.service.IUserService;
 import com.linkpal.util.CheckOnlyContext;
@@ -29,6 +30,9 @@ public class UserController {
     
     @Autowired
     IRoleService roleService;
+
+    @Autowired
+    IERPStockService ierpStockService;
 
     @RequestMapping(value = "/user/index")
     @RequiresPermissions("user:view")
@@ -125,6 +129,17 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping(value = "/defaultstock")
+    public ModelAndView defaultStock(int ID)
+    {
+
+        ModelAndView mav=new ModelAndView("web/user/defautstock");
+        User user=userService.getDetail(ID);
+        mav.addObject("user",user);
+        mav.addObject("erpstocklist", ierpStockService.getList());
+        return mav;
+    }
+
     @RequestMapping(value = "/user/bind")
     public ModelAndView Bind(HttpServletRequest request,int ID,Integer[] rids)
     {
@@ -132,9 +147,16 @@ public class UserController {
         return getList(request,(User) request.getSession().getAttribute("User"));
     }
 
+    @RequestMapping(value = "/user/bindStock")
+    public ModelAndView bindStock(HttpServletRequest request,int ID,Integer[] stockId)
+    {
+        userService.UserBindStock(ID, stockId);
+        return getList(request,(User) request.getSession().getAttribute("User"));
+    }
+
     @RequestMapping(value = "/user/updatepsw")
     public void updatepsw(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       User user= GlobalVarContext.user;
+       User user= (User) request.getSession().getAttribute("user");
        String url="";
        if(!user.getUserpassword().equals(MD5Util.getResult(request.getParameter("opsw"))))
        {

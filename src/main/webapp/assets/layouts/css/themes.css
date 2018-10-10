@@ -5,11 +5,11 @@
 /* Header search bar, toggler button & top menu */
 .page-header.navbar {
     /*background: #ffffff;*/
-    background: -webkit-linear-gradient(#344a5d,#364252); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(#344a5d, #364252); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(#344a5d, #364252); /* Firefox 3.6 - 15 */
-    background: linear-gradient(#344a5d, #364252);
-    box-shadow: 0px 2px 6px rgba(17,74,105,0.27);
+    background: -webkit-linear-gradient(#0061ab,#0061ab); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#0061ab, #0061ab); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#0061ab, #0061ab); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#0061ab, #0061ab);
+    /*box-shadow: 0px 2px 6px rgba(17,74,105,0.27);*/
 }
 
     .page-header.navbar .top-menu .navbar-nav {
@@ -328,26 +328,26 @@
 }
 
     .page-sidebar .page-sidebar-menu {
-        background-color: #344a5d;
+        background-color: #fbfafb;
         box-shadow: 5px 5px 10px rgba(151,151,151,0.2);
-        border: 1px solid  #344a5d;
+        border: 1px solid  #fbfafb;
         /* 1st level links */
         /* All links */
     }
 
         .page-sidebar .page-sidebar-menu > li > a {
             border: none;
-            color: #848383;
-            font-weight: bold;
+            color: #3a3a3a;
+            font-weight: 500;
         }
 
             .page-sidebar .page-sidebar-menu > li > a > i {
-                color: #848383;
+                color: #3a3a3a;
             }
 
                 .page-sidebar .page-sidebar-menu > li > a > i[class^="icon-"],
                 .page-sidebar .page-sidebar-menu > li > a > i[class*="icon-"] {
-                    color: #848383;
+                    color: #3c3b3c;
                 }
 
             .page-sidebar .page-sidebar-menu > li > a > .arrow:before,
@@ -361,26 +361,28 @@
 
         .page-sidebar .page-sidebar-menu > li:hover > a,
         .page-sidebar .page-sidebar-menu > li.open > a {
-            background: #2b9b98;
-            color: #fffcff;
+            background: #147ecf;
+            color: #fbfafb;
+            border-left:4px solid #095489 !important;
+            width: 100% !important;
         }
 
             .page-sidebar .page-sidebar-menu > li:hover > a > i,
             .page-sidebar .page-sidebar-menu > li.open > a > i {
-                color: #f9fcfb;
+                color: #fbfafb;
             }
 
             .page-sidebar .page-sidebar-menu > li:hover > a > .arrow:before,
             .page-sidebar .page-sidebar-menu > li:hover > a > .arrow.open:before,
             .page-sidebar .page-sidebar-menu > li.open > a > .arrow:before,
             .page-sidebar .page-sidebar-menu > li.open > a > .arrow.open:before {
-                color: #f9fcfb;
+                color: #fbfafb;
             }
 
         .page-sidebar .page-sidebar-menu > li.active > a,
         .page-sidebar .page-sidebar-menu > li.active.open > a {
             background: #58abf4;
-            color: #f9fcfb;
+            color: #fbfafb;
             border-left: 4px solid #4789d8;
         }
 
@@ -391,14 +393,14 @@
 
             .page-sidebar .page-sidebar-menu > li.active > a > i,
             .page-sidebar .page-sidebar-menu > li.active.open > a > i {
-                color: #f9fcfb;
+                color: #fbfafb;
             }
 
             .page-sidebar .page-sidebar-menu > li.active > a > .arrow:before,
             .page-sidebar .page-sidebar-menu > li.active > a > .arrow.open:before,
             .page-sidebar .page-sidebar-menu > li.active.open > a > .arrow:before,
             .page-sidebar .page-sidebar-menu > li.active.open > a > .arrow.open:before {
-                color: #f9fcfb;
+                color: #fbfafb;
             }
 
         .page-sidebar .page-sidebar-menu > li.active + li > a {
@@ -415,17 +417,17 @@
 
         .page-sidebar .page-sidebar-menu li > a > .arrow:before,
         .page-sidebar .page-sidebar-menu li > a > .arrow.open:before {
-            color: #848383;
+            color: #3c3b3c;
         }
 
         .page-sidebar .page-sidebar-menu li:hover > a > .arrow:before,
         .page-sidebar .page-sidebar-menu li:hover > a > .arrow.open:before {
-            color: #f9fcfb;
+            color: #fbfafb;
         }
 
         .page-sidebar .page-sidebar-menu li.active > a > .arrow:before,
         .page-sidebar .page-sidebar-menu li.active > a > .arrow.open:before {
-            color: #f9fcfb;
+            color: #fbfafb;
         }
 
 .page-sidebar-closed .page-sidebar .page-sidebar-menu:hover .sub-menu {
@@ -461,7 +463,7 @@
     .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a > i,
     .page-sidebar .page-sidebar-menu .sub-menu > li.open > a > i,
     .page-sidebar .page-sidebar-menu .sub-menu > li.active > a > i {
-        color: #848383;
+        color: #3c3b3c;
         color: #959fae;
     }
 
@@ -471,7 +473,7 @@
     .page-sidebar .page-sidebar-menu .sub-menu > li.open > a > .arrow.open:before,
     .page-sidebar .page-sidebar-menu .sub-menu > li.active > a > .arrow:before,
     .page-sidebar .page-sidebar-menu .sub-menu > li.active > a > .arrow.open:before {
-        color: #848383;
+        color: #3c3b3c;
     }
 
 .page-sidebar .sidebar-toggler {

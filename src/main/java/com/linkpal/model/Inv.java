@@ -1,6 +1,8 @@
 package com.linkpal.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +16,17 @@ public class Inv implements Serializable {
     private Integer fstate;
 
     private Date fcreatetime;
+
+    public Inv()
+    {
+        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+        try {
+            this.fcreatetime=sdf.parse(sdf.format(new Date()));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     private List<Inventry> inventries;
 

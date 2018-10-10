@@ -64,12 +64,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                </form>
            </div>
        </div>
-       <br>
+
    <table class="table table-bordered table-hover table-striped ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
   <th >序号</th>
   <th >权限编码</th>

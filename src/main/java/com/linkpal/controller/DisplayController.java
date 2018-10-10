@@ -31,10 +31,14 @@ public class DisplayController {
         {
             int page=Integer.parseInt(list.get(0).get("page").toString());
             if(page==1)
-             mav=new ModelAndView("web/cabinet/display");
+            {
+                mav=new ModelAndView("web/cabinet/display");
+                mav.addObject("cdlist",list);
+            }
             else if(page==2)
-                mav=new ModelAndView("web/goodseat/display");
-            mav.addObject("cdlist",list);
+            {  mav=new ModelAndView("web/goodseat/display");
+            mav.addObject("gdlist",list);}
+
         }
 
         return mav;
@@ -48,12 +52,20 @@ public class DisplayController {
         map.put("fenumber",fenumber);
         map.put("flag","SCABINET");
         map.put("fstock",fstock);
-        ModelAndView mav=  mav=new ModelAndView("web/scabinet/display");;
+        ModelAndView mav=  mav=null;;
         List<Map<String,Object>> list=displayService.getDisplayInfo(map);
+        if(list.size()>0) {
+            int page = Integer.parseInt(list.get(0).get("page").toString());
+            if (page == 1) {
+                mav = new ModelAndView("web/scabinet/display");
+                mav.addObject("scdlist", list);
+            }
+            else if (page == 2)
+            {  mav = new ModelAndView("web/goodseat/display");
 
-            mav.addObject("scdlist",list);
+            mav.addObject("gdlist",list);}
 
-
+        }
         return mav;
     }
 

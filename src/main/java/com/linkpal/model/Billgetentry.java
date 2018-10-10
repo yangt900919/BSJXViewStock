@@ -1,13 +1,13 @@
 package com.linkpal.model;
 
-import org.hibernate.jsr303.tck.tests.metadata.NotEmpty;
+
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class Billgetentry implements Serializable {
     private Integer fid;
 
-    @NotEmpty(message = "物料不能为空")
     private Integer fmaterialid;
 
     private Material material;
@@ -20,10 +20,10 @@ public class Billgetentry implements Serializable {
 
     private Double finventory;
 
-    @NotEmpty(message = "仓库不能为空")
+
     private Integer fsendstockid;
 
-    private Stock estock;
+    private ERPStock estock;
 
     private String fnote;
 
@@ -71,7 +71,7 @@ public class Billgetentry implements Serializable {
     }
 
     public Double getFapplyqty() {
-        return fapplyqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(fapplyqty));
     }
 
     public void setFapplyqty(Double fapplyqty) {
@@ -79,7 +79,7 @@ public class Billgetentry implements Serializable {
     }
 
     public Double getFrealqty() {
-        return frealqty;
+        return frealqty==null?frealqty:Double.valueOf(new DecimalFormat("0.000000").format(frealqty));
     }
 
     public void setFrealqty(Double frealqty) {
@@ -87,7 +87,7 @@ public class Billgetentry implements Serializable {
     }
 
     public Double getFinventory() {
-        return finventory;
+        return Double.valueOf(new DecimalFormat("0.000000").format(finventory));
     }
 
     public void setFinventory(Double finventory) {
@@ -142,11 +142,11 @@ public class Billgetentry implements Serializable {
         this.material = material;
     }
 
-    public Stock getEstock() {
+    public ERPStock getEstock() {
         return estock;
     }
 
-    public void setEstock(Stock estock) {
+    public void setEstock(ERPStock estock) {
         this.estock = estock;
     }
 }

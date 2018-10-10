@@ -105,6 +105,20 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public void UserBindStock(int id, Integer[] stockId) {
+        userDao.deleteUserERPStock(id);
+        if(stockId.length>0){
+            for(Integer i : stockId){
+                Map map  = new HashMap();
+                map.put("fuserid",id);
+                map.put("ferpstockid",i);
+                userDao.saveUserErpStock(map);
+            }
+        }
+    }
+
+
+    @Override
     public User getDetail(int fid) {
         return userDao.getDetail(fid);
     }

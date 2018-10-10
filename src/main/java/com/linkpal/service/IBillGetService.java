@@ -23,4 +23,8 @@ public interface IBillGetService extends  IBaseService<Billget> {
 
     public boolean deleteBatch(Integer[] ids);
     String getAutoNumber();
+
+    void updateDepart(Map map);
+
+    float getInventoryQty(Integer fmaid);
 }

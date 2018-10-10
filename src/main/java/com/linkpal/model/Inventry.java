@@ -18,6 +18,8 @@ public class Inventry implements Serializable {
 
     private Double fqty;
 
+    private Double finvqty;
+
     private Date fcreatetime;
 
     private static final long serialVersionUID = 1L;
@@ -84,5 +86,13 @@ public class Inventry implements Serializable {
 
     public void setGoodseat(Goodseat goodseat) {
         this.goodseat = goodseat;
+    }
+
+    public Double getFinvqty() {
+        return finvqty;
+    }
+
+    public void setFinvqty(Double finvqty) {
+        this.finvqty = finvqty;
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.MaterialrgoodseatMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Materialrgoodseat">
     <id column="FID" jdbcType="INTEGER" property="fid" />
     <result column="FMaterialID" jdbcType="INTEGER" property="fmaterialid" />
@@ -262,7 +263,7 @@
 
   <delete id="deleteBatch">
     delete from T_VS_materialrgoodseat where FID in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )
@@ -339,5 +340,10 @@
     </where>
 
   </select>
+
+
+    <update id="ajustGoodsSeat" statementType="CALLABLE" parameterType="java.util.Map">
+        exec proc_ajustGoodsSeat #{fmaterialid},#{fsrc_goodseatid},#{fdes_goodseatid}
+</update>
 
 </mapper>
