@@ -82,8 +82,8 @@ function Delete(url,ID)
                     data: "ID=" +ID,
                     contentType: "application/json; charset=UTF-8",
                     success: function (result) {
-                    	//alert(result);
-                        if(result=="true")
+                    	//alert(result=="true");
+                        if(result)
                         {
                             alert("单据已生成下游单据不能删除!");
                         }
@@ -123,8 +123,9 @@ function DeleteBatch(url)
 			{
 				if($("#fstate"+$(this).val()).text().trim()=="审核")
 				{
-					bool=false;
+					//bool=false;
 					str="存在已审核单据，批量删除失败!";
+
 				}
 				else
 				{
@@ -134,13 +135,16 @@ function DeleteBatch(url)
                         ({
                             type: "get",
                             url: url+"/checkrelation",
-                            data: "ID=" +$(this).val(),
+                            data: "ID=" +Number($(this).val().split(",")[0]),
                             contentType: "application/json; charset=UTF-8",
                             success: function (result) {
-                                if(result=="true")
+
+                                if(result)
                                 {
-                                    bool=false;
+
+                                   // bool=false;
                                     str="单据已生成下游单据不能删除!";
+                                   //alert(str+"fdgdfg");
                                 }
 
                             },
@@ -151,7 +155,7 @@ function DeleteBatch(url)
                     }
                     else
                     {
-                        bool=false;
+                        //bool=false;
                         str="至少选择一条数据!";
                     }
 
@@ -160,10 +164,11 @@ function DeleteBatch(url)
         });
                 if(ids.length==0)
                 {
-                    bool=false;
+                    //bool=false;
                     str="至少选择一条数据!";
                 }
-        if(bool )
+                alert(str);
+        if(str=="" )
          location.href = url+"/deleteBatch?ids=" + ids;
         else
         	alert(str);
