@@ -5,7 +5,21 @@
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="userName" jdbcType="VARCHAR" property="username" />
     <result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
+    <result column="stock" jdbcType="VARCHAR" property="stock" />
+    <result column="stockid" jdbcType="INTEGER" property="stockid" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+
+    <collection property="roles" ofType="com.linkpal.model.Role">
+      <result column="rID" property="fid"/>
+      <result column="rName" property="rolename"/>
+    </collection>
+
+    <collection property="erpStocks" ofType="com.linkpal.model.ERPStock">
+      <result column="erpID" property="fid"/>
+      <result column="erpName" property="fname"/>
+      <result column="erpNumber" property="fnumber"/>
+    </collection>
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +80,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    fid, userName, userPassword, createtime
+    t0.*,t2.fid rID,t2.rolename rName,(select top 1 a.fnumber from T_VS_ERPStock a
+ inner join T_VS_UserRERPStock b on a.fid=b.ferpstockid
+ where b.fuserid=t0.fid)stock ,(select top 1 a.fid from T_VS_ERPStock a
+ inner join T_VS_UserRERPStock b on a.fid=b.ferpstockid
+ where b.fuserid=t0.fid)stockid,t3.fid erpID,t3.fname erpName,t3.fnumber erpNumber
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.UserExample" resultMap="BaseResultMap">
     select
@@ -75,7 +93,11 @@
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from T_VS_User
+    FROM t_vs_user t0
+    left join t_vs_userrrole t1 on t0.fid=t1.fuserid
+    left join t_vs_role t2 on t1.froleid=t2.fid
+    left join T_VS_UserRERPStock t4 on t0.fid=t4.fuserid
+    left join t_vs_erpstock t3 on t4.ferpstockid=t3.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,8 +108,12 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from T_VS_User
-    where fid = #{fid,jdbcType=INTEGER}
+    FROM t_vs_user t0
+    left join t_vs_userrrole t1 on t0.fid=t1.fuserid
+    left join t_vs_role t2 on t1.froleid=t2.fid
+    left join T_VS_UserRERPStock t4 on t0.fid=t4.fuserid
+    left join t_vs_erpstock t3 on t4.ferpstockid=t3.fid
+    where t0.fid = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from T_VS_User
@@ -100,17 +126,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.linkpal.model.User">
-    insert into T_VS_User (fid, userName, userPassword, 
+    insert into T_VS_User ( userName, userPassword,
       createtime)
-    values (#{fid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userpassword,jdbcType=VARCHAR}, 
+    values ( #{username,jdbcType=VARCHAR}, #{userpassword,jdbcType=VARCHAR},
       #{createtime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.User">
     insert into T_VS_User
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        fid,
-      </if>
+
       <if test="username != null">
         userName,
       </if>
@@ -122,9 +146,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        #{fid,jdbcType=INTEGER},
-      </if>
+
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
@@ -201,4 +223,72 @@
     SELECT TOP #{pageSize, jdbcType=INTEGER} * FROM T_VS_User WHERE fid NOT IN (SELECT TOP #{perSize, jdbcType=INTEGER} fid from T_VS_User) AND
     userName LIKE #{fnumber, jdbcType=VARCHAR}
   </select>
+
+  <select id="getList"  resultMap="BaseResultMap ">
+    SELECT top ${pageSize}t0.*,t2.fid rID,t2.rolename rName
+    FROM t_vs_user t0
+    left join t_vs_userrrole t1 on t0.fid=t1.fuserid
+    left join t_vs_role t2 on t1.froleid=t2.fid
+
+    where
+    t0.fid not in (
+    select top ${pageIndex} fid from t_VS_user
+    <where>
+
+      <if test="t.username!=null and t.username!= '' ">
+        and username like '%${t.username}%'
+      </if>
+    </where>
+
+    order by fid
+    )
+    <if test="t.username!=null and t.username!= '' ">
+      and t0.username like '%${t.username}%'
+    </if>
+    order by t0.fid
+  </select>
+
+  <select id="getTotalNum" parameterType="com.linkpal.model.User" resultType="int">
+    SELECT Count(*)
+    FROM t_VS_User
+    <where>
+
+      <if test="username!=null and username!= '' ">
+        and username like '%${username}%'
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteBatch">
+    delete from t_vs_user where FID in (
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+
+  <select id="checkOnly"  resultType="int">
+    SELECT Count(*)
+    FROM t_VS_User
+    where username=#{param}
+  </select>
+
+  <delete id="deleteRoleUser" parameterType="int">
+    DELETE FROM t_vs_userrrole
+    WHERE fuserid=#{id}
+  </delete>
+
+  <delete id="deleteUserERPStock" parameterType="int">
+    DELETE FROM T_VS_UserRERPStock
+    WHERE fuserid=#{id}
+  </delete>
+
+  <insert id="roleuserBind" parameterType="java.util.Map">
+    insert into t_vs_userrrole values(#{fuserid},#{froleid},getdate())
+  </insert>
+
+  <insert id="saveUserErpStock" parameterType="java.util.Map">
+    insert into T_VS_UserRERPStock values(#{fuserid},#{ferpstockid},getdate())
+  </insert>
 </mapper>

@@ -6,6 +6,7 @@ import com.linkpal.model.Organization;
 import com.linkpal.model.Page;
 import com.linkpal.service.IOrganizationService;
 import com.linkpal.util.CheckOnlyContext;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/organization/getList")
+    @RequiresPermissions("organization:view")
     public ModelAndView getList(HttpServletRequest request,Organization organization)
     {
 
@@ -45,6 +47,7 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/organization/create")
+    @RequiresPermissions("organization:create")
     public ModelAndView Create()
     {
         ModelAndView mav=new ModelAndView("web/organization/edit");
@@ -71,6 +74,7 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/organization/edit")
+    @RequiresPermissions("organization:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/organization/edit");
@@ -80,12 +84,14 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/organization/delete")
+    @RequiresPermissions("organization:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
         organizationService.delete(ID);
         return getList(request,(Organization)request.getSession().getAttribute("Organization"));
     }
 
     @RequestMapping(value = "/organization/deleteBatch")
+    @RequiresPermissions("organization:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         organizationService.deleteBatch(ids);

@@ -38,12 +38,35 @@
     margin:0 auto !important;
 }*/
 
+/*
+.form-inline>.form-group>input
+{
+    width:20vw !important;
+}
+.form-inline>.form-group>.input-group>input
+{
+    width:18vw !important;
+}
+*/
+
+
 .bill_input
 {
-    width:182px !important;
+    width:162px !important;
 }
 
 .bill_input_b
 {
-    width:145px !important;
+    width:125px !important;
+}
+.table-responsive
+{
+    height: 55% !important;
+    overflow-y: auto !important;
+   /* border: none;*/
+
+}
+.table
+{
+    border-bottom: 1px solid #dddddd !important;
 }

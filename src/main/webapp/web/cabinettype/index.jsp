@@ -24,37 +24,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		 showCondition("cabinettype",'${cabinettypeList }'); 
 	 });
+     $("#home", parent.document).removeClass("active");
+     $("#link", parent.document).empty();
+     $("#link", parent.document).addClass("active");
+     $("#link", parent.document).text("储柜类型信息管理");
 	</script>
   </head>
   
   <body>
 
    <div class=container-fluid>
-   <h3 class=title_index>
-   储柜类型信息管理
-   </h3>
-    <div class="row">
-       <div class="col-md-3 col-sm-3 col-xs-3" >
-        <div class=row>
-    <%--  <c:if test="${cabinettype_add=='cabinettype_add' }">--%>
-        <div class="col-md-4 col-sm-4 col-xs-4" >  <a class="btn btn-primary btn-sm"  href="cabinettype/create">
-        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-        <%--</c:if>
-        <c:if test="${cabinettype_delete=='cabinettype_delete' }">--%>
-             <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('cabinettype')">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        删除</a>
-           </div>
-<%--           </c:if>--%>
-   <%--        
-             <div class="col-md-4 col-sm-4 col-xs-4">  <a class="btn btn-info"  onclick="filter('cabinettype')" href="javascript:;">
-        <span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</a>
-           </div> 
-        </div>--%>
-      
-    </div>
+   <div class=title_index>
+   &nbsp;储柜类型信息管理
    </div>
-        <div class="col-md-9 col-sm-9 col-xs-3">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6">
             <form class="form-inline" action="cabinettype/getList">
                 <div class="form-group">
                     <label for="fnumber">柜列类型编码</label>
@@ -64,20 +48,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <label for="fname">柜列类型名称</label>
                     <input type="text" class="form-control" id="fname" name="fname" placeholder="" value=${model.fname }>
                 </div>
-          
+
 
                 <button type="submit" class="btn btn-primary btn-sm ">
                     <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询
                 </button>
             </form>
         </div>
+       <div class="col-md-6 col-sm-6 col-xs-6" >
+           <div class="buttongroups"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('cabinettype')">
+               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+               删除</a>
+           </div>
+            <div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="cabinettype/create">
+        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
+        <%--</c:if>
+        <c:if test="${cabinettype_delete=='cabinettype_delete' }">--%>
+
+<%--           </c:if>--%>
+   <%--        
+             <div class="col-md-4 col-sm-4 col-xs-4">  <a class="btn btn-info"  onclick="filter('cabinettype')" href="javascript:;">
+        <span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</a>
+           </div> 
+        </div>--%>
+      
     </div>
-   <br>
+   </div>
+
+
+
+       <div class="table-responsive">
    <table class="table table-bordered table-hover  table-striped ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
   <th >储柜类型编码</th>
   <th >储柜类型名称</th>
@@ -112,7 +117,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </tr>
   </c:forEach>
   </tbody>
-</table>
+   </table></div>
 <jsp:include page="../../page.jsp"></jsp:include>
        <jsp:include page="../../web/shared/modal.jsp"></jsp:include>
    </div>

@@ -88,9 +88,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-     <h3 class=title>
-  储柜信息管理
-   </h3>
+     <div class=title>
+  &nbsp;储柜信息管理
+   </div>
     <div class="container-fluid editpage-content">
 
    <form action="scabinet/save"  class="form-horizontal" method="post" id=form>
@@ -117,10 +117,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <label for="fcabinetid" class=col-sm-3>柜列</label>
     <div class=col-sm-9>
         <div class="input-group">
-            <input $ type="text"  onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="柜列" value=${scabinet.cabinet.fname}>
+            <input $ type="text" readonly  onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="柜列" value=${scabinet.cabinet.fname}>
             <input type="hidden" class="form-control" id="fcabinetid" name=fcabinetid  placeholder="" value=${scabinet.fcabinetid}>
             <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
         </div>
 
@@ -130,10 +130,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <label for="fcabinettypeid" class=col-sm-3>储柜类型</label>
      <div class=col-sm-9>
      <div class="input-group">
-         <input $ type="text"  onfocus="clearBasics('fcabinettypeid')"  class="form-control" id="cabinettype" name="cabinettypename"  placeholder="储柜类型" value=${scabinet.cabinettype.fname}>
-         <input type="hidden" class="form-control" id="fcabinettypeid" name=fcabinettypeid  placeholder="" value=${scabinet.fstockid}>
+         <input $ type="text" readonly  onfocus="clearBasics('fcabinettypeid')"  class="form-control" id="cabinettype" name="cabinettypename"  placeholder="储柜类型" value=${scabinet.cabinettype.fname}>
+         <input type="hidden" class="form-control" id="fcabinettypeid" name=fcabinettypeid  placeholder="" value=${scabinet.fcabinettypeid}>
          <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('cabinettype','fcabinettypeid','cabinettype')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('cabinettype','fcabinettypeid','cabinettype')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
      </div>
      </div>
@@ -149,10 +149,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <label for="fstockid" class=col-sm-3>仓库</label>
      <div class=col-sm-9>
          <div class="input-group">
-             <input $ type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="仓库" value=${scabinet.stock.stockname}>
+             <input $ type="text" readonly onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="仓库" value=${scabinet.stock.stockname}>
              <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${scabinet.fstockid}>
              <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
          </div>
   </div></div>
@@ -167,15 +167,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   
   </div>
-   <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
-  <!--  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
-   </div>
-   </div>
-    </div>
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+               <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
+
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
   </form>
   
   </div>

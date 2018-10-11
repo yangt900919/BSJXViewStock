@@ -12,4 +12,6 @@ public interface IMaterialService extends IBaseService<Material>{
     boolean deleteBatch(Integer[] ids);
 
     Map<String,Object> getPageList(HttpServletRequest request, Material t);
+
+    List<Material> getnoStList();
 }

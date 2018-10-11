@@ -38,7 +38,102 @@ public class InventoryDaoImpl implements IInventoryDao {
 
     @Override
     public List<Inventory> getExportList(Map map) {
-        return null;
+        return inventoryMapper.getExportList(map);
+    }
+
+    @Override
+    public List<Inventory> getMaList(Map map) {
+        return inventoryMapper.getMaList(map);
+    }
+
+    @Override
+    public int getMaTotalNum(Map map) {
+        return inventoryMapper.getMaTotalNum(map);
+    }
+
+    @Override
+    public List<Inventory> getMaExportList(Map map) {
+        return inventoryMapper.getMaExportList(map);
+    }
+
+    @Override
+    public List<Inventory> getMgList(Map map) {
+        return inventoryMapper.getMgList(map);
+    }
+
+    @Override
+    public int getMgTotalNum(Map map) {
+        return inventoryMapper.getMgTotalNum(map);
+    }
+
+    @Override
+    public List<Inventory> getMgExportList(Map map) {
+        return inventoryMapper.getMgExportList(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getZJList(Map map) {
+        return inventoryMapper.getZJList(map);
+    }
+
+    @Override
+    public int getZJTotalNum(Map map) {
+        return inventoryMapper.getZJTotalNum(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getZJExportList(Map map) {
+        return inventoryMapper.getZJExportList(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getZJMaList(Map map) {
+        return inventoryMapper.getZJMaList(map);
+    }
+
+    @Override
+    public int getZJMaTotalNum(Map map) {
+        return inventoryMapper.getZJMaTotalNum(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getZJMaExportList(Map map) {
+        return inventoryMapper.getZJMaExportList(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getHGList(Map map) {
+        return inventoryMapper.getHGList(map);
+    }
+
+    @Override
+    public int getHGTotalNum(Map map) {
+        return inventoryMapper.getHGTotalNum(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getHGExportList(Map map) {
+        return inventoryMapper.getHGExportList(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getHGMaList(Map map) {
+        return inventoryMapper.getHGMaList(map);
+    }
+
+    @Override
+    public int getHGMaTotalNum(Map map) {
+        return inventoryMapper.getHGMaTotalNum(map);
+    }
+
+    @Override
+    public List<Map<String,Object>> getHGMaExportList(Map map) {
+        return inventoryMapper.getHGMaExportList(map);
+    }
+
+    @Override
+    public List<Inventory> getInventoryDetail(Map map) {
+        return inventoryMapper.getInventoryDetail(map);
     }
 /*
     @Override

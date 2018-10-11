@@ -27,11 +27,21 @@ font-size:13px;
 	margin-top:20px;
 	margin-bottom: 30px;
 	margin-left: 20px;
+	width:250px;
+	color: #3d3c3c;
+	font-size: 1.2em;
+	/*font-weight: bold;*/
+	border-left: 4px solid #147ecf;
 }
 .title_index
 {
 	margin-top:20px;
 	margin-bottom: 30px;
+	width:250px;
+	color: #3d3c3c;
+	font-size: 1.2em;
+	/*font-weight: bold;*/
+	border-left: 4px solid #147ecf;
 }
 .search
 {
@@ -40,13 +50,19 @@ font-size:13px;
 
 .form-inline>.form-group>input
 {
-	width:10vw !important;
+	width:12vw !important;
+	font-size: 1.1em !important;
 }
 .form-inline>.form-group>.input-group>input
 {
-	width:8vw !important;
+	width:10vw !important;
+	font-size: 1.1em !important;
 }
-
+.buttongroups
+{
+	float: right;
+	padding-left: 5px;
+}
 .table
 {
 	text-align: center;
@@ -55,13 +71,13 @@ font-size:13px;
 
 .check
 {
-	width:18px;
-	height:18px;
+	width:15px;
+	height:15px;
 }
 .push
 {
-	width:18px;
-	height:18px;
+	width:15px;
+	height:15px;
 }
 
 .basics-search
@@ -93,10 +109,11 @@ font-size:13px;
  */
 
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-    height: 35px ;
-    line-height: 35px ;
+    height: 28px ;
+    line-height: 28px ;
     vertical-align: top ;
     border-top: 1px solid #EEF1F6 ;
+	border-bottom: 1px solid #dddddd ;
 }
  .table >thead>tr>th
 {
@@ -104,12 +121,12 @@ font-size:13px;
 /*	background:  linear-gradient(#467fea,#5bc0de);
 		color:#ffffff ;*/
 		text-align: center ;
-			font-size:15px ;
+			font-size:0.9em ;
 }
  .table >tbody
 {
 text-align: center ;
-	font-size:14px ;
+	font-size:0.8em ;
 }
 
 .table >tbody>tr>td
@@ -149,4 +166,53 @@ background-color: #8C43AB;
 	border: 1px solid #E9E9E9;
 line-height:40px;
 
+}
+.modal-header
+{
+	height: 40px !important;
+	line-height: 40px;
+}
+.modal-footer
+{
+	height: 50px !important;
+	line-height: 50px !important;
+}
+.modal-header h4
+{
+	font-size: 1.2em;
+}
+
+.modal-footer button
+{
+	margin-top: -5px;
+/*	padding-bottom: 10px;*/
+}
+.modal
+{
+	margin-top: -15px;
+}
+.table-responsive
+{
+	height: 70% !important;
+	overflow-y: auto !important;
+/*	border: none;*/
+
+}
+.table
+{
+	border-bottom: 1px solid #dddddd !important;
+}
+label
+{
+	font-size:0.8em !important;
+}
+input,select,textarea
+{
+	height: 30px !important;
+	line-height: 30px !important;
+	font-size: 1em !important;
+}
+select
+{
+	font-size:0.8em !important;
 }

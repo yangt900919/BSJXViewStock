@@ -2,74 +2,180 @@
 
 <AdminMenuGroups>
 	<AdminMenuGroup name="管理首页" url="index.jsp"
-		icon="fa fa-home" info="">
+		icon="icon iconfont icon-home" info="" permission="main">
 	</AdminMenuGroup>
 
-	<AdminMenuGroup name="基础资料管理" icon="fa fa-file" permission="basic">
-
-<AdminMenu name="物料信息管理" url="material/getList" info="添加修改删除物料"
-			permission="ma_view" />
-		<AdminMenu name="客户信息管理" url="custom/getList" info="添加修改删除客户"
-			permission="stock_view"/>
-			
-		<AdminMenu name="供应商信息管理" url="supplier/getList" info="添加修改删除供应商"
-			permission="cabinet_view"/>
-
-		<AdminMenu name="领料单位信息管理" url="organization/getList" info="添加修改删除领料单位"
-				   permission="cabinet_view"/>
-
-		<AdminMenu name="仓库信息管理" url="stock/getList" info="添加修改删除仓库"
-				   permission="cabinetType_view"/>
-		<AdminMenu name="柜列信息管理" url="cabinet/getList" info="添加修改删除柜列"
-				   permission="cabinetType_view"/>
-		 <AdminMenu name="储柜类型信息管理" url="cabinettype/getList" info="添加修改删除储柜类型"
-			permission="cabinetType_view"/>
-			
- <AdminMenu name="储柜信息管理" url="scabinet/getList" info="添加修改删除储柜"
-			permission="scabinet_view"/>
-
-		<AdminMenu name="货位信息管理" url="goodseat/getList" info="添加修改删除货位"
-				   permission="scabinet_view"/>
 
 
-	<AdminMenu name="物料-货位" url="materialrgoodseat/index" info="添加修改删除物料和货位关系"
-			permission="mags_view"/>
+	<AdminMenuGroup name="采购管理" icon="icon iconfont icon-caigou" permission="cg">
+		<AdminMenu name="采购订单维护" url="billorder/getList" info="添加修改删除采购订单"
+				   permission="billorder:view" />
+		<AdminMenu name="采购订单新增" url="billorder/create" info="新增采购订单"
+				   permission="billorder:create" />
 	</AdminMenuGroup>
 
-	<AdminMenuGroup name="单据信息管理" icon="fa fa-folder" permission="basic">
+	<AdminMenuGroup name="收货管理" icon="icon iconfont icon-daishouhuo" permission="sh">
+		<AdminMenu name="收货通知请检单维护" url="billcheck/getList" info="添加修改删除收货通知请检单"
+				   permission="billcheck:view" />
+		<AdminMenu name="收货通知请检单新增" url="billcheck/create" info="新增收货通知请检单"
+				   permission="billorder:create" />
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="入库管理" icon="icon iconfont icon-shangpinruku" permission="rk">
+		<AdminMenu name="入库单维护" url="billstock/getList" info="添加修改删除入库单"
+				   permission="billstock:view" />
+		<AdminMenu name="入库单新增" url="billstock/create" info="新增入库单"
+				   permission="billstock:create" />
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="出库管理" icon="icon iconfont icon-peijianchukutongji" permission="ck">
+		<AdminMenu name="出库单维护" url="billget/getList" info="添加修改删除出库单"
+				   permission="billget:view" />
+		<AdminMenu name="出库单新增" url="billget/create" info="新增出库单"
+				   permission="billget:create" />
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="退换货管理" icon="icon iconfont icon-fanxiutuihuo" permission="th">
+		<AdminMenu name="退换货单维护" url="billreturn/getList" info="添加修改删除退换货"
+				   permission="billreturn:view" />
+		<AdminMenu name="退换货单新增" url="billreturn/create" info="新增退换货"
+				   permission="billreturn:create" />
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="异常出入库管理" icon="icon iconfont icon-yichangchuru" permission="yc">
+		<AdminMenu name="异常出入库单维护" url="icstockbill/getList" info="添加修改删除异常出入库"
+				   permission="icstockbill:view" />
+		<AdminMenu name="异常出入库单新增" url="icstockbill/create" info="新增异常出入库"
+				   permission="icstockbill:create" />
+	</AdminMenuGroup>
+<!--
+	<AdminMenuGroup name="单据信息管理" icon="glyphicon glyphicon-modal-window" permission="bill">
 		<AdminMenu name="采购订单" url="billorder/index" info="添加修改删除采购订单"
-				   permission="ma_view" />
+				   permission="billorder:view" />
 		<AdminMenu name="收货通知请检单" url="billcheck/index" info="添加修改删除收货通知请检单"
-				   permission="ma_view" />
+				   permission="billcheck:view" />
 		<AdminMenu name="入库单" url="billstock/index" info="添加修改删除入库单"
-				   permission="ma_view" />
+				   permission="billstock:view" />
 		<AdminMenu name="出库单" url="billget/index" info="添加修改删除出库单"
-				   permission="ma_view" />
+				   permission="billget:view" />
+		<AdminMenu name="退换货单" url="billreturn/index" info="添加修改删除退换货单"
+				   permission="billreturn:view" />
+	</AdminMenuGroup>-->
+
+	<AdminMenuGroup name="即时库存" url="inventory/getMaList"
+		icon="icon iconfont icon-kucunliang" info="" permission="inventory:view">
 	</AdminMenuGroup>
 
-	<AdminMenuGroup name="即时库存" url="inventory/index"
-		icon="fa fa-leaf" info="" permission="inventory_view">
+	<AdminMenuGroup name="资料即时库存" url="datainventory/getList"
+					icon="icon iconfont icon-kucunliang" info="" permission="datainventory:view">
 	</AdminMenuGroup>
+
+	<AdminMenuGroup name="统计分析" icon="icon iconfont icon-icon" permission="analysis">
+		<AdminMenu name="库存台账" url="report/getInventoryBalance?flag=0" info=""
+				   permission="balance:view" />
+        <AdminMenu name="物料收发日报表" url="report/getInventoryBalance_date?flag=0" info=""
+                   permission="balance_date:view" />
+        <AdminMenu name="物料收发汇总表" url="report/getInventorySummary?flag=0" info=""
+                   permission="summary:view" />
+        <AdminMenu name="异常收发汇总表" url="report/getICstockSummary?flag=0" info=""
+                   permission="icsummary:view" />
+        <AdminMenu name="保质期清单" url="report/getGuaranteePeriod?flag=0" info=""
+                   permission="gup:view" />
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="货位调整" url="materialrgoodseat/getaList"
+					icon="icon iconfont icon-tiaozheng" info="" permission="gsadjust:view">
+	</AdminMenuGroup>
+
 
 <!--<AdminMenuGroup name="异常出入库" url="ICStockBill/Index"
 		icon="fa fa-leaf" info="" permission="icstock_view">
 	</AdminMenuGroup>-->
-	<AdminMenuGroup name="系统管理" icon="fa fa-cog" permission="system">
 
-		<AdminMenu name="用户管理" url="User/Index" info=""
-			permission="user_view" />
-		<AdminMenu name="角色管理" url="Basics/Role/Index" info="添加修改删除角色"
-			permission="role_view"/>
-<!-- 	<AdminMenu name="权限管理" url="Basics/Permission/Index" info="添加修改删除权限"
-			permission="per_view"/> -->
- <AdminMenu name="操作记录" url="operatelog/index" info=""
-			permission="op_view"/>
+	<AdminMenuGroup name="基础资料管理" icon="icon iconfont icon-jichushuju" permission="basic">
+
+		<AdminMenu name="物料信息管理" url="material/getList" info="添加修改删除物料"
+				   permission="material:view" />
+		<AdminMenu name="客户信息管理" url="custom/getList" info="添加修改删除客户"
+				   permission="custom:view"/>
+
+		<AdminMenu name="供应商信息管理" url="supplier/getList" info="添加修改删除供应商"
+				   permission="supplier:view"/>
+
+		<AdminMenu name="领料单位信息管理" url="organization/getList" info="添加修改删除领料单位"
+				   permission="organization:view"/>
+
+		<AdminMenu name="仓库信息管理" url="stock/getList" info="添加修改删除仓库"
+				   permission="stock:view"/>
+		<AdminMenu name="ERP仓库信息管理" url="erpstock/getList" info="添加修改删除erp仓库"
+				   permission="erpstock:view"/>
+		<AdminMenu name="柜列信息管理" url="cabinet/getList" info="添加修改删除柜列"
+				   permission="cabinet:view"/>
+		<AdminMenu name="储柜类型信息管理" url="cabinettype/getList" info="添加修改删除储柜类型"
+				   permission="cabinettype:view"/>
+
+		<AdminMenu name="储柜信息管理" url="scabinet/getList" info="添加修改删除储柜"
+				   permission="scabinet:view"/>
+
+		<AdminMenu name="货位信息管理" url="goodseat/getList" info="添加修改删除货位"
+				   permission="goodseat:view"/>
+
+
+		<AdminMenu name="物料-货位" url="materialrgoodseat/getList" info="添加修改删除物料和货位关系"
+				   permission="materialrgoodseat:view"/>
+	</AdminMenuGroup>
+
+
+	<AdminMenuGroup name="资料基础资料管理" icon="icon iconfont icon-jichushuju" permission="databasic">
+
+		<AdminMenu name="资料柜列信息管理" url="datacabinet/getList" info="添加修改删除资料柜列"
+				   permission="datacabinet:view"/>
+		<AdminMenu name="资料柜类型信息管理" url="datacabinettype/getList" info="添加修改删除资料柜类型"
+				   permission="datacabinettype:view"/>
+
+		<AdminMenu name="资料柜信息管理" url="datascabinet/getList" info="添加修改删除资料柜"
+				   permission="datascabinet:view"/>
+
+		<AdminMenu name="资料位置信息管理" url="dataseat/getList" info="添加修改删除资料位置"
+				   permission="dataseat:view"/>
+
+
+		<AdminMenu name="资料-资料位置" url="datardataseat/getList" info="添加修改删除资料和位置关系"
+				   permission="datardataseat:view"/>
+	</AdminMenuGroup>
+
+
+	<AdminMenuGroup name="操作记录" url="operatelog/getList"
+					icon="icon iconfont icon-jilumian" info="" permission="operatelog:view">
+	</AdminMenuGroup>
+	<AdminMenuGroup name="资料操作记录" url="dataoperatelog/getList"
+					icon="icon iconfont icon-jilumian" info="" permission="dataoperatelog:view">
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="盘点方案" url="inv/getList"
+					icon="icon iconfont icon-pandian" info="" permission="inv:view">
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="二维码打印" icon="icon iconfont icon-erweima" permission="qrcode">
 		<AdminMenu name="物料二维码打印" url="maprint/getList" info=""
-				   permission="op_view"/>
+				   permission="maprint:view"/>
 		<AdminMenu name="齐套二维码打印" url="maboxprint/getList" info=""
-				   permission="op_view"/>
+				   permission="maboxprint:view"/>
 		<AdminMenu name="货位二维码打印" url="gsprint/getList" info=""
-				   permission="op_view"/>
+				   permission="gsprint:view"/>
+		<AdminMenu name="资料位置二维码打印" url="dsprint/getList" info=""
+				   permission="dsprint:view"/>
+	</AdminMenuGroup>
+
+	<AdminMenuGroup name="系统管理" icon="icon iconfont icon-shezhi" permission="system">
+
+		<AdminMenu name="用户管理" url="user/index" info="添加删除修改用户"
+			permission="user:view" />
+		<AdminMenu name="角色管理" url="role/index" info="添加修改删除角色"
+			permission="role:view"/>
+ 	<!--<AdminMenu name="权限管理" url="permission/index" info="添加修改删除权限"
+			permission="permission:view"/>-->
+
 	</AdminMenuGroup>
 
 

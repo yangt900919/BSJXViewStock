@@ -1,6 +1,7 @@
 package com.linkpal.model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Billorderentry implements Serializable {
@@ -16,7 +17,7 @@ public class Billorderentry implements Serializable {
 
     private Integer fstockid;
 
-    private  Stock stock;
+    private  ERPStock stock;
 
     private Double fqty;
 
@@ -32,11 +33,17 @@ public class Billorderentry implements Serializable {
 
     private Double freceiptqty;
 
+    private Double funreceiptqty;
+
     private Double frefoundqty;
 
     private Double fstoredqty;
 
     private String fjudgetype;
+
+    private Double fprice;
+
+    private String fcurrency;
 
     private String fnote;
 
@@ -83,7 +90,7 @@ public class Billorderentry implements Serializable {
     }
 
     public Double getFqty() {
-        return fqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(fqty));
     }
 
     public void setFqty(Double fqty) {
@@ -131,7 +138,7 @@ public class Billorderentry implements Serializable {
     }
 
     public Double getFreceiptqty() {
-        return freceiptqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(freceiptqty));
     }
 
     public void setFreceiptqty(Double freceiptqty) {
@@ -139,7 +146,7 @@ public class Billorderentry implements Serializable {
     }
 
     public Double getFrefoundqty() {
-        return frefoundqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(frefoundqty));
     }
 
     public void setFrefoundqty(Double frefoundqty) {
@@ -147,7 +154,7 @@ public class Billorderentry implements Serializable {
     }
 
     public Double getFstoredqty() {
-        return fstoredqty;
+        return Double.valueOf(new DecimalFormat("0.000000").format(fstoredqty));
     }
 
     public void setFstoredqty(Double fstoredqty) {
@@ -178,11 +185,35 @@ public class Billorderentry implements Serializable {
         this.material = material;
     }
 
-    public Stock getStock() {
+    public ERPStock getStock() {
         return stock;
     }
 
-    public void setStock(Stock stock) {
+    public void setStock(ERPStock stock) {
         this.stock = stock;
+    }
+
+    public Double getFprice() {
+        return fprice;
+    }
+
+    public void setFprice(Double fprice) {
+        this.fprice = fprice;
+    }
+
+    public String getFcurrency() {
+        return fcurrency;
+    }
+
+    public void setFcurrency(String fcurrency) {
+        this.fcurrency = fcurrency;
+    }
+
+    public Double getFunreceiptqty() {
+        return Math.abs(Double.valueOf(new DecimalFormat("0.000000").format(funreceiptqty)));
+    }
+
+    public void setFunreceiptqty(Double funreceiptqty) {
+        this.funreceiptqty = funreceiptqty;
     }
 }

@@ -7,6 +7,7 @@ import com.linkpal.model.Supplier;
 import com.linkpal.service.ISupplierService;
 import com.linkpal.util.CheckOnlyContext;
 import com.linkpal.util.StringUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "/supplier/getList")
+    @RequiresPermissions("supplier:view")
     public ModelAndView getList(HttpServletRequest request,Supplier supplier)
     {
 
@@ -46,6 +48,7 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "/supplier/create")
+    @RequiresPermissions("supplier:create")
     public ModelAndView Create()
     {
         ModelAndView mav=new ModelAndView("web/supp/edit");
@@ -72,6 +75,7 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "/supplier/edit")
+    @RequiresPermissions("supplier:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/supp/edit");
@@ -81,12 +85,14 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "/supplier/delete")
+    @RequiresPermissions("supplier:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
         supplierService.delete(ID);
         return getList(request,(Supplier)request.getSession().getAttribute("Supplier"));
     }
 
     @RequestMapping(value = "/supplier/deleteBatch")
+    @RequiresPermissions("supplier:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         supplierService.deleteBatch(ids);

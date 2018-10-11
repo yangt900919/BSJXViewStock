@@ -465,6 +465,66 @@ public class BillorderentryExample {
             return (Criteria) this;
         }
 
+        public Criteria andFpriceIsNull() {
+            addCriterion("fprice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceIsNotNull() {
+            addCriterion("fprice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceEqualTo(Double value) {
+            addCriterion("fprice =", value, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceNotEqualTo(Double value) {
+            addCriterion("fprice <>", value, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceGreaterThan(Double value) {
+            addCriterion("fprice >", value, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("fprice >=", value, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceLessThan(Double value) {
+            addCriterion("fprice <", value, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceLessThanOrEqualTo(Double value) {
+            addCriterion("fprice <=", value, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceIn(List<Double> values) {
+            addCriterion("fprice in", values, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceNotIn(List<Double> values) {
+            addCriterion("fprice not in", values, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceBetween(Double value1, Double value2) {
+            addCriterion("fprice between", value1, value2, "fprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFpriceNotBetween(Double value1, Double value2) {
+            addCriterion("fprice not between", value1, value2, "fprice");
+            return (Criteria) this;
+        }
+
         public Criteria andFstateIsNull() {
             addCriterion("fstate is null");
             return (Criteria) this;
@@ -1044,6 +1104,77 @@ public class BillorderentryExample {
             addCriterion("fjudgetype not between", value1, value2, "fjudgetype");
             return (Criteria) this;
         }
+
+        public Criteria andFcurrencyIsNull() {
+            addCriterion("fcurrency is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyIsNotNull() {
+            addCriterion("fcurrency is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyEqualTo(String value) {
+            addCriterion("fcurrency =", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyNotEqualTo(String value) {
+            addCriterion("fcurrency <>", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyGreaterThan(String value) {
+            addCriterion("fcurrency >", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyGreaterThanOrEqualTo(String value) {
+            addCriterion("fcurrency >=", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyLessThan(String value) {
+            addCriterion("fcurrency <", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyLessThanOrEqualTo(String value) {
+            addCriterion("fcurrency <=", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyLike(String value) {
+            addCriterion("fcurrency like", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyNotLike(String value) {
+            addCriterion("fcurrency not like", value, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyIn(List<String> values) {
+            addCriterion("fcurrency in", values, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyNotIn(List<String> values) {
+            addCriterion("fcurrency not in", values, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyBetween(String value1, String value2) {
+            addCriterion("fcurrency between", value1, value2, "fcurrency");
+            return (Criteria) this;
+        }
+
+        public Criteria andFcurrencyNotBetween(String value1, String value2) {
+            addCriterion("fcurrency not between", value1, value2, "fcurrency");
+            return (Criteria) this;
+        }
+
 
         public Criteria andFnoteIsNull() {
             addCriterion("fnote is null");

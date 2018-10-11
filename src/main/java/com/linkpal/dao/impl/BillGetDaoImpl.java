@@ -4,6 +4,7 @@ import com.linkpal.dao.IBillGetDao;
 import com.linkpal.map.BillgetMapper;
 import com.linkpal.map.BillgetentryMapper;
 import com.linkpal.model.Bill;
+import com.linkpal.model.Billcheck;
 import com.linkpal.model.Billget;
 import com.linkpal.model.Billgetentry;
 import com.linkpal.model.example.BillgetExample;
@@ -26,6 +27,9 @@ public class BillGetDaoImpl implements IBillGetDao {
 
     @Override
     public boolean create(Billget billget) throws Exception {
+
+        Billget bg=getDetail(billget.getFnumber());
+        if(bg!=null) billget.setFnumber(getAutoNumber());
         billgetMapper.insert(billget);
         Billget b=getDetail(billget.getFnumber());
         int i=1;
@@ -52,12 +56,13 @@ public class BillGetDaoImpl implements IBillGetDao {
         List<Billgetentry> billgetentries=billget.getBillgetentries();
         List<Billgetentry> billgetentries1=billgetMapper.selectByPrimaryKey(billget.getFid()).getBillgetentries();
 
+        if(billgetentries1.size()>billgetentries.size())
         for(int j=billgetentries1.size();j<billgetentries.size();j--)
         {
             billgetentryMapper.deleteByPrimaryKey(billgetentries1.get(j).getFid());
         }
 
-        int i=billgetentries.size()+1;
+        int i=billgetentries.size();
 
         for(Billgetentry entrys:billgetentries)
         {
@@ -153,5 +158,15 @@ public class BillGetDaoImpl implements IBillGetDao {
     @Override
     public String getAutoNumber() {
         return billgetMapper.getAutoNumber();
+    }
+
+    @Override
+    public void updateDepart(Map map) {
+        billgetMapper.updateDepart(map);
+    }
+
+    @Override
+    public float getInventoryQty(Integer fmaid) {
+        return billgetMapper.getInventoryQty(fmaid);
     }
 }

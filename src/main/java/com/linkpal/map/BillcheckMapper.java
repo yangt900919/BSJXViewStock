@@ -46,4 +46,6 @@ public interface BillcheckMapper {
     String initAutoboxno(@Param("fonumber") String fonumber);
 
     int BillCheck(@Param("fid") Integer fid);
+
+    void BillCheckRewrite_Order(Map map);
 }

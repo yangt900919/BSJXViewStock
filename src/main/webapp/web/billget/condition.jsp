@@ -53,14 +53,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                              </div></div>
                                                      </div>
 
-                                                <div class="form-group">
+                                            <%--    <div class="form-group">
                                                     <label for="fnumber" class="col-md-4 col-sm-4 col-xs-4">单据编码</label>
                                                     <div class="col-md-8 col-sm-8 col-xs-8">
                                                         <div class=row>
                                                             <div class="col-md-10 col-sm-10 col-xs-10">
                                                                 <input type="text" class="form-control" id="fnumber" name="fnumber"  value=${model.fnumber }>
                                                             </div></div></div>
-                                                </div>
+                                                </div>--%>
 
                               <div class="form-group">
                                   <label for="fnumber" class="col-md-4 col-sm-4 col-xs-4">单据状态</label>
@@ -82,10 +82,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                       <div class=row>
                                           <div class="col-md-10 col-sm-10 col-xs-10">
                                               <div class="input-group">
-                                                  <input  type="text"  onfocus="clearBasics('fmaterialid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
+                                                  <input readonly  type="text"  onfocus="clearBasics('fmaterialid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.materialname}>
                                                   <input type="hidden" class="form-control" id="fmaterialid" name=fmaterialid  placeholder="" value=${model.fmaterialid}>
                                                   <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="getmaterial('material','fmaterialid','','material','','')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="getmaterial('material','fmaterialid','','material','','')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                                           </div>
 
@@ -99,39 +99,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                         <div class=row>
                                                             <div class="col-md-10 col-sm-10 col-xs-10">
                                                             <div class="input-group">
-                                                                <input  type="text"  onfocus="clearBasics('fsendstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stockname}>
+                                                                <input readonly  type="text"  onfocus="clearBasics('fsendstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stockname}>
                                                                 <input type="hidden" class="form-control" id="fsendstockid" name=fsendstockid  placeholder="" value=${model.fsendstockid}>
                                                                 <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('stock','fsendstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('erpstock','fsendstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                 </div>
-
+<%--
                                                 <div class="form-group">
                                                     <label for="fcustomid" class="col-md-4 col-sm-4 col-xs-4">客户</label>
                                                     <div class="col-md-8 col-sm-8 col-xs-8">
                                                         <div class=row>
                                                             <div class="col-md-10 col-sm-10 col-xs-10">
                                                             <div class="input-group">
-                                                                <input  type="text"  onfocus="clearBasics('fcustomid')"  class="form-control" id="custom" name="customname"  placeholder="" value=${model.customname}>
+                                                                <input readonly type="text"  onfocus="clearBasics('fcustomid')"  class="form-control" id="custom" name="customname"  placeholder="" value=${model.customname}>
                                                                 <input type="hidden" class="form-control" id="fcustomid" name=fcustomid  placeholder="" value=${model.fcustomid}>
                                                                 <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('custom','fcustomid','custom')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('custom','fcustomid','custom')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
                                                             </div>
 
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                       </form>
                   </div>
                   </div>
               </div>
                   <div class="modal-footer">
-                      <button class="btn btn-primary" onclick="querySubmit('billget/getList','bgform','billget')">查询</button>
+                      <button class="btn btn-primary btn-sm" onclick="querySubmit('billget/getList','bgform','billget')"> <span class="glyphicon  glyphicon-search" aria-hidden="true"></span> 查询</button>
                   </div>
               </div>
           </div>

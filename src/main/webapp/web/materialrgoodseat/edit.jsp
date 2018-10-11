@@ -52,9 +52,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-     <h3 class=title>
-  物料-货位信息管理
-   </h3>
+     <div class=title>
+  &nbsp;物料-货位信息管理
+   </div>
     <div class="container-fluid  editpage-content">
 
    <form action="materialrgoodseat/save"  class="form-horizontal" method="post" id="form">
@@ -66,10 +66,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div class=row>
        <div class="col-md-10 col-sm-10 col-xs-10">
            <div class="input-group">
-               <input  type="text"  onfocus="clearBasics('fmaterialid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${model.material.materialname}>
-               <input type="hidden" class="form-control" id="fmaterialid" name=fmaterialid  placeholder="" value=${model.fmaterialid}>
+               <input  type="text" readonly onfocus="clearBasics('fmaterialid')"  class="form-control" id="material" name="materialname"  placeholder="" value=${materialrgoodseat.material.materialname}>
+               <input type="hidden" class="form-control" id="fmaterialid" name=fmaterialid  placeholder="" value=${materialrgoodseat.fmaterialid}>
                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('ma','fmaterialid','material')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary  btn-sm"  type="button" onclick="showBasics('ma','fmaterialid','material')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
     </div>
 
@@ -82,10 +82,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <div class=row>
        <div class="col-md-10 col-sm-10 col-xs-10">
            <div class="input-group">
-               <input  type="text"  onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="goodseatname"  placeholder="" value=${model.goodseat.fnumber}>
-               <input type="hidden" class="form-control" id="fgoodseatid" name=fgoodseatid  placeholder="" value=${model.fgoodseatid}>
+               <input  type="text" readonly onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="goodseatname"  placeholder="" value=${materialrgoodseat.goodseat.fnumber}>
+               <input type="hidden" class="form-control" id="fgoodseatid" name=fgoodseatid  placeholder="" value=${materialrgoodseat.fgoodseatid}>
                <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary  btn-sm "  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div> </div>
 
     </div></div>
@@ -127,15 +127,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   </div></div>
   </div>
-  <div class="form-group">
-   <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
- <!--   <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
 
-  <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
-   </div>
-    </div>
+               <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
+
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
   </form>
   </div>
    

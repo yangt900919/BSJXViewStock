@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.PermissionMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Permission">
     <id column="FID" jdbcType="INTEGER" property="fid" />
     <result column="FNumber" jdbcType="VARCHAR" property="fnumber" />
@@ -102,19 +103,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.linkpal.model.Permission">
-    insert into T_VS_Permission (FID, FNumber, FName, 
+    insert into T_VS_Permission ( FNumber, FName,
       FUrl, FisNav, FCreateTime
       )
-    values (#{fid,jdbcType=INTEGER}, #{fnumber,jdbcType=VARCHAR}, #{fname,jdbcType=VARCHAR}, 
+    values ( #{fnumber,jdbcType=VARCHAR}, #{fname,jdbcType=VARCHAR},
       #{furl,jdbcType=VARCHAR}, #{fisnav,jdbcType=INTEGER}, #{fcreatetime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Permission">
     insert into T_VS_Permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        FID,
-      </if>
+
       <if test="fnumber != null">
         FNumber,
       </if>
@@ -132,9 +131,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        #{fid,jdbcType=INTEGER},
-      </if>
+
       <if test="fnumber != null">
         #{fnumber,jdbcType=VARCHAR},
       </if>
@@ -226,4 +223,56 @@
       FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP}
     where FID = #{fid,jdbcType=INTEGER}
   </update>
+
+  <select id="getList"  resultType="com.linkpal.model.Permission" >
+    SELECT  top ${pageSize} t0.* from t_vs_permission t0
+    where
+    t0.fid not in (
+    select top ${pageIndex} fid from t_vs_permission
+
+    <where>
+
+      <if test="t.fnumber!=null and t.fnumber!= '' ">
+        and fnumber like '%${t.fnumber}%'
+      </if>
+
+      <if test="t.fname!=null and t.fname!= '' ">
+        and fname like '%${t.fname}%'
+      </if>
+
+    </where>
+    )
+
+
+    <if test="t.fnumber!=null and t.fnumber!= '' ">
+      and t0.fnumber like '%${t.fnumber}%'
+    </if>
+
+    <if test="t.fname!=null and t.fname!= '' ">
+      and t0.fname like '%${t.fname}%'
+    </if>
+
+
+    order by t0.fid
+  </select>
+
+  <select id="getTotalNum" parameterType="com.linkpal.model.Permission" resultType="int">
+    SELECT count(*)
+    FROM t_vs_permission
+    <where>
+      <if test="fnumber!=null and fnumber!= '' ">
+        and fnumber like '%${fnumber}%'
+      </if>
+
+      <if test="fname!=null and fname!= '' ">
+        and fname like '%${fname}%'
+      </if>
+
+    </where>
+  </select>
+  <select id="checkOnly"  resultType="int">
+    SELECT Count(*)
+    FROM t_vs_permission
+    where fnumber=#{fnumber}
+  </select>
 </mapper>

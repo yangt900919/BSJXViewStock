@@ -1,11 +1,12 @@
-function gotoSCabinet(fnumber)
+function gotoSCabinet(fsnumber,fenumber,fstock)
 {
-window.location.href="DispalySCabinet?fnumber="+fnumber	;
+   // alert("123");
+    window.location.href="scabinet/display?fsnumber="+fsnumber+"&fenumber="+fenumber+"&fstock="+fstock
 }
 
-function gotoCabinet(fnumber)
+function gotoCabinet(fsnumber,fenumber,fstock)
 {
-window.location.href="DispalyCabinet?fnumber="+fnumber	;
+window.location.href="cabinet/display?fsnumber="+fsnumber+"&fenumber="+fenumber+"&fstock="+fstock	;
 }
 
 function gotoStock(page)
@@ -13,7 +14,7 @@ function gotoStock(page)
 	window.location.href="page/stock/"+page;
 }
 
-function gotoGoodsSeat(fnumber)
+function gotoGoodSeat(fsnumber,fenumber,fstock)
 {
-window.location.href="DispalyGoodsSeat?fnumber="+fnumber	;	
+    window.location.href="goodseat/display?fsnumber="+fsnumber+"&fenumber="+fenumber+"&fstock="+fstock	;
 }

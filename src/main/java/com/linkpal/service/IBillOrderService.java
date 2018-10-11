@@ -1,9 +1,14 @@
 package com.linkpal.service;
 
+import com.linkpal.Excepetion.ImportException;
 import com.linkpal.model.Billorder;
 import com.linkpal.model.Billorderentry;
+import org.apache.poi.ss.formula.functions.T;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 public interface IBillOrderService extends  IBaseService<Billorder> {
@@ -33,4 +38,9 @@ public interface IBillOrderService extends  IBaseService<Billorder> {
 
 
     float getPushDownQty( Integer fentryid,Integer fid);
+    List<Map<String,Object>> saveBillOrder(Map map);
+
+    public Map<String,Object> importInfo(InputStream in, MultipartFile file,HttpServletRequest request) throws ImportException;
+
+    void updateStock(Map map);
 }

@@ -28,6 +28,8 @@ function getmaterial(mtID,id,number,name,model,unit)
      mname=name;
      mmodel=model;
      munit=unit;
+     bID=id;
+     bName=name;
 
 }
 
@@ -46,6 +48,12 @@ if(mnum!='')
     $("#"+mname).val(nameval);
     if(munit!='')
     $("#"+munit).val(unitval);
+
+    if(mmodel.length>0)
+    {
+        getinventory();
+    }
+
    // alert( $("#billgetentries[0].material").val);
 }
 
@@ -58,10 +66,10 @@ function orderentry()
         "\n" +
         "                        <td>\n" +
         "                            <div class=\"input-group\">\n" +
-        "                                <input ${readonly} type=\"text\" required onfocus=\"clearBasics('fmaid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"material"+index+"\" name=\"materialname"+index+"\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input readonly type=\"text\" required onfocus=\"clearBasics('fmaid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"material"+index+"\" name=\"materialname"+index+"\"  placeholder=\"\" value=\"\">\n" +
         "                                <input type=\"hidden\" class=\"form-control\" id=\"fmaid"+index+"\" name=billorderentries["+index+"].fmaid  placeholder=\"\" value=\"\">\n" +
         "                                <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaid"+index+"','material"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaid"+index+"','material"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                            </div>\n" +
         "                        </td>\n" +
@@ -75,18 +83,18 @@ function orderentry()
         "                        </td>\n" +
         "                     <td>\n" +
         "                            <div class=\"input-group\">\n" +
-        "                                <input ${readonly} type=\"text\" required onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"stock"+index+"\" name=\"stockname"+index+"\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input readonly type=\"text\" required onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"stock"+index+"\" name=\"stockname"+index+"\"  placeholder=\"\" value=\"\">\n" +
         "                                <input  type=\"hidden\" class=\"form-control\" id=\"fstockid"+index+"\" name=billorderentries["+index+"].fstockid  placeholder=\"\" value=\"\">\n" +
         "                                <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"showBasics('stock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"showBasics('erpstock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                            </div>\n" +
         "                        </td>\n" +
         "                                  <td>\n" +
-        "                                   <input ${readonly} type=\"number\" class=\"form-control  bill_input\" id=\"fqty"+index+"\" name=\"billorderentries["+index+"].fqty\"  value=\"\" >\n" +
+        "                                   <input ${readonly} type=\"text\" class=\"form-control  bill_input\" id=\"fqty"+index+"\" name=\"billorderentries["+index+"].fqty\"  value=\"\" >\n" +
         "                               </td>\n" +
         "                               <td>\n" +
-        "                                   <input ${readonly} type=\"text\" class=\"form-control  bill_input\" id=\"fbrand"+index+"\" name=\"billorderentries["+index+"].fbrand\"  value=\"\" >\n" +
+     /*   "                                   <input ${readonly} type=\"text\" class=\"form-control  bill_input\" id=\"fbrand"+index+"\" name=\"billorderentries["+index+"].fbrand\"  value=\"\" >\n" +
         "                               </td>\n" +
         "                               <td>\n" +
         "                                   <input ${readonly}  type=\"text\" class=\"form-control  bill_input\" id=\"fqulity"+index+"\" name=\"billorderentries["+index+"].fqulity\"  value=\"\" >\n" +
@@ -97,18 +105,18 @@ function orderentry()
         "                               <td>\n" +
         "                                   <input ${readonly} type=\"text\" class=\"form-control  bill_input\" id=\"fcontnum"+index+"\" name=\"billorderentries["+index+"].fcontnum\"  value=\"\" >\n" +
         "                               </td>\n" +
-        "                               <td>\n" +
-        "                                   <input readonly type=\"number\" class=\"form-control  bill_input\" id=\"freceiptqty"+index+"\" name=\"billorderentries["+index+"].freceiptqty\"  value=\"\" >\n" +
+        "                               <td>\n" +*/
+        "                                   <input readonly type=\"text\" class=\"form-control  bill_input\" id=\"freceiptqty"+index+"\" name=\"billorderentries["+index+"].freceiptqty\"  value=\"\" >\n" +
         "                               </td>\n" +
         "                               <td>\n" +
-        "                                   <input readonly type=\"number\" class=\"form-control  bill_input\" id=\"frefoundqty"+index+"\" name=\"billorderentries["+index+"].frefoundqty\"  value=\"\" >\n" +
+        "                                   <input readonly type=\"text\" class=\"form-control  bill_input\" id=\"frefoundqty"+index+"\" name=\"billorderentries["+index+"].frefoundqty\"  value=\"\" >\n" +
         "                               </td>\n" +
         "                               <td>\n" +
-        "                                   <input readonly type=\"number\" class=\"form-control  bill_input\" id=\"fstoredqty"+index+"\" name=\"billorderentries["+index+"].fstoredqty\"  value=\"\" >\n" +
+        "                                   <input readonly type=\"text\" class=\"form-control  bill_input\" id=\"fstoredqty"+index+"\" name=\"billorderentries["+index+"].fstoredqty\"  value=\"\" >\n" +
         "                               </td>\n" +
-        "                               <td>\n" +
+        /*  "                             <td>\n" +
         "                                   <textarea rows=\"1\" cols=\"10\" class=\"form-control  bill_input\" id=\"fjudgetype"+index+"\" name=\"billorderentries["+index+"].fjudgetype\" placeholder=\"\" ></textarea>\n" +
-        "                               </td>\n" +
+        "                               </td>\n" +*/
         "                               <td>\n" +
         "                                   <textarea rows=\"1\" cols=\"10\" class=\"form-control  bill_input\" id=\"fnote"+index+"\" name=\"billorderentries["+index+"].fnote\" placeholder=\"\" ></textarea>\n" +
         "                               </td>\n" +
@@ -123,10 +131,10 @@ function checkentry()
         "\n" +
         "                        <td>\n" +
         "                            <div class=\"input-group\">\n" +
-        "                                <input ${readonly} type=\"text\"  onfocus=\"clearBasics('fmaid"+index+"')\"  class=\"form-control bill_input_b\" id=\"fMaterial"+index+"\" name=\"billcheckentries["+index+"].fMaterialname\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input readonly type=\"text\"  onfocus=\"clearBasics('fmaid"+index+"')\"  class=\"form-control bill_input_b\" id=\"fMaterial"+index+"\" name=\"billcheckentries["+index+"].fMaterialname\"  placeholder=\"\" value=\"\">\n" +
         "                                <input type=\"hidden\" class=\"form-control\" id=\"fmaid"+index+"\" name=billcheckentries["+index+"].fmaid  placeholder=\"\" value=\"\">\n" +
         "                                <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaid"+index+"','fMaterial"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaid"+index+"','fMaterial"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                            </div>\n" +
         "                        </td>\n" +
@@ -137,17 +145,15 @@ function checkentry()
         "                        <td>\n" +
         "                            <input type=\"text\" class=\"form-control bill_input\" id=\"materialunit"+index+"\" name=\"billcheckentries["+index+"].materialunit\"  value=\"\" readonly>\n" +
         "                        </td>\n" +
+
         "                        <td>\n" +
-        "                            <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"fbatch"+index+"\" name=\"billcheckentries["+index+"].flot\"  value=\"\" readonly>\n" +
+        "                            <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"fqty"+index+"\" name=\"billcheckentries["+index+"].fqty\"  value=\"\" >\n" +
         "                        </td>\n" +
         "                        <td>\n" +
-        "                            <input ${readonly} type=\"number\" class=\"form-control bill_input\" id=\"fqty"+index+"\" name=\"billcheckentries["+index+"].fqty\"  value=\"\" >\n" +
+        "                            <input ${readonly}  type=\"text\" class=\"form-control bill_input\" id=\"feligqty"+index+"\" name=\"billcheckentries["+index+"].feligqty\"  value=\"\" >\n" +
         "                        </td>\n" +
         "                        <td>\n" +
-        "                            <input ${readonly}  type=\"number\" class=\"form-control bill_input\" id=\"feligqty"+index+"\" name=\"billcheckentries["+index+"].feligqty\"  value=\"\" >\n" +
-        "                        </td>\n" +
-        "                        <td>\n" +
-        "                            <input ${readonly} type=\"number\" class=\"form-control bill_input\" id=\"funqty"+index+"\" name=\"billcheckentries["+index+"].funqty\"  value=\"\" >\n" +
+        "                            <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"funqty"+index+"\" name=\"billcheckentries["+index+"].funqty\"  value=\"\" >\n" +
         "                        </td>\n" +
         "                        <td>\n" +
         "                            <textarea rows=\"1\" cols=\"10\" class=\"form-control bill_input\" id=\"freason"+index+"\" name=\"billcheckentries["+index+"].freason\" placeholder=\"\" ></textarea>\n" +
@@ -166,14 +172,17 @@ function checkentry()
         "                        </td>\n" +
         "                        <td>\n" +
         "                            <div class=\"input-group\">\n" +
-        "                                <input ${readonly} type=\"text\"  onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"stock"+index+"\" name=\"billcheckentries["+index+"].stockname\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input readonly type=\"text\"  onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"stock"+index+"\" name=\"billcheckentries["+index+"].stockname\"  placeholder=\"\" value=\"\">\n" +
         "                                <input  type=\"hidden\" class=\"form-control\" id=\"fstockid"+index+"\" name=billcheckentries["+index+"].fstockid  placeholder=\"\" value=\"\">\n" +
         "                                <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"showBasics('stock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"showBasics('erpstock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                            </div>\n" +
         "                        </td>\n" +
         "<td>\n" +
+        "                        <td>\n" +
+        "                            <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"fbatch"+index+"\" name=\"billcheckentries["+index+"].flot\"  value=\"\" readonly>\n" +
+        "                        </td>\n" +
         "    <input readonly type=\"text \" class=\"form-control  bill_input\" id=\"fonumber"+index+"\" name=\"billcheckentries["+index+"].fonumber\" value=\"\">\n" +
         "    <input readonly type=\"hidden\"  id=\"fobillid"+index+"\" name=\"billcheckentries["+index+"].fobillid\" value=\"\">\n" +
         "    <input readonly type=\"hidden\"  id=\"foid"+index+"\" name=\"billcheckentries["+index+"].foid\" value=\"\">\n" +
@@ -182,16 +191,21 @@ function checkentry()
         "                    </tr>"
 }
 
+var dstock="";
+var dstockid=0;
+
 function getentry()
 {
-    html="<tr>\n" +
+  // alert(index);
+    //alert('${dstock}');
+    html="<tr id='tr"+index+"'>\n" +
         "\n" +
         "                <td>\n" +
         "                    <div class=\"input-group\">\n" +
-        "                        <input ${readonly} type=\"text\"  onfocus=\"clearBasics('fmaterialid"+index+"')\"  class=\"form-control bill_input_b\" id=\"material"+index+"\" name=\"materialn"+index+"\"  placeholder=\"\" value=\"\">\n" +
+        "                        <input readonly type=\"text\"  onfocus=\"clearBasics('fmaterialid"+index+"')\"   class=\"form-control bill_input_b\" id=\"material"+index+"\" name=\"materialn"+index+"\"  placeholder=\"\" value=\"\">\n" +
         "                        <input type=\"hidden\" class=\"form-control\" id=\"fmaterialid"+index+"\" name=billgetentries["+index+"].fmaterialid  placeholder=\"\" value=\"\">\n" +
         "                        <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaterialid"+index+"','material"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaterialid"+index+"','material"+index+"','materialname"+index+"','finventory"+index+"','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                    </div>\n" +
         "                </td>\n" +
@@ -202,28 +216,31 @@ function getentry()
         "                <td>\n" +
         "                    <input type=\"text\" class=\"form-control bill_input\" id=\"materialunit"+index+"\" name=\"billgetentries["+index+"].materialunit\"  value=\"\" readonly>\n" +
         "                </td>\n" +
-        "                <td>\n" +
-        "                    <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"flot"+index+"\" name=\"billgetentries["+index+"].flot\"  value=\"\" >\n" +
-        "                </td>\n" +
-        "                <td>\n" +
-         "                    <input ${readonly} type=\"number\" class=\"form-control bill_input\" id=\"fapplyqty"+index+"\" name=\"billgetentries["+index+"].fapplyqty\"  value=\"\" >\n" +
-        "                </td>\n" +
-        "                <td>\n" +
-        "                    <input ${readonly}  type=\"number\" class=\"form-control bill_input\" id=\"frealqty"+index+"\" name=\"billgetentries["+index+"].frealqty\"  value=\"\" >\n" +
-         "                </td>\n" +
 
+        "                <td>\n" +
+         "                    <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"fapplyqty"+index+"\" name=\"billgetentries["+index+"].fapplyqty\"  value=\"\" >\n" +
+        "                </td>\n" +
+        "                <td>\n" +
+        "                    <input readonly  type=\"text\" class=\"form-control bill_input\" id=\"frealqty"+index+"\" name=\"billgetentries["+index+"].frealqty\"  value=\"\" >\n" +
+         "                </td>\n" +
+        "                <td>\n" +
+        "                    <input readonly  type=\"text\" class=\"form-control bill_input\" id=\"finventory"+index+"\"   value=\"\" >\n" +
+        "                </td>\n" +
          "                <td>\n" +
         "                    <div class=\"input-group\">\n" +
-          "                        <input ${readonly} type=\"text\"  onfocus=\"clearBasics('fsendstockid"+index+"')\"  class=\"form-control bill_input_b\" id=\"stock"+index+"\" name=\"billgetentries["+index+"].estockname\"  placeholder=\"\" value=\"\">\n" +
-          "                        <input  type=\"hidden\" class=\"form-control\" id=\"fsendstockid"+index+"\" name=billgetentries["+index+"].fsendstockid  placeholder=\"\" value=\"\">\n" +
+          "                        <input readonly type=\"text\"  onfocus=\"clearBasics('fsendstockid"+index+"')\"  class=\"form-control bill_input_b\" id=\"stock"+index+"\" name=\"billgetentries["+index+"].estockname\"  placeholder=\"\" value='"+dstock+"'>\n" +
+          "                        <input  type=\"hidden\" class=\"form-control\" id=\"fsendstockid"+index+"\" name=billgetentries["+index+"].fsendstockid  placeholder=\"\" value="+dstockid+">\n" +
           "                        <span class=\"input-group-btn\">\n" +
-          "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"showBasics('stock','fsendstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+          "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"showBasics('erpstock','fsendstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
           "    </span>\n" +
           "                    </div>\n" +
           "                </td>\n" +
             "                <td>\n" +
           "                    <textarea rows=\"1\" cols=\"10\" class=\"form-control bill_input\" id=\"fnote"+index+"\" name=\"billgetentries["+index+"].fnote\" placeholder=\"\" ></textarea>\n" +
           "                </td>\n" +
+        "                <td>\n" +
+        "                    <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"flot"+index+"\" name=\"billgetentries["+index+"].flot\"  value=\"\" >\n" +
+        "                </td>\n" +
         "            </tr>";
 }
 
@@ -233,10 +250,10 @@ function stockentry()
         "\n" +
         "                        <td>\n" +
         "                            <div class=\"input-group\">\n" +
-        "                                <input ${readonly} type=\"text\"  onfocus=\"clearBasics('fmaterialid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"material"+index+"\" name=\"billstockentries["+index+"].materialname\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input readonly type=\"text\"  onfocus=\"clearBasics('fmaterialid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"material"+index+"\" name=\"billstockentries["+index+"].materialname\"  placeholder=\"\" value=\"\">\n" +
         "                                <input type=\"hidden\" class=\"form-control\" id=\"fmaterialid"+index+"\" name=billstockentries["+index+"].fmaterialid  placeholder=\"\" value=\"\">\n" +
         "                                <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaterialid"+index+"','material"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaterialid"+index+"','material"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                            </div>\n" +
         "                        </td>\n" +
@@ -251,18 +268,18 @@ function stockentry()
         "                            <input ${readonly} type=\"text\" class=\"form-control  bill_input\" id=\"fbatch"+index+"\" name=\"billstockentries["+index+"].fbatch\"  value=\"\" readonly>\n" +
         "                        </td>\n" +
         "                        <td>\n" +
-        "                            <input ${readonly} type=\"number\" class=\"form-control  bill_input\" id=\"fqty"+index+"\" name=\"billstockentries["+index+"].fqty\"  value=\"\" >\n" +
+        "                            <input ${readonly} type=\"text\" class=\"form-control  bill_input\" id=\"fqty"+index+"\" name=\"billstockentries["+index+"].fqty\"  value=\"\" >\n" +
         "                        </td>\n" +
         "                        <td>\n" +
-        "                            <input ${readonly}  type=\"number\" class=\"form-control  bill_input\" id=\"facqty"+index+"\" name=\"billstockentries["+index+"].facqty\"  value=\"\" >\n" +
+        "                            <input readonly  type=\"text\" class=\"form-control  bill_input\" id=\"facqty"+index+"\" name=\"billstockentries["+index+"].facqty\"  value=\"\" >\n" +
         "                        </td>\n" +
         "                        \n" +
         "                        <td>\n" +
         "                            <div class=\"input-group\">\n" +
-        "                                <input ${readonly} type=\"text\"  onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"stock"+index+"\" name=\"billstockentries["+index+"].stockname\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input readonly type=\"text\"  onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control  bill_input_b\" id=\"stock"+index+"\" name=\"billstockentries["+index+"].stockname\"  placeholder=\"\" value=\"\">\n" +
         "                                <input  type=\"hidden\" class=\"form-control\" id=\"fstockid"+index+"\" name=billstockentries["+index+"].fstockid  placeholder=\"\" value=\"\">\n" +
         "                                <span class=\"input-group-btn\">\n" +
-        "         <button class=\"btn btn-primary\" ${disabled} type=\"button\" onclick=\"showBasics('stock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"showBasics('erpstock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
         "    </span>\n" +
         "                            </div>\n" +
         "                        </td>\n" +
@@ -275,8 +292,64 @@ function stockentry()
         "                    </tr>"
 }
 
-function addEntry(flag)
+function returnentry()
 {
+    html="<tr id='tr"+index+"'>\n" +
+        "\n" +
+        "                        <td>\n" +
+        "                            <input type=\"hidden\" class=\"form-control\" id=\"fid"+index+"\" name=billreturnentries["+index+"].fid  placeholder=\"\" value=\"\">\n" +
+        "\n" +
+        "                            <input type=\"hidden\" class=\"form-control\" id=\"fbillid"+index+"\" name=billreturnentries["+index+"].fbillid  placeholder=\"\" value=\"\">\n" +
+        "                            <input type=\"hidden\" class=\"form-control\" id=\"fentriyid"+index+"\" name=billreturnentries["+index+"].fentriyid  placeholder=\"\" value=\"\">\n" +
+        "\n" +
+        "                            <div class=\"input-group\">\n" +
+        "                                <input  readonly type=\"text\"  onfocus=\"clearBasics('fmaterialid"+index+"')\"  class=\"form-control bill_input_b\" id=\"material"+index+"\" name=\"materialname"+index+"\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input type=\"hidden\" class=\"form-control\" id=\"fmaterialid"+index+"\" name=billreturnentries["+index+"].fmaterialid  placeholder=\"\" value=\"\">\n" +
+        "                                <span class=\"input-group-btn\">\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"getmaterial('material','fmaterialid"+index+"','material"+index+"','materialname"+index+"','','materialunit"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "    </span>\n" +
+        "                            </div>\n" +
+        "                        </td>\n" +
+        "\n" +
+        "                        <td>\n" +
+        "                            <input type=\"text\" class=\"form-control bill_input\" id=\"materialname"+index+"\" name=\"billreturnentries["+index+"].materialname\"  value=\"\" readonly>\n" +
+        "\n" +
+        "                        </td>\n" +
+        "                        <td>\n" +
+        "                            <input type=\"text\" class=\"form-control bill_input\" id=\"materialunit"+index+"\" name=\"billreturnentries["+index+"].materialunit\"  value=\"\" readonly>\n" +
+        "                        </td>\n" +
+        "                        <td>\n" +
+        "                            <div class=\"input-group\">\n" +
+        "                                <input readonly type=\"text\"  onfocus=\"clearBasics('fstockid"+index+"')\"  class=\"form-control bill_input_b\" id=\"stock"+index+"\" name=\"stockname"+index+"\"  placeholder=\"\" value=\"\">\n" +
+        "                                <input  type=\"hidden\" class=\"form-control\" id=\"fstockid"+index+"\" name=billreturnentries["+index+"].fstockid  placeholder=\"\" value=\"${map.stock.fid}\">\n" +
+        "                                <span class=\"input-group-btn\">\n" +
+        "         <button class=\"btn btn-primary btn-sm\" ${disabled} type=\"button\" onclick=\"showBasics('erpstock','fstockid"+index+"','stock"+index+"')\">&nbsp;<span class=\"glyphicon glyphicon-search form-control-feedback\" aria-hidden=\"true\" ></span>&nbsp;</button>\n" +
+        "    </span>\n" +
+        "                            </div>\n" +
+        "                        </td>\n" +
+        "                        <td>\n" +
+        "                            <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"freqty"+index+"\" name=\"billreturnentries["+index+"].freqty\"  value=\"\" >\n" +
+        "                        </td>\n" +
+        "                        <td>\n" +
+        "                            <input ${readonly} type=\"text\" class=\"form-control bill_input\" id=\"fqty"+index+"\" name=\"billreturnentries["+index+"].fqty\"  value=\"\" >\n" +
+        "                        </td>\n" +
+        "      \n" +
+        "                                <td>\n" +
+        "                                   <input ${readonly} type=\"date\" class=\"form-control bill_input\" id=\"fredate"+index+"\" name=\"billreturnentries["+index+"].fredate\"  value=\"\" >\n" +
+        "                               </td>\n" +
+        "                              \n" +
+        "                               \n" +
+        "                               <td>\n" +
+        "                                   <textarea ${readonly} rows=\"1\" cols=\"10\" class=\"form-control bill_input\" id=\"fnote"+index+"\" name=\"billreturnentries["+index+"].fnote\" placeholder=\"\" ></textarea>\n" +
+        "                               </td>\n" +
+        "\n" +
+        "                    </tr>";
+}
+
+function addEntry(flag,v_index)
+{
+    if(v_index>0)
+        index=index+v_index;
    // alert(index);
     if(flag=="order")
         orderentry();
@@ -286,6 +359,8 @@ function addEntry(flag)
         stockentry();
     else if(flag=="get")
         getentry();
+    else if(flag=="return")
+        returnentry();
     //alert(html);
 $("#entrys").append(html);
     index++;
@@ -309,7 +384,7 @@ function pushDown(url,billtype)
 var str="";
     //alert(url);
     var bool=true;
-    $("input[name='push']:checkbox:checked").each(function () {
+    $("input[name='check']:checkbox:checked").each(function () {
       var idarray =$(this).val().split(",");
         billid.push(Number(idarray[0]));
       ids.push(Number(idarray[1]));
@@ -428,7 +503,7 @@ function BiiPrint(url)
         //var str="";
         //alert(url);
         //var bool=true;
-        $("input[name='push']:checkbox:checked").each(function () {
+        $("input[name='check']:checkbox:checked").each(function () {
             var idarray =$(this).val().split(",");
            // billid.push(Number(idarray[0]));
             qrcodes.push(Number(idarray[1]));
@@ -447,7 +522,7 @@ function initBoxno(url)
     if($("#fisqt").prop("checked")==true)
     {
         $("#fboxno").attr("readonly",false);
-        $("#fisqt").val(1);
+        $("#fisqt1").val(1);
 if($("#fboxno").val().trim().length==0)
 {
     $.ajax
@@ -508,3 +583,30 @@ if($("#feligqty"+index).val()<0) $("#feligqty"+index).val($("#fqty"+index).val()
     else
     $("#funqty"+index).val(qty-quqty);
 }
+
+function getinventory()
+{
+    var fmaid=$("#"+mid).val();
+    $.ajax
+    ({
+        type: "get",
+        url: "billget/inventory",
+        data: "fmaid=" +fmaid,
+        contentType: "application/json; charset=UTF-8",
+        success: function (result) {
+
+            $("#"+mmodel).val(result);
+
+        },
+        error: function (result, data) {
+            //alert(data);
+        }
+    });
+}
+
+/*
+function setIndex(v_index)
+{
+    index=v_index;
+}
+*/

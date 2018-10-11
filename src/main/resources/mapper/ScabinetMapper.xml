@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.ScabinetMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Scabinet">
     <id column="FID" jdbcType="INTEGER" property="fid" />
     <result column="FNumber" jdbcType="VARCHAR" property="fnumber" />
@@ -307,7 +308,7 @@
         and fstockid=#{t.fstockid}
       </if>
     </where>
-    order by fnumber
+    order by fid
     )
     <if test="t.fnumber!=null and t.fnumber!= '' ">
       and t0.FNumber like '%${t.fnumber}%' 		</if>
@@ -324,14 +325,14 @@
     <if test="t.fstockid>0 ">
       and t0.fstockid=#{t.fstockid}
     </if>
-    order by t0.fnumber
+    order by t0.fid
 
   </select>
 
 
   <delete id="deleteBatch">
     delete from T_VS_SCabinet where FID in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )

@@ -4,6 +4,8 @@ import com.linkpal.model.Goodseat;
 import com.linkpal.model.Materialrgoodseat;
 import com.linkpal.model.example.MaterialrgoodseatExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface MaterialrgoodseatMapper extends IBaseMapper<Materialrgoodseat>{
@@ -30,4 +32,6 @@ public interface MaterialrgoodseatMapper extends IBaseMapper<Materialrgoodseat>{
     int updateByPrimaryKey(Materialrgoodseat record);
 
     int getTotalNum(Materialrgoodseat t);
+
+    void ajustGoodsSeat(Map map);
 }

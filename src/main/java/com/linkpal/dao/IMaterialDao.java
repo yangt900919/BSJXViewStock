@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IMaterialDao extends IBaseDao<Material> {
 
+    List<Material> getnoStList();
 }

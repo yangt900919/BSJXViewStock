@@ -23,4 +23,6 @@ public interface IBillStockService extends  IBaseService<Billstock> {
 
     public boolean deleteBatch(Integer[] ids);
     String getAutoNumber();
+
+    void BillStockRewrite_Order(Map map);
 }

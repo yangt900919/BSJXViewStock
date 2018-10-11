@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 文件的命名 表名 + Mapper -->
+
+<!-- namespace:接口包 + 接口名
+	
+ -->
+<mapper namespace="com.linkpal.map.IICStockBillMapper">
+
+
+<resultMap type="com.linkpal.model.ICStockBill" id="ICStockBillResultMap">
+        
+        <id column="FID" property="FID"/>
+	    <result column="FNumber" property="FNumber"/>
+        <result column="FBillType" property="FBillType"/>
+        <result column="FMaterialID" property="FMaterialID"/>
+        <result column="FGoodSeatID" property="FGoodSeatID"/>
+	    <result column="FStockID" property="FStockID"/>
+        <result column="FBatchNo" property="FBatchNo"/>
+	<result column="FMdate" property="FMdate"/>
+	<result column="FGperiod" property="FGperiod"/>
+        <result column="FRemark" property="FRemark"/>
+         <result column="FQty" property="FQty"/>
+	<result column="FcreatorID" property="FcreatorID"></result>
+        
+         <association property="material" javaType="com.linkpal.model.Material">
+            <id column="mID" property="fid"/>
+            <result column="mNumber" property="materialnumber"/>
+            <result column="mName" property="materialname"/>
+            <result column="mUnit" property="materialunit"/>
+        </association>
+       
+        <association property="goodseat" javaType="com.linkpal.model.Goodseat">
+            <id column="gID" property="fid"/>
+            <result column="gNumber" property="fnumber"/>
+       <!--     <result column="gName" property="FName"/>-->
+        </association>
+        
+         <association property="stock" javaType="com.linkpal.model.ERPStock">
+            <id column="sID" property="fid"/>
+            <result column="sNumber" property="fnumber"/>
+            <result column="sName" property="fname"/>
+        </association>
+        
+        <association property="cabinet" javaType="com.linkpal.model.Cabinet">
+            <id column="cID" property="fid"/>
+            <result column="cNumber" property="fnumber"/>
+            <result column="cName" property="fname"/>
+        </association>
+        
+        <association property="scabinet" javaType="com.linkpal.model.Scabinet">
+            <id column="scID" property="fid"/>
+            <result column="scNumber" property="fnumber"/>
+            <result column="scName" property="fname"/>
+        </association>
+
+	<association property="creator" javaType="com.linkpal.model.User">
+		<id column="crid" property="fid"/>
+		<result column="crname" property="username"/>
+	</association>
+    </resultMap>
+
+    	<select id="getById" resultMap="ICStockBillResultMap"  parameterType="int">
+	select t0.*,t1.fid mID,t1.materialNumber mNumber,t1.materialName mName,t1.materialUnit mUnit,t2.FID gID,t2.FNumber gNumber,
+t3.FID sID,t3.fnumber sNumber,t3.fname sName,t4.fid cID,t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber,
+t6.fid crid,t6.username crname
+ from T_VS_ICStockBill t0
+left join T_VS_material t1 on t0.FMaterialID=t1.fid
+left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.FID
+left join t_vs_erpstock t3 on t0.FStockID=t3.FID
+left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+left join t_Vs_user t6 on t0.fcreatorid=t6.fid
+where t0.FID=#{ID}
+	</select>
+
+	<insert id="add" parameterType="com.linkpal.model.ICStockBill">
+		INSERT INTO T_VS_ICStockBill(FNumber,FBillType
+           ,FMaterialID
+           ,FGoodSeatID
+           ,FStockID
+           ,FBatchNo
+           ,FMdate
+           ,FGperiod
+           ,FQty
+           ,FRemark
+           ,FcreatorID
+           ,FCreateTime)
+		VALUES( #{FNumber},#{FBillType},#{FMaterialID},#{FGoodSeatID},#{FStockID},#{FBatchNo},#{FMdate},#{FGperiod},#{FQty},#{FRemark},#{FcreatorID},#{FCreateTime})
+	</insert>
+
+
+	<update id="update" parameterType="com.linkpal.model.ICStockBill">
+		UPDATE T_VS_ICStockBill
+		SET FNumber = #{FNumber,jdbcType=VARCHAR},
+		FMaterialID=#{FMaterialID,jdbcType=INTEGER},FGoodSeatID=#{FGoodSeatID,jdbcType=INTEGER},
+		FStockID=#{FStockID,jdbcType=INTEGER},
+		FBatchNo=#{FBatchNo,jdbcType=VARCHAR},FGperiod=#{FGperiod,jdbcType=DOUBLE}
+		,FMdate=#{FMdate,jdbcType=VARCHAR},FQty=#{FQty,jdbcType=DOUBLE},FRemark=#{FRemark,jdbcType=VARCHAR}
+		WHERE FID=#{fid}
+	</update>
+
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM T_VS_ICStockBill
+		WHERE FID=#{ID}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from T_VS_ICStockBill where FID in (
+		<foreach collection="array" index="index" item="item" open="" separator="," close="">
+			#{item}
+		</foreach>
+		)
+
+	</delete>
+	
+	
+	<select id="getAllList" resultMap="ICStockBillResultMap ">
+select t0.*,t1.fid mID,t1.materialNumber mNumber,t1.materialName mName,t1.materialUnit mUnit,t2.FID gID,t2.FNumber gNumber,
+t3.FID sID,t3.fnumber sNumber,t3.fname sName,t4.fid cID,t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber,
+t6.fid crid,t6.username crname
+ from T_VS_ICStockBill t0
+left join T_VS_material t1 on t0.FMaterialID=t1.fid
+left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.FID
+left join t_vs_erpstock t3 on t0.FStockID=t3.FID 
+left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+left join t_Vs_user t6 on t0.fcreatorid=t6.fid
+where t0.fqty>0
+order by t1.materialnumber,t2.fnumber
+	</select>
+	
+	<select id="getList"  resultMap="ICStockBillResultMap " parameterType="java.util.Map" >
+		select top ${pageSize} t0.*,t1.fid mID,t1.materialNumber mNumber,t1.materialName mName,t1.materialUnit
+		mUnit,t2.FID gID,t2.FNumber gNumber,
+		t3.FID sID,t3.fnumber sNumber,t3.fname sName,t4.fid cID,t4.fnumber cNumber,t4.fname cName,t5.fid scID
+		,t5.fname scName,t5.fnumber scNumber,t6.fid crid,t6.username crname
+		from T_VS_ICStockBill t0
+		left join T_VS_material t1 on t0.FMaterialID=t1.fid
+		left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.FID
+		left join t_vs_erpstock t3 on t0.FStockID=t3.FID
+		left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+		left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+		left join t_Vs_user t6 on t0.fcreatorid=t6.fid
+		where t0.fid not in (
+		select top ${pageIndex} tt0.fid from T_VS_ICStockBill tt0
+		left join t_vs_material tt1 on tt0.FMaterialID=tt1.fid
+		left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.FID
+		left join t_vs_erpstock tt3 on tt0.FStockID=tt3.FID
+		left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+		left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+		left join t_Vs_user tt6 on tt0.fcreatorid=tt6.fid
+		where t0.fqty>0 and  convert(varchar,tt0.FCreateTime,23) between #{sdate} and #{edate}
+		<if test="FMaterialID>0">
+			and tt0.FMaterialID =#{FMaterialID}
+		</if>
+		<if test="FGoodSeatID>0">
+			and tt0.FGoodSeatID=#{FGoodSeat}
+		</if>
+		<if test="FStockID>0">
+			and tt0.fstockid =#{FStockID}
+		</if>
+		<if test="FCabinetID>0">
+			and tt5.fid =#{FCabinetID}
+		</if>
+		<if test="FSCabinetID>0">
+			and tt4.fid =#{FSCabinetID}
+		</if>
+		<if test="FcreatorID>0">
+			and tt0.FcreatorID=#{FcreatorID}
+		</if>
+		<if test="FNumber>0">
+			and tt0.FNumber=#{FNumber}
+		</if>
+		<!-- <if test="FBatchNo!='' and FBatchNo!=null ">
+		and fbatchno  like '%${FBatchNo}%'
+		</if> -->
+
+
+		order by fid
+    )  
+     <if test="FMaterialID>0">
+		and t0.FMaterialID =#{FMaterialID}		</if>
+		<if test="FGoodSeatID>0">
+		and t0.FGoodSeatID=#{FGoodSeat}
+		</if>
+		<if test="FStockID>0">
+		and t0.fstockid =#{FStockID} 		</if>
+		<if test="FCabinetID>0">
+		and t5.fid =#{FCabinetID} 		</if>
+		<if test="FSCabinetID>0">
+		and t4.fid =#{FSCabinetID} 		</if>
+		<if test="FcreatorID>0">
+			and t0.FcreatorID=#{FcreatorID}
+		</if>
+		<if test="FNumber>0">
+			and t0.FNumber=#{FNumber}
+		</if>
+		<!-- <if test="FBatchNo!='' and FBatchNo!=null ">
+		and t0.fbatchno  like '%${FBatchNo}%'
+		</if>
+		<if test="FSdate!='' and  FSdate!=null">
+		and convert(varchar,t0.fsdate,23)=#{FSdate}
+		</if> -->
+
+		 and t0.fqty>0 and convert(varchar,t0.FCreateTime,23) between #{sdate} and #{edate}
+   order by t0.fid
+	</select>
+	
+	<select id="getTotalNum" parameterType="java.util.Map" resultType="int">
+		SELECT count(*)
+		FROM t_VS_ICStockBill t0
+		left join t_vs_material t1 on t0.FMaterialID=t1.fid
+		left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.FID
+		left join t_vs_erpstock t3 on t0.FStockID=t3.FID
+		left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+		left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+		left join t_Vs_user t6 on t0.fcreatorid=t6.fid
+		where t0.fqty>0 and convert(varchar,t0.FCreateTime,23) between #{sdate} and #{edate}
+		<if test="FMaterialID>0">
+			and t0.FMaterialID =#{FMaterialID}
+		</if>
+		<if test="FGoodSeatID>0">
+			and t0.FGoodSeatID=#{FGoodSeat}
+		</if>
+		<if test="FStockID>0">
+			and t0.fstockid =#{FStockID}
+		</if>
+		<if test="FCabinetID>0">
+			and t5.fid =#{FCabinetID}
+		</if>
+		<if test="FSCabinetID>0">
+			and t4.fid =#{FSCabinetID}
+		</if>
+		<if test="FcreatorID>0">
+			and t0.FcreatorID=#{FcreatorID}
+		</if>
+		<if test="FNumber>0">
+			and t0.FNumber=#{FNumber}
+		</if>
+		<!-- <if test="FBatchNo!='' and FBatchNo!=null ">
+		and t0.fbatchno  like '%${FBatchNo}%'
+		</if>
+		<if test="FSdate!='' and  FSdate!=null">
+		and convert(varchar,t0.fsdate,23)=#{FSdate}
+		</if> -->
+
+
+	</select>
+
+
+	<select id="getAutoNumber" resultType="String">
+		exec Proc_initAutoNum 'T_VS_ICStockBill','YC'
+	</select>
+	
+</mapper>

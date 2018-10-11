@@ -1,117 +1,99 @@
 package com.linkpal.controller;
 
-import com.linkpal.service.ICabinetService;
-import com.linkpal.service.IGoodseatService;
-import com.linkpal.service.IInventoryService;
-import com.linkpal.service.IStockService;
+import com.linkpal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class DisplayController {
 
     @Autowired
-    IStockService stockService;
+    IDisplayService displayService;
 
-    @Autowired
-    ICabinetService cabinetService;
+    @RequestMapping(value = "/cabinet/display")
+    public ModelAndView CabinetDisplay(String fsnumber,String fenumber,String fstock)
+    {
+        Map map=new HashMap<>();
+        map.put("fsnumber",fsnumber);
+        map.put("fenumber",fenumber);
+        map.put("flag","CABINET");
+        map.put("fstock",fstock);
+        ModelAndView mav=null;
+        List<Map<String,Object>> list=displayService.getDisplayInfo(map);
+        if(list.size()>0)
+        {
+            int page=Integer.parseInt(list.get(0).get("page").toString());
+            if(page==1)
+            {
+                mav=new ModelAndView("web/cabinet/display");
+                mav.addObject("cdlist",list);
+            }
+            else if(page==2)
+            {  mav=new ModelAndView("web/goodseat/display");
+            mav.addObject("gdlist",list);}
 
-    @Autowired
-    IGoodseatService goodseatService;
+        }
 
-    @Autowired
-    IInventoryService inventoryService;
-
-    /**
-     * 获取指定仓库的所有货位
-     * @param request
-     * @param stockid
-     * @return
-     */
-    @RequestMapping(value = "/display/stock/goodseat")
-    public ModelAndView showGoodseat(HttpServletRequest request, int stockid){
-        ModelAndView mav = new ModelAndView("");
-       // mav.addObject("", goodseatService.getStockGoodseats(stockid));
-        return mav;
-    }
-    @RequestMapping(value = "/display/stock/list")
-    public ModelAndView showList(){
-        ModelAndView mav = new ModelAndView("web/plan/cabinet");
-        return mav;
-    }
-
-    /**
-     * 获取指定仓库的所有货架
-     * @param request
-     * @param stockid
-     * @return
-     */
-    @RequestMapping(value = "/display/stock/cabinet")
-    public ModelAndView showCabinet(HttpServletRequest request, int stockid){
-        ModelAndView mav = new ModelAndView("");
-       // mav.addObject("", cabinetService.getStockCabinet(stockid));
         return mav;
     }
 
-    /**
-     * 获取指定仓库的所有货架和货位
-     * @param request
-     * @param stockid
-     * @return
-     */
-    @RequestMapping(value = "/display/stock/detail")
-    public ModelAndView showCabinetAndGoodseat(HttpServletRequest request, int stockid){
-        ModelAndView mav = new ModelAndView("");
-       /* mav.addObject("", goodseatService.getNoCabinetGoodseats(stockid));
-        mav.addObject("", cabinetService.getStockCabinet(stockid));*/
+    @RequestMapping(value = "/scabinet/display")
+    public ModelAndView SCabinetDisplay(String fsnumber,String fenumber,String fstock)
+    {
+        Map map=new HashMap<>();
+        map.put("fsnumber",fsnumber);
+        map.put("fenumber",fenumber);
+        map.put("flag","SCABINET");
+        map.put("fstock",fstock);
+        ModelAndView mav=  mav=null;;
+        List<Map<String,Object>> list=displayService.getDisplayInfo(map);
+        if(list.size()>0) {
+            int page = Integer.parseInt(list.get(0).get("page").toString());
+            if (page == 1) {
+                mav = new ModelAndView("web/scabinet/display");
+                mav.addObject("scdlist", list);
+            }
+            else if (page == 2)
+            {  mav = new ModelAndView("web/goodseat/display");
+
+            mav.addObject("gdlist",list);}
+
+        }
         return mav;
     }
 
-    /**
-     * 获取指定仓库货架的所有货位
-     * @param request
-     * @param stockid
-     * @param cabinetid
-     * @return
-     */
-    @RequestMapping(value = "/display/stock/cabinet/goodseat")
-    public ModelAndView showCabinetAndGoodseat(HttpServletRequest request, int stockid, int cabinetid){
-        ModelAndView mav = new ModelAndView("");
-       /* mav.addObject("", goodseatService.getCabinetGoodseats(stockid));*/
+
+    @RequestMapping(value = "/goodseat/display")
+    public ModelAndView GoodseatDisplay(String fsnumber,String fenumber,String fstock)
+    {
+        Map map=new HashMap<>();
+        map.put("fsnumber",fsnumber);
+        map.put("fenumber",fenumber);
+        map.put("flag","GOODSEAT");
+        map.put("fstock",fstock);
+        ModelAndView mav=  mav=new ModelAndView("web/goodseat/display");;
+        List<Map<String,Object>> list=displayService.getDisplayInfo(map);
+
+        mav.addObject("gdlist",list);
+
+
         return mav;
     }
 
-    /**
-     * 添加无货架的货位物料展示
-     * @param request
-     * @param stockNumber
-     * @return
-     */
-    @RequestMapping(value = "/display/stock/materials")
-    public ModelAndView showMaterialsOnGoodseat(HttpServletRequest request, String stockNumber){
-        ModelAndView mav = new ModelAndView("");
-        int stockid = stockService.getDetail(stockNumber).getFid();
-       /* mav.addObject("", inventoryService.showStockGoodseat(goodseatService.getNoCabinetGoodseats(stockid)));*/
-        return mav;
-    }
+  /*  private Map mapParam(String fsnumber,String fenumber,String fstock)
+    {
+        Map map=new HashMap<>();
+        map.put("fsnumber",fsnumber);
+        map.put("fenumber",fenumber);
+        map.put("fstock",fstock);
+        return map;
+    }*/
 
-    /**
-     * 添加有货架的货位物料展示
-     * @param request
-     * @param stockNumber
-     * @param cabinetNumber
-     * @return
-     */
-    @RequestMapping(value = "/display/stock/cabinet/materials")
-    public ModelAndView showMaterialsOnCabinetGoodseat(HttpServletRequest request, String stockNumber, String cabinetNumber){
-        ModelAndView mav = new ModelAndView("");
-        int stockid = stockService.getDetail(stockNumber).getFid();
-        int cabinetid = cabinetService.getDetail(cabinetNumber).getFid();
-        //mav.addObject("", inventoryService.showStockGoodseat(goodseatService.getCabinetGoodseats(stockid, cabinetid)));
-        return mav;
-    }
 }

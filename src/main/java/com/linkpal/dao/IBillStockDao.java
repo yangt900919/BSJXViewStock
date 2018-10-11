@@ -12,4 +12,6 @@ public interface IBillStockDao extends IBaseDao<Billstock> {
     int getTotalNum(Map map);
 
     String getAutoNumber();
+
+    void BillStockRewrite_Order(Map map);
 }

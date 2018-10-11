@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.DataoperatelogMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Dataoperatelog">
+    <result column="FID" jdbcType="INTEGER" property="fid" />
+    <result column="FNumer" jdbcType="VARCHAR" property="fnumer" />
+    <result column="FBillID" jdbcType="INTEGER" property="fbillid" />
+    <result column="FEntryID" jdbcType="INTEGER" property="fentryid" />
+    <result column="FUser" jdbcType="VARCHAR" property="fuser" />
+    <result column="FType" jdbcType="VARCHAR" property="ftype" />
+    <result column="FMaterialID" jdbcType="INTEGER" property="fmaterialid" />
+    <result column="FDataID" jdbcType="INTEGER" property="fdataid" />
+    <result column="FDataSeat" jdbcType="VARCHAR" property="fdataseat" />
+    <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
+
+    <association property="material" javaType="com.linkpal.model.Material">
+      <id column="fmaid" jdbcType="INTEGER" property="fid" />
+      <result column="materialNumber" jdbcType="VARCHAR" property="materialnumber" />
+      <result column="materialName" jdbcType="VARCHAR" property="materialname" />
+      <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
+      <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    FID, FNumer, FBillID, FEntryID, FUser, FType, FMaterialID, FDataID, FDataSeat, FCreateTime
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.DataoperatelogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_DataOperateLog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.DataoperatelogExample">
+    delete from T_VS_DataOperateLog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Dataoperatelog">
+    insert into T_VS_DataOperateLog (FID, FNumer, FBillID, 
+      FEntryID, FUser, FType, 
+      FMaterialID, FDataID, FDataSeat, 
+      FCreateTime)
+    values (#{fid,jdbcType=INTEGER}, #{fnumer,jdbcType=VARCHAR}, #{fbillid,jdbcType=INTEGER}, 
+      #{fentryid,jdbcType=INTEGER}, #{fuser,jdbcType=VARCHAR}, #{ftype,jdbcType=VARCHAR}, 
+      #{fmaterialid,jdbcType=INTEGER}, #{fdataid,jdbcType=INTEGER}, #{fdataseat,jdbcType=VARCHAR}, 
+      #{fcreatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Dataoperatelog">
+    insert into T_VS_DataOperateLog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        FID,
+      </if>
+      <if test="fnumer != null">
+        FNumer,
+      </if>
+      <if test="fbillid != null">
+        FBillID,
+      </if>
+      <if test="fentryid != null">
+        FEntryID,
+      </if>
+      <if test="fuser != null">
+        FUser,
+      </if>
+      <if test="ftype != null">
+        FType,
+      </if>
+      <if test="fmaterialid != null">
+        FMaterialID,
+      </if>
+      <if test="fdataid != null">
+        FDataID,
+      </if>
+      <if test="fdataseat != null">
+        FDataSeat,
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fnumer != null">
+        #{fnumer,jdbcType=VARCHAR},
+      </if>
+      <if test="fbillid != null">
+        #{fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="fentryid != null">
+        #{fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="fuser != null">
+        #{fuser,jdbcType=VARCHAR},
+      </if>
+      <if test="ftype != null">
+        #{ftype,jdbcType=VARCHAR},
+      </if>
+      <if test="fmaterialid != null">
+        #{fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="fdataid != null">
+        #{fdataid,jdbcType=INTEGER},
+      </if>
+      <if test="fdataseat != null">
+        #{fdataseat,jdbcType=VARCHAR},
+      </if>
+      <if test="fcreatetime != null">
+        #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.DataoperatelogExample" resultType="java.lang.Long">
+    select count(*) from T_VS_DataOperateLog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_DataOperateLog
+    <set>
+      <if test="record.fid != null">
+        FID = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fnumer != null">
+        FNumer = #{record.fnumer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fbillid != null">
+        FBillID = #{record.fbillid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fentryid != null">
+        FEntryID = #{record.fentryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fuser != null">
+        FUser = #{record.fuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ftype != null">
+        FType = #{record.ftype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fmaterialid != null">
+        FMaterialID = #{record.fmaterialid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fdataid != null">
+        FDataID = #{record.fdataid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fdataseat != null">
+        FDataSeat = #{record.fdataseat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fcreatetime != null">
+        FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_DataOperateLog
+    set FID = #{record.fid,jdbcType=INTEGER},
+      FNumer = #{record.fnumer,jdbcType=VARCHAR},
+      FBillID = #{record.fbillid,jdbcType=INTEGER},
+      FEntryID = #{record.fentryid,jdbcType=INTEGER},
+      FUser = #{record.fuser,jdbcType=VARCHAR},
+      FType = #{record.ftype,jdbcType=VARCHAR},
+      FMaterialID = #{record.fmaterialid,jdbcType=INTEGER},
+      FDataID = #{record.fdataid,jdbcType=INTEGER},
+      FDataSeat = #{record.fdataseat,jdbcType=VARCHAR},
+      FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+
+
+  <select id="getList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select top ${pageSize} t.*,t1.fid fmaid,t1.materialNumber materialnumber,t1.materialName materialname,t1.materialModel materialmodel
+    ,t1.materialUnit materialunit
+    from T_VS_dataOperateLog t
+    inner join T_VS_Material t1 on t.FdataID=t1.fid
+    where CONVERT(varchar,cast(t.fdate as datetime),23)between #{sdate} and #{edate}
+    and t.fid not in
+    (
+    select   top ${pageIndex} fid from T_VS_dataOperateLog tt
+    where CONVERT(varchar,cast(tt.fdate as datetime),23)between #{sdate} and #{edate}
+    <!--<if test="fuser!=null">
+      and
+    </if>-->
+    <if test="fnumer!='' and  fnumer!=null">
+      and fnumer like '%${fnumer}%'		</if>
+    <if test="fuser!='' and  fuser!=null">
+      and fuser like '%${fuser}%'		</if>
+    <if test="ftype!='' and  ftype!=null">
+      and ftype like '%${ftype}%'		</if>
+    <if test="fdataid>0">
+      and fdataid =#{fdataid}		</if>
+    <if test="fstock!='' and  fstock!=null">
+      and fstock like '%${fstock}%'		</if>
+
+    <if test="ferpstock!='' and  ferpstock!=null">
+      and ferpstock like '%${ferpstock}%'		</if>
+    <if test="fdataseat!='' and  fdataseat!=null">
+      and t.fdataseat like '%${fdataseat}%'		</if>
+
+    order by fid desc
+    )
+    <if test="fnumer!='' and  fnumer!=null">
+      and t.fnumer like '%${fnumer}%'		</if>
+    <if test="fuser!='' and  fuser!=null">
+      and t.fuser like '%${fuser}%'		</if>
+    <if test="ftype!='' and  ftype!=null">
+      and t.ftype like '%${ftype}%'		</if>
+    <if test="fdataid>0">
+      and t.fdataid =#{fdataid}		</if>
+    <if test="fstock!='' and  fstock!=null">
+      and t.fstock like '%${fstock}%'		</if>
+    <if test="fdataseat!='' and  fdataseat!=null">
+      and t.fdataseat like '%${fdataseat}%'		</if>
+
+    <!-- <if test="fsrc_number!='' and  fsrc_number!=null">
+       and t.fsrc_number like '%${fsrc_number}%'		</if>-->
+    order by t.fid desc
+  </select>
+  <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_dataOperateLog tt
+    where CONVERT(varchar,cast(tt.fdate as datetime),23)between #{sdate} and #{edate}
+    <if test="fnumer!='' and  fnumer!=null">
+      and fnumer like '%${fnumer}%'		</if>
+    <if test="fuser!='' and  fuser!=null">
+      and fuser like '%${fuser}%'		</if>
+    <if test="ftype!='' and  ftype!=null">
+      and ftype like '%${ftype}%'		</if>
+    <if test="fdataid>0">
+      and fdataid =#{fdataid}		</if>
+    <if test="fstock!='' and  fstock!=null">
+      and fstock like '%${fstock}%'		</if>
+    <if test="fdataseat and  fdataseat!=null">
+      and fdataseat like '%${fdataseat}%'		</if>
+
+    <if test="ferpstock!='' and  ferpstock!=null">
+      and ferpstock like '%${ferpstock}%'		</if>
+    <!-- <if test="fsrc_number!='' and  fsrc_number!=null">
+       and fsrc_number like '%${fsrc_number}%'		</if>-->
+  </select>
+
+</mapper>

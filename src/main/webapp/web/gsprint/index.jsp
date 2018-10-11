@@ -27,51 +27,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          pageNow=${page.pageNow};
 	 });
 
-
+     $("#home", parent.document).removeClass("active");
+     $("#link", parent.document).empty();
+     $("#link", parent.document).addClass("active");
+     $("#link", parent.document).text("货位二维码打印管理");
 	</script>
   </head>
-  
+
+  <style>
+
+    #goodseat,#cabinet,#scabinet,#stock,#cabinettype
+      {
+          width:7vw !important;
+          font-size: 1.1em !important;
+      }
+  </style>
   <body>
 <%--  <jsp:include page="condition.jsp"></jsp:include>--%>
    <div class=container-fluid>
-   <h3 class=title_index>
- 货位二维码打印管理
-   </h3>
-   <div class="row">
-       <div class="col-md-3 col-sm-3 col-xs-4" >
-        <div class=row>
-      <%--<c:if test="${gsprint_add=='gsprint_add' }">--%>
-        <div class="col-md-4 col-sm-4 col-xs-4" >  <a class="btn btn-primary btn-sm"  href="gsprint/create">
-        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-     <%--   </c:if>
-        <c:if test="${gsprint_delete=='gsprint_delete' }">--%>
-             <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('gsprint')">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        删除</a>
-           </div>
-          <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="PrintqrCode('gsprint')">
-              <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
-              打印</a>
-          </div>
-      
-    </div>
+   <div class=title_index>
+ &nbsp;货位二维码打印管理
    </div>
-       <div class="col-md-9 col-sm-9 col-xs-3">
 
-       </div>
-   </div>
-       <br>
+
        <div class="row">
-           <div class="col-md-12">
+           <div class="col-md-9">
            <form class="form-inline" action="gsprint/getList">
                <div class="form-group">
                    <label for="fgoodseatid" >货位</label>
 
                                <div class="input-group">
-                                   <input  type="text"  onfocus="clearBasics('fgoodseatid')"  class="form-control" id="goodseat" name="goodseatname"  placeholder="" value=${model.goodseat.fnumber}>
+                                   <input  type="text" readonly onfocus="clearBasics('fgoodseatid')"  class="form-control gs" id="goodseat" name="goodseatname"  placeholder="" value=${model.goodseat.fnumber}>
                                    <input type="hidden" class="form-control" id="fgoodseatid" name=fgoodseatid  placeholder="" value=${model.fgoodseatid}>
                                    <span class="input-group-btn">
-                                                <button class="btn btn-primary"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+                                                <button class="btn btn-primary btn-sm"  type="button" onclick="showBasics('goodseat','fgoodseatid','goodseat')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
                                                                 </span></div>
 
                </div>
@@ -79,20 +68,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <div class="form-group">
                    <label for="fscabinetid">储柜</label>
                    <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fscabinetid')"  class="form-control" id="scabinet" name="scabinetname"  placeholder="" value=${model.scabinet.fname}>
+                       <input $ type="text" readonly onfocus="clearBasics('fscabinetid')"  class="form-control gs" id="scabinet" name="scabinetname"  placeholder="" value=${model.scabinet.fname}>
                        <input type="hidden" class="form-control" id="fscabinetid" name=fscabinetid  placeholder="" value=${model.fscabinetid}>
                        <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('scabinet','fscabinetid','scabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('scabinet','fscabinetid','scabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
                    </div>
                </div>
                <div class="form-group">
                    <label for="fcabinetid">柜列</label>
                    <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fcabinetid')"  class="form-control" id="cabinet" name="cabinetname"  placeholder="" value=${model.cabinet.fname}>
+                       <input $ type="text" readonly  onfocus="clearBasics('fcabinetid')"  class="form-control gs" id="cabinet" name="cabinetname"  placeholder="" value=${model.cabinet.fname}>
                        <input type="hidden" class="form-control" id="fcabinetid" name=fcabinetid  placeholder="" value=${model.fcabinetid}>
                        <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('cabinet','fcabinetid','cabinet')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
                    </div>
                </div>
@@ -100,10 +89,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <div class="form-group">
                    <label for="fcabinettypeid">储柜类型</label>
                    <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fcabinettypeid')"  class="form-control" id="cabinettype" name="cabinettypename"  placeholder="" value=${model.cabinettype.fname}>
+                       <input $ type="text"  readonly onfocus="clearBasics('fcabinettypeid')"  class="form-control gs" id="cabinettype" name="cabinettypename"  placeholder="" value=${model.cabinettype.fname}>
                        <input type="hidden" class="form-control" id="fcabinettypeid" name=fcabinettypeid  placeholder="" value=${model.fcabinettypeid}>
                        <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('cabinettype','fcabinettypeid','cabinettype')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('cabinettype','fcabinettypeid','cabinettype')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
                    </div>
                </div>
@@ -111,10 +100,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <div class="form-group">
                    <label for="fstockid">仓库</label>
                    <div class="input-group">
-                       <input $ type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${model.stock.stockname}>
+                       <input $ type="text" readonly onfocus="clearBasics('fstockid')"  class="form-control gs" id="stock" name="stockname"  placeholder="" value=${model.stock.stockname}>
                        <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${model.fstockid}>
                        <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
                    </div>
                </div>
@@ -123,14 +112,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                </button>
            </form>
        </div>
+           <div class="col-md-3 col-sm-3 col-xs-3" >
+
+               <div class="buttongroups"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="PrintqrCode('gsprint')">
+                   <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                   打印</a>
+               </div>
+               <div class="buttongroups"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('gsprint')">
+                   <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                   删除</a>
+               </div>
+               <div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="gsprint/create">
+                   <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
+               <%--   </c:if>
+                  <c:if test="${gsprint_delete=='gsprint_delete' }">--%>
+
+
+
+           </div>
        </div>
-  <hr>
+
+
        <div class="table-responsive">
    <table class="table table-bordered table-hover  ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
 
   <th >货位</th>
@@ -144,7 +152,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <c:forEach items="${gsprintlist }" var="map">
   <tr>
   <td>
-    <input type="checkbox" name=push class="check" value=${map.fid}>
+    <input type="checkbox" name=check class="check" value=${map.fid}>
   </td>
   <td>${map.goodseat.fnumber }</td>
   <td>${map.fcharge}</td>

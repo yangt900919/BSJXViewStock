@@ -3,6 +3,7 @@ package com.linkpal.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Billorder implements Serializable {
 
     private Integer frestockid;
 
-    private Stock restock;
+    private ERPStock restock;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fcreatetime;
@@ -50,6 +51,8 @@ public class Billorder implements Serializable {
 
     private List<Billorderentry> billorderentries;
 
+    private String fbuyer;
+
     private static final long serialVersionUID = 1L;
 
     public  Billorder()
@@ -57,6 +60,7 @@ public class Billorder implements Serializable {
         this.fcreatetime=new java.sql.Date(new Date().getTime());
         this.fbizdate=new java.sql.Date(new Date().getTime());
         this.fstatus=0;
+        this.billorderentries=new ArrayList<>();
     }
 
     public Integer getFbillid() {
@@ -171,11 +175,11 @@ public class Billorder implements Serializable {
         this.custom = custom;
     }
 
-    public Stock getRestock() {
+    public ERPStock getRestock() {
         return restock;
     }
 
-    public void setRestock(Stock restock) {
+    public void setRestock(ERPStock restock) {
         this.restock = restock;
     }
 
@@ -217,5 +221,13 @@ public class Billorder implements Serializable {
 
     public void setBillorderentries(List<Billorderentry> billorderentries) {
         this.billorderentries = billorderentries;
+    }
+
+    public String getFbuyer() {
+        return fbuyer;
+    }
+
+    public void setFbuyer(String fbuyer) {
+        this.fbuyer = fbuyer;
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class Billstock implements Serializable {
     /**
      * 仓库信息
      */
-    private Stock stock;
+    private ERPStock stock;
 
     /**
      * 供应商信息
@@ -107,6 +108,7 @@ public class Billstock implements Serializable {
         this.fstatus=0;
         this.fdate=new java.sql.Date(new Date().getTime());
         this.fbizdate=new java.sql.Date(new Date().getTime());
+        this.billstockentries=new ArrayList<>();
     }
 
     public List<Billstockentry> getmEntries() {
@@ -133,11 +135,11 @@ public class Billstock implements Serializable {
         this.fcheusername = fcheusername;
     }
 
-    public Stock getStock() {
+    public ERPStock getStock() {
         return stock;
     }
 
-    public void setStock(Stock stock) {
+    public void setStock(ERPStock stock) {
         this.stock = stock;
     }
 

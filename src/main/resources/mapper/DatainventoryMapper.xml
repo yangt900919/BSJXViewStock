@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.DatainventoryMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Datainventory">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="FdataID" jdbcType="INTEGER" property="fdataid" />
+    <result column="fdataseatid" jdbcType="INTEGER" property="fdataseatid" />
+    <result column="fstockid" jdbcType="INTEGER" property="fstockid" />
+    <result column="ferpstockid" jdbcType="INTEGER" property="ferpstockid" />
+    <result column="fqty" jdbcType="DOUBLE" property="fqty" />
+    <result column="fdate" jdbcType="VARCHAR" property="fdate" />
+
+    <association property="material" javaType="com.linkpal.model.Material">
+      <id column="fmaid" jdbcType="INTEGER" property="fid" />
+      <result column="materialNumber" jdbcType="VARCHAR" property="materialnumber" />
+      <result column="materialName" jdbcType="VARCHAR" property="materialname" />
+      <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
+      <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
+    </association>
+
+    <association property="dataseat" javaType="com.linkpal.model.Dataseat">
+      <id column="gID" property="fid"/>
+      <result column="gNumber" property="fnumber"/>
+    </association>
+
+    <association property="erpstock" javaType="com.linkpal.model.ERPStock">
+      <id column="ferpstid" jdbcType="INTEGER" property="fid" />
+      <result column="erpstnumber" jdbcType="VARCHAR" property="fnumber" />
+      <result column="erpstname" jdbcType="VARCHAR" property="fname" />
+
+    </association>
+
+    <association property="stock" javaType="com.linkpal.model.Stock">
+      <id column="fstid" jdbcType="INTEGER" property="fid" />
+      <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
+      <result column="stockName" jdbcType="VARCHAR" property="stockname" />
+      <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
+      <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+    </association>
+
+    <association property="cabinet" javaType="com.linkpal.model.Cabinet">
+      <id column="cID" property="fid"/>
+      <result column="cNumber" property="fnumber"/>
+      <result column="cName" property="fname"/>
+    </association>
+
+    <association property="scabinet" javaType="com.linkpal.model.Scabinet">
+      <id column="scID" property="fid"/>
+      <result column="scNumber" property="fnumber"/>
+      <result column="scName" property="fname"/>
+    </association>
+
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fid, FdataID, fdataseatid, fqty, fdate
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.DatainventoryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_DataInventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_DataInventory
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_DataInventory
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.DatainventoryExample">
+    delete from T_VS_DataInventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Datainventory">
+    insert into T_VS_DataInventory (fid, FdataID, fdataseatid, 
+      fqty, fdate)
+    values (#{fid,jdbcType=INTEGER}, #{fdataid,jdbcType=INTEGER}, #{fdataseatid,jdbcType=INTEGER}, 
+      #{fqty,jdbcType=DOUBLE}, #{fdate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Datainventory">
+    insert into T_VS_DataInventory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="fdataid != null">
+        FdataID,
+      </if>
+      <if test="fdataseatid != null">
+        fdataseatid,
+      </if>
+      <if test="fqty != null">
+        fqty,
+      </if>
+      <if test="fdate != null">
+        fdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fdataid != null">
+        #{fdataid,jdbcType=INTEGER},
+      </if>
+      <if test="fdataseatid != null">
+        #{fdataseatid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fdate != null">
+        #{fdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.DatainventoryExample" resultType="java.lang.Long">
+    select count(*) from T_VS_DataInventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_DataInventory
+    <set>
+      <if test="record.fid != null">
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fdataid != null">
+        FdataID = #{record.fdataid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fdataseatid != null">
+        fdataseatid = #{record.fdataseatid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fqty != null">
+        fqty = #{record.fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fdate != null">
+        fdate = #{record.fdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_DataInventory
+    set fid = #{record.fid,jdbcType=INTEGER},
+      FdataID = #{record.fdataid,jdbcType=INTEGER},
+      fdataseatid = #{record.fdataseatid,jdbcType=INTEGER},
+      fqty = #{record.fqty,jdbcType=DOUBLE},
+      fdate = #{record.fdate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Datainventory">
+    update T_VS_DataInventory
+    <set>
+      <if test="fdataid != null">
+        FdataID = #{fdataid,jdbcType=INTEGER},
+      </if>
+      <if test="fdataseatid != null">
+        fdataseatid = #{fdataseatid,jdbcType=INTEGER},
+      </if>
+      <if test="fqty != null">
+        fqty = #{fqty,jdbcType=DOUBLE},
+      </if>
+      <if test="fdate != null">
+        fdate = #{fdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Datainventory">
+    update T_VS_DataInventory
+    set FdataID = #{fdataid,jdbcType=INTEGER},
+      fdataseatid = #{fdataseatid,jdbcType=INTEGER},
+      fqty = #{fqty,jdbcType=DOUBLE},
+      fdate = #{fdate,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="getList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select top ${pageSize} t0.*,t1.fid fmaid,t1.materialNumber ,t1.materialName ,t1.materialUnit ,
+    t2.fid gID,t2.fnumber gNumber,'' gName,
+    t3.fid fstid,t3.stockNumber ,t3.stockName ,t4.fid cID,
+    t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber,t6.fid ferpstid,t6.fnumber erpstnumber,t6.fname erpstname
+    from T_VS_DataInventory t0
+    left join T_VS_Material t1 on t0.fdataid=t1.fid
+    left join T_VS_DataSeat t2 on t0.fdataseatid=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+    left join T_VS_UserRERPStock t7 on t6.fid=t7.ferpstockid
+    where  t0.fqty>0 and t0.fid not in (
+    select top ${pageIndex} tt0.fid from T_VS_DataInventory tt0
+    left join T_VS_Material tt1 on tt0.fdataid=tt1.fid
+    left join T_VS_DataSeat tt2 on tt0.fdataseatid=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    left join T_VS_UserRERPStock tt7 on tt6.fid=tt7.ferpstockid
+    where  tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fdataid>0">
+      and tt0.fdataid =#{fdataid}		</if>
+    <if test="fdataseatid>0">
+      and tt0.fdataseatid=#{fdataseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+
+    <if test="fuser!='' and fuser!=null ">
+      and tt7.fuserid=#{fuser}
+    </if>
+
+
+    order by tt2.fnumber
+    )
+    <if test="fmaid>0">
+      and t0.fdataid=#{fdataid}		</if>
+    <if test="fdataseatid>0">
+      and t0.fdataseatid=#{fdataseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and t0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and t5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and t4.fid =#{fscabinetid} 		</if>
+
+    <!-- <if test="FSdate!='' and  FSdate!=null">
+    and convert(varchar,t0.fdate,23)=#{FSdate}
+    </if> -->
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t7.fuserid=#{fuser}
+    </if>
+    order by t2.fnumber
+  </select>
+
+
+  <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_DataInventory tt0
+    left join T_VS_Material tt1 on tt0.fdataid=tt1.fid
+    left join T_VS_DataSeat tt2 on tt0.fdataseatid=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    left join T_VS_UserRERPStock tt7 on tt6.fid=tt7.ferpstockid
+    where  tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fdataid>0">
+      and tt0.fdataid =#{fdataid}		</if>
+    <if test="fdataseatid>0">
+      and tt0.fdataseatid=#{fdataseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+
+    <if test="fuser!='' and fuser!=null ">
+      and tt7.fuserid=#{fuser}
+    </if>
+
+
+  </select>
+
+</mapper>

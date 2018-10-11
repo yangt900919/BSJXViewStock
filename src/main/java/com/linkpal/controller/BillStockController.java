@@ -5,10 +5,8 @@ import com.linkpal.model.Billstock;
 import com.linkpal.model.Page;
 import com.linkpal.model.User;
 import com.linkpal.service.*;
-import com.linkpal.util.GlobalVarContext;
-import com.linkpal.util.InitBinderUtil;
-import com.linkpal.util.MapUtil;
-import com.linkpal.util.StringUtil;
+import com.linkpal.util.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -35,7 +33,7 @@ public class BillStockController {
     @Autowired
     IMaterialService materialService;
     @Autowired
-    IStockService stockService;
+    IERPStockService stockService;
     @Autowired
     IUserService userService;
     @Autowired
@@ -44,12 +42,13 @@ public class BillStockController {
     ICustomService customService;
 
     @RequestMapping(value = "/billstock/index")
+    @RequiresPermissions("billstock:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/billstock/index");
         mav.addObject("model",new HashMap<>());
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         return mav;
@@ -57,9 +56,21 @@ public class BillStockController {
 
     @RequestMapping(value = "/billstock/getList")
     @ResponseBody
-    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
+    @RequiresPermissions("billstock:view")
+    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String,Object> params)
     {
+        if(params==null)params=new HashMap<>();
+        if(params.size()==0)
+        {
+            params.put("sdate", DateUtil.getDatePreM());
+            params.put("edate",DateUtil.getDateNow());
+            params.put("fstatus",-1);
+        }
 
+        if(((User) request.getSession().getAttribute("user")).getUsername().equals("admin"))
+            params.put("creatorid",null);
+        else
+            params.put("creatorid",((User) request.getSession().getAttribute("user")).getFid());
         Map<String, Object> m=billStockService.getPageList(request, params);
         ModelAndView mav=new ModelAndView("web/billstock/index");
         mav.addObject("billstocklist", (List<Billstock>) m.get("list"));
@@ -67,7 +78,7 @@ public class BillStockController {
         mav.addObject("url", "billstock/getList");
         mav.addObject("model",m.get("model"));
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         if(request!=null)
@@ -76,17 +87,20 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/create")
+    @RequiresPermissions("billstock:create")
     public ModelAndView Create(HttpServletRequest request)
     {
         ModelAndView mav=new ModelAndView("web/billstock/edit");
         Billstock billstock=new Billstock();
-        User user= GlobalVarContext.user;
+        User user= ((User) request.getSession().getAttribute("user"));
         billstock.setCreator(user);
         billstock.setFuserid(user.getFid());
         billstock.setFnumber(billStockService.getAutoNumber());
+        billstock.setFkeeperid(user.getFid());
+        billstock.setKeeper(user);
         mav.addObject("billstock",billstock);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         mav.addObject("readonly","");
@@ -117,17 +131,20 @@ public class BillStockController {
             }
         }
 
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billstock")) ;
+
+
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billstock")) ;
     }
 
     @RequestMapping(value = "/billstock/edit")
+    @RequiresPermissions("billstock:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/billstock/edit");
        Billstock billstock=billStockService.getDetail(ID);
         mav.addObject("billstock",billstock);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("supplierlist", supplierService.getList());
         if(billstock.getFstatus()==1) {
@@ -138,16 +155,18 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/delete")
+    @RequiresPermissions("billstock:delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
         billStockService.delete(ID);
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billstock")) ;
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billstock")) ;
     }
 
     @RequestMapping(value = "/billstock/deleteBatch")
+    @RequiresPermissions("billstock:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         billStockService.deleteBatch(ids);
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billstock")) ;
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billstock")) ;
     }
 
     @RequestMapping(value = "/billstock/CheckOnly")
@@ -165,21 +184,33 @@ public class BillStockController {
     }
 
     @RequestMapping(value = "/billstock/audit")
+    @RequiresPermissions("billstock:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billstock billstock=billStockService.getDetail(ID);
-        billstock.setFuserid(GlobalVarContext.user.getFid());
+        billstock.setFchuserid(((User) request.getSession().getAttribute("user")).getFid());
         billstock.setFdate(new Date());
+        billstock.setFstatus(1);
         billStockService.update(billstock);
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billstock")) ;
+        Map map=new HashMap();
+        map.put("fid",billstock.getFid());
+        map.put("fuserid",billstock.getFchuserid());
+        billStockService.BillStockRewrite_Order(map);
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billstock")) ;
     }
 
     @RequestMapping(value = "/billstock/unaudit")
+    @RequiresPermissions("billstock:unaudit")
     public ModelAndView UnAudit(HttpServletRequest request, int ID) throws Exception {
         Billstock billstock=billStockService.getDetail(ID);
-        billstock.setFuserid(0);
-        billstock.setFdate(null);
+        billstock.setFchuserid(0);
+        billstock.setFchedate(null);
+        billstock.setFstatus(0);
         billStockService.update(billstock);
-        return  getList(request, (Map<String, String>) request.getSession().getAttribute("Billstock")) ;
+        Map map=new HashMap();
+        map.put("fid",billstock.getFid());
+        map.put("fuserid",billstock.getFchuserid());
+        billStockService.BillStockRewrite_Order(map);
+        return  getList(request, (Map<String,Object>) request.getSession().getAttribute("Billstock")) ;
     }
 
     @RequestMapping(value = "/billstock/checkrelation")
@@ -187,6 +218,16 @@ public class BillStockController {
 
 
         response.getWriter().println("false");
+    }
+
+
+    @RequestMapping(value = "/billstock/print")
+    @RequiresPermissions("billstock:print")
+    public ModelAndView Print(int ID)
+    {
+        ModelAndView mav=Edit(ID);
+        mav.addObject("issprint",1);
+        return mav;
     }
 
 

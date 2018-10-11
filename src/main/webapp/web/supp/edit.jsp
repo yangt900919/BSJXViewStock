@@ -67,9 +67,9 @@ validators: {
   </head>
   
   <body>
-   <h3 class=title>
-  供应商信息管理
-   </h3>
+   <div class=title>
+  &nbsp;供应商信息管理
+   </div>
     <div class="container-fluid editpage-content">
   
    <form action="supplier/save"  class="form-horizontal" method="post" id=form>
@@ -92,12 +92,14 @@ validators: {
   
   </div>
    <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
-  <!--  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
-   </div>
+       <div class="col-sm-offset-3 col-sm-9">
+           <button type="submit" class="btn btn-primary btn-sm">
+               <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+           <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
+
+               <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+       </div>
    </div>
   </form>
   </body>

@@ -64,10 +64,11 @@
             <tr style="height: 45px;">
                 <th>&nbsp;&nbsp;物料代码&nbsp;&nbsp;</th>
                 <th>物料名称</th>
+                <th>计量单位</th>
                 <th>仓库</th>
                 <th>数量</th>
-                <th>交货日期</th>
-                <th>合同号</th>
+               <%-- <th>交货日期</th>
+                <th>合同号</th>--%>
 
 
             </tr>
@@ -77,11 +78,12 @@
                 <tr style="height: 45px;">
                     <td>${map.material.materialnumber}</td>
                     <td>${map.material.materialname}</td>
-                    <td>${map.stock.stockname}</td>
+                    <td>${map.material.materialunit}</td>
+                    <td>${map.stock.fname}</td>
                     <td>${map.fqty}</td>
-                    <td><fmt:formatDate value="${map.fdeldate}" pattern="yyyy-MM-dd"></fmt:formatDate>
+                   <%-- <td><fmt:formatDate value="${map.fdeldate}" pattern="yyyy-MM-dd"></fmt:formatDate>
                     </td>
-                    <td>${map.fcontnum}</td>
+                    <td>${map.fcontnum}</td>--%>
 
 
                 </tr>

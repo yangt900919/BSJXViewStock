@@ -27,36 +27,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          pageNow=${page.pageNow};
 	 });
 
-
+     $("#home", parent.document).removeClass("active");
+     $("#link", parent.document).empty();
+     $("#link", parent.document).addClass("active");
+     $("#link", parent.document).text("物料二维码打印管理");
 	</script>
   </head>
   
   <body>
 <%--  <jsp:include page="condition.jsp"></jsp:include>--%>
    <div class=container-fluid>
-   <h3 class=title_index>
-  物料二维码打印管理
-   </h3>
-   <div class="row">
-       <div class="col-md-3 col-sm-3 col-xs-4" >
-        <div class=row>
-      <%--<c:if test="${maboxprint_add=='maboxprint_add' }">--%>
-        <div class="col-md-4 col-sm-4 col-xs-4" >  <a class="btn btn-primary btn-sm"  href="maboxprint/create">
-        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-     <%--   </c:if>
-        <c:if test="${maboxprint_delete=='maboxprint_delete' }">--%>
-             <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('maboxprint')">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        删除</a>
-           </div>
-          <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="PrintqrCode('maboxprint')">
-              <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
-              打印</a>
-          </div>
-      
-    </div>
+   <div class=title_index>
+  &nbsp;齐套二维码打印管理
    </div>
-       <div class="col-md-9 col-sm-9 col-xs-3">
+   <div class="row">
+       <div class="col-md-6 col-sm-6 col-xs-6" >
            <form class="form-inline" action="maboxprint/getList">
                <div class="form-group">
                    <label for="fboxno">箱号</label>
@@ -68,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <input  type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="" value="${model.supplier.suppliername}">
                        <input type="hidden" class="form-control" id="fsupplierid" name=fsupplierid  placeholder="" value="${maboxprint.fsupplierid}">
                        <span class="input-group-btn">
-         <button class="btn btn-primary" type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                    </div>
                </div>
@@ -79,14 +64,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                </button>
            </form>
        </div>
+
+       <div class="col-md-6 col-sm-6 col-xs-6" >
+           <div class="buttongroups"> <a class="btn btn-warning btn-sm"  href="javascript:;" onclick="PrintqrCode('maboxprint')">
+               <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+               打印</a>
+           </div>
+           <div class="buttongroups"> <a class="btn btn-danger btn-sm"  href="javascript:;" onclick="DeleteBatch('maboxprint')">
+               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+               删除</a>
+           </div>
+        <div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="maboxprint/create">
+        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
+     <%--   </c:if>
+        <c:if test="${maboxprint_delete=='maboxprint_delete' }">--%>
+
+
+      
+    </div>
+
    </div>
-  <hr>
+
        <div class="table-responsive">
    <table class="table table-bordered table-hover  ">
   <thead class=thead>
   <tr>
   <th>
-  <input type="checkbox"  class="push" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
 
   <th >编号</th>
@@ -101,7 +105,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <c:forEach items="${maboxprintlist }" var="map">
   <tr>
   <td>
-    <input type="checkbox" name=push class="push" value=${map.fid}>
+    <input type="checkbox" name=check class="check" value=${map.fid}>
   </td>
   <td>${map.fbillno }</td>
   <td>${map.fboxno }</td>

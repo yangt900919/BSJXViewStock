@@ -14,6 +14,7 @@
     <result column="fdepartmentid" jdbcType="INTEGER" property="fdepartmentid" />
     <result column="fstatus" jdbcType="INTEGER" property="fstatus" />
     <result column="fnote" jdbcType="VARCHAR" property="fnote" />
+    <result column="fbuyer" jdbcType="VARCHAR" property="fbuyer" />
     <result column="fbizdate" jdbcType="TIMESTAMP" property="fbizdate" />
 
     <association property="organization" javaType="com.linkpal.model.Organization">
@@ -22,10 +23,10 @@
       <result column="orname" property="organizationname"/>
     </association>
 
-    <association property="restock" javaType="com.linkpal.model.Stock">
+    <association property="restock" javaType="com.linkpal.model.ERPStock">
       <id column="stid" property="fid"/>
-      <result column="stnumber" property="stocknumber"/>
-      <result column="stname" property="stockname"/>
+      <result column="stnumber" property="fnumber"/>
+      <result column="stname" property="fname"/>
     </association>
 
     <association property="creator" javaType="com.linkpal.model.User">
@@ -56,16 +57,19 @@
       <result column="fentriyid" jdbcType="INTEGER" property="fentriyid" />
       <result column="fmaid" jdbcType="INTEGER" property="fmaid" />
       <result column="fstockid" jdbcType="INTEGER" property="fstockid" />
-      <result column="fqty" jdbcType="INTEGER" property="fqty" />
+      <result column="fqty" jdbcType="DOUBLE" property="fqty" />
       <result column="fstate" jdbcType="INTEGER" property="fstate" />
       <result column="fbrand" jdbcType="VARCHAR" property="fbrand" />
       <result column="fqulity" jdbcType="VARCHAR" property="fqulity" />
       <result column="fdeldate" jdbcType="TIMESTAMP" property="fdeldate" />
       <result column="fcontnum" jdbcType="VARCHAR" property="fcontnum" />
-      <result column="freceiptqty" jdbcType="INTEGER" property="freceiptqty" />
-      <result column="frefoundqty" jdbcType="INTEGER" property="frefoundqty" />
-      <result column="fstoredqty" jdbcType="INTEGER" property="fstoredqty" />
+      <result column="freceiptqty" jdbcType="DOUBLE" property="freceiptqty" />
+      <result column="funreceiptqty" jdbcType="DOUBLE" property="funreceiptqty" />
+      <result column="frefoundqty" jdbcType="DOUBLE" property="frefoundqty" />
+      <result column="fstoredqty" jdbcType="DOUBLE" property="fstoredqty" />
       <result column="fjudgetype" jdbcType="VARCHAR" property="fjudgetype" />
+      <result column="fprice" jdbcType="DOUBLE" property="fprice" />
+      <result column="fcurrency" jdbcType="VARCHAR" property="fcurrency" />
       <result column="fnote" jdbcType="VARCHAR" property="fnote" />
 
       <association property="material" javaType="com.linkpal.model.Material">
@@ -75,12 +79,12 @@
         <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
         <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
       </association>
-      <association property="stock" javaType="com.linkpal.model.Stock">
+      <association property="stock" javaType="com.linkpal.model.ERPStock">
         <id column="fstid" jdbcType="INTEGER" property="fid" />
-        <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
-        <result column="stockName" jdbcType="VARCHAR" property="stockname" />
-        <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
-        <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+        <result column="stockNumber" jdbcType="VARCHAR" property="fnumber" />
+        <result column="stockName" jdbcType="VARCHAR" property="fname" />
+<!--        <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
+        <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />-->
       </association>
     </collection>
 
@@ -155,16 +159,17 @@
       ,t1.fqulity
       ,t1.fdeldate
       ,t1.fcontnum
-      ,isnull(t1.freceiptqty,0)freceiptqty
-      ,isnull(t1.frefoundqty,0)frefoundqty
-      ,isnull(t1.fstoredqty,0)fstoredqty
+      ,round(isnull(t1.freceiptqty,0),6)freceiptqty
+       ,  (select round(t1.fqty-isnull(sum(fqty),0),6) from t_vs_billcheckentry where   foid=t1.fentriyid and fobillid=t1.fbillid)funreceiptqty
+      ,round(isnull(t1.frefoundqty,0),6)frefoundqty
+      ,round(isnull(t1.fstoredqty,0),6)fstoredqty
       ,t1.fjudgetype
       ,t1.fnote,t3.fid suid,t3.supplierNumber sunumber,t3.supplierName suname,
       t4.fid orid,t4.organizationName ornumber,t4.organizationName orname,
-      t5.fid stid,t5.stockNumber stnumber,t5.stockName stname,
+      t5.fid stid,t5.fnumber stnumber,t5.fname stname,
       t6.fid cuid,t6.customName cuname,t6.customNumber cunumber,t7.fid crid,t7.userName crname,
       t8.fid auid,t8.userName auname,t9.fid fmaid,t9.materialNumber,t9.materialName,t9.materialModel,
-      t9.materialUnit,t10.fid fstid,t10.stockNumber,t10.stockName,t10.stockAddress,t10.stockTel
+      t9.materialUnit,t10.fid fstid,t10.fnumber stocknumber,t10.fname stockname
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.BillorderExample" resultMap="BaseResultMap">
     select
@@ -177,12 +182,12 @@
     left join T_VS_BillOrderEntry t1 on t0.fbillid=t1.fbillid
     left join T_VS_Supplier t3 on t0.fsupplierid=t3.fid
     left join T_VS_Organization t4 on t0.fdepartmentid=t4.fid
-    left join T_VS_Stock t5 on t0.frestockid=t5.fid
+    left join T_VS_ERPStock t5 on t0.frestockid=t5.fid
     left join T_VS_Custom t6 on t0.fcustomid=t6.fid
     left join T_VS_User t7 on t0.fcruserid=t7.fid
     left join T_VS_User t8 on t0.fchuserid=t8.fid
     left join T_VS_Material t9 on t1.fmaid=t9.fid
-    left join T_VS_Stock t10 on t1.fstockid=t10.fid
+    left join T_VS_ERPStock t10 on t1.fstockid=t10.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -197,12 +202,12 @@
     left join T_VS_BillOrderEntry t1 on t0.fbillid=t1.fbillid
     left join T_VS_Supplier t3 on t0.fsupplierid=t3.fid
     left join T_VS_Organization t4 on t0.fdepartmentid=t4.fid
-    left join T_VS_Stock t5 on t0.frestockid=t5.fid
+    left join T_VS_ERPStock t5 on t0.frestockid=t5.fid
     left join T_VS_Custom t6 on t0.fcustomid=t6.fid
     left join T_VS_User t7 on t0.fcruserid=t7.fid
     left join T_VS_User t8 on t0.fchuserid=t8.fid
     left join T_VS_Material t9 on t1.fmaid=t9.fid
-    left join T_VS_Stock t10 on t1.fstockid=t10.fid
+    left join T_VS_ERPStock t10 on t1.fstockid=t10.fid
     where t0.fbillid = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByExample" parameterType="com.linkpal.model.BillorderExample">
@@ -220,13 +225,13 @@
     insert into T_VS_BillOrder ( fnumber, fsupplierid,
       fcustomid, frestockid, fcreatetime, 
       fcruserid, fcheckdate, fchuserid, 
-      fdepartmentid, fstatus, fnote,fbizdate
+      fdepartmentid, fstatus, fnote,fbizdate,fbuyer
       )
     values ( #{fnumber,jdbcType=VARCHAR}, #{fsupplierid,jdbcType=INTEGER},
       #{fcustomid,jdbcType=INTEGER}, #{frestockid,jdbcType=INTEGER}, #{fcreatetime,jdbcType=TIMESTAMP}, 
       #{fcruserid,jdbcType=INTEGER}, #{fcheckdate,jdbcType=TIMESTAMP}, #{fchuserid,jdbcType=INTEGER}, 
       #{fdepartmentid,jdbcType=INTEGER}, #{fstatus,jdbcType=INTEGER}, #{fnote,jdbcType=VARCHAR},
-      #{fbizdate,jdbcType=TIMESTAMP}
+      #{fbizdate,jdbcType=TIMESTAMP},#{fbuyer,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Billorder">
@@ -269,6 +274,9 @@
       <if test="fbizdate != null">
         fbizdate,
       </if>
+      <if test="fbuyer != null">
+        fbuyer,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
 
@@ -307,6 +315,9 @@
       </if>
       <if test="fbizdate != null">
         #{fbizdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fbuyer != null">
+        #{fbuyer,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -358,6 +369,9 @@
       <if test="fbizdate != null">
         fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="fbuyer != null">
+        fbuyer = #{fbuyer,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -377,7 +391,8 @@
       fdepartmentid = #{fdepartmentid,jdbcType=INTEGER},
       fstatus = #{fstatus,jdbcType=INTEGER},
       fnote = #{fnote,jdbcType=VARCHAR},
-      fbizdate = #{fbizdate,jdbcType=TIMESTAMP}
+      fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
+    fbuyer = #{fbuyer,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -397,7 +412,8 @@
       fdepartmentid = #{fdepartmentid,jdbcType=INTEGER},
       fstatus = #{fstatus,jdbcType=INTEGER},
       fnote = #{fnote,jdbcType=VARCHAR},
-      fbizdate = #{fbizdate,jdbcType=TIMESTAMP}
+      fbizdate = #{fbizdate,jdbcType=TIMESTAMP},
+       fbuyer = #{fbuyer,jdbcType=VARCHAR}
     where fbillid = #{fbillid,jdbcType=INTEGER}
   </update>
 
@@ -407,16 +423,28 @@
     left join T_VS_BillOrderEntry t1 on t0.fbillid=t1.fbillid
     left join T_VS_Supplier t3 on t0.fsupplierid=t3.fid
     left join T_VS_Organization t4 on t0.fdepartmentid=t4.fid
-    left join T_VS_Stock t5 on t0.frestockid=t5.fid
+    left join T_VS_ERPStock t5 on t0.frestockid=t5.fid
     left join T_VS_Custom t6 on t0.fcustomid=t6.fid
     left join T_VS_User t7 on t0.fcruserid=t7.fid
     left join T_VS_User t8 on t0.fchuserid=t8.fid
     left join T_VS_Material t9 on t1.fmaid=t9.fid
-    left join T_VS_Stock t10 on t1.fstockid=t10.fid
-    where t0.fbillid not IN (
-    select top ${pageIndex} tt0.fbillid from T_VS_BillOrder tt0
+    left join T_VS_ERPStock t10 on t1.fstockid=t10.fid
+    where t1.fid not IN (
+    select top ${pageIndex} tt1.fid from T_VS_BillOrder tt0
     left join T_VS_BillOrderEntry tt1 on tt0.fbillid=tt1.fbillid
-    where CONVERT(varchar,tt0.fbizdate,23) between #{sdate} and #{edate}
+    where isnull(tt1.fqty,0)!=isnull(tt1.freceiptqty,0)
+      <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+        and convert(varchar,cast(tt0.fcreatetime as datetime),23) &gt; #{sdate}
+      </if>
+      <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+        and convert(varchar,cast(tt0.fcreatetime as datetime),23) &lt; #{sdate}
+      </if>
+      <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+        and convert(varchar,cast(tt0.fcreatetime as datetime),23) between #{sdate} and #{edate}
+      </if>
+    <if test="creatorid!=null">
+      and tt0.fcruserid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and tt0.fnumber like '%${fnumber}%'
     </if>
@@ -438,9 +466,22 @@
       and tt1.fstockid =#{fstockid}
     </if>
 
+    order by tt0.fbillid desc,tt1.fid
 
     )
-    and CONVERT(varchar,t0.fbizdate,23) between #{sdate} and #{edate}
+    and isnull(t1.fqty,0)!=isnull(t1.freceiptqty,0)
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t0.fcreatetime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t0.fcreatetime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t0.fcreatetime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="creatorid!=null">
+      and t0.fcruserid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and t0.fnumber like '%${fnumber}%'
     </if>
@@ -461,13 +502,25 @@
       and t1.fstockid =#{fstockid}
     </if>
 
-    order by t0.fbillid
+    order by t0.fbillid desc,t1.fid
   </select>
   <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
 
     select count(*) from T_VS_BillOrder tt0
     left join T_VS_BillOrderEntry tt1 on tt0.fbillid=tt1.fbillid
-    where CONVERT(varchar,tt0.fbizdate,23) between #{sdate} and #{edate}
+    where isnull(tt1.fqty,0)!=isnull(tt1.freceiptqty,0)
+      <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+        and convert(varchar,cast(tt0.fcreatetime as datetime),23) &gt; #{sdate}
+      </if>
+      <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+        and convert(varchar,cast(tt0.fcreatetime as datetime),23) &lt; #{sdate}
+      </if>
+      <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+        and convert(varchar,cast(tt0.fcreatetime as datetime),23) between #{sdate} and #{edate}
+      </if>
+   <if test="creatorid!=null">
+     and tt0.fcruserid=#{creatorid}
+   </if>
     <if test="fnumber!='' and fnumber!=null">
       and tt0.fnumber like '%${fnumber}%'
     </if>
@@ -517,4 +570,20 @@ exec Proc_initAutoNum 'T_VS_BillOrder','CGDD'
   <select id="getPushDownQty" statementType="CALLABLE"  parameterType="Integer" resultType="float">
     exec Proc_getPushDownQty #{fentryid},#{fid},'t_vs_billcheckentry'
   </select>
+
+  <select id="saveBillOrder" statementType="CALLABLE" resultType="java.util.Map" parameterType="java.util.Map">
+    exec Proc_saveBillOrder #{采购凭证},#{凭证日期},#{供应商/供应工厂},#{creatorid},#{PGr},#{物料},#{短文本},#{OUn},#{数量},#{净价},#{币别},#{库位},#{flag}
+  </select>
+
+  <update id="updateStock" parameterType="java.util.Map">
+    update t_vs_material set fstockid=#{fstockid} where fid=#{fmaterialid}
+
+    UPDATE t set t.frestockid=#{fstockid} from T_VS_BillOrder t
+inner join t_vs_billorderentry t1 on t.fbillid=t1.fbillid
+where t1.fmaid=#{fmaterialid}
+
+UPDATE t1 set t1.fstockid=#{fstockid} from T_VS_BillOrder t
+inner join t_vs_billorderentry t1 on t.fbillid=t1.fbillid
+where t1.fmaid=#{fmaterialid}
+  </update>
 </mapper>

@@ -28,7 +28,14 @@ public class PageList<T> {
 			t=(T) session.getAttribute(name);
 		}
 		Page page = null;
-    	int totalCount=dao.getTotalNum(t);
+    	int totalCount=0;
+    	try{
+			totalCount=dao.getTotalNum(t);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
     	if (pageNow != null) {  
 	        page = new Page(totalCount, Integer.parseInt(pageNow));  
 	    } else {  

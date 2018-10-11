@@ -4,9 +4,11 @@ import com.linkpal.model.Billget;
 import com.linkpal.model.Page;
 import com.linkpal.model.User;
 import com.linkpal.service.*;
+import com.linkpal.util.DateUtil;
 import com.linkpal.util.InitBinderUtil;
 import com.linkpal.util.MapUtil;
 import com.linkpal.util.GlobalVarContext;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,7 +38,7 @@ public class BillGetController {
     @Autowired
     IMaterialService materialService;
     @Autowired
-    IStockService stockService;
+    IERPStockService stockService;
     @Autowired
     IUserService userService;
     @Autowired
@@ -45,12 +47,13 @@ public class BillGetController {
     ICustomService customService;
 
     @RequestMapping(value = "/billget/index")
+    @RequiresPermissions("billget:view")
     public ModelAndView Index()
     {
         ModelAndView mav=new ModelAndView("web/billget/index");
         mav.addObject("model",new HashMap<>());
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("orgnizationlist", organizationService.getList());
         mav.addObject("customlist", customService.getList());
@@ -59,9 +62,21 @@ public class BillGetController {
 
     @RequestMapping(value = "/billget/getList")
     @ResponseBody
-    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String, String> params)
+    @RequiresPermissions("billget:view")
+    public ModelAndView getList(HttpServletRequest request,@RequestParam Map<String,Object> params)
     {
+        if(params==null)params=new HashMap<>();
 
+        if(params.size()==0)
+        {
+            params.put("sdate", DateUtil.getDatePreM());
+            params.put("edate",DateUtil.getDateNow());
+            params.put("fstate",-1);
+        }
+        if(((User) request.getSession().getAttribute("user")).getUsername().equals("admin"))
+            params.put("creatorid",null);
+        else
+            params.put("creatorid",((User) request.getSession().getAttribute("user")).getFid());
         Map<String, Object> m=billGetService.getPageList(request, params);
         ModelAndView mav=new ModelAndView("web/billget/index");
         mav.addObject("billgetlist", (List<Billget>) m.get("list"));
@@ -69,7 +84,7 @@ public class BillGetController {
         mav.addObject("url", "billget/getList");
         mav.addObject("model",m.get("model"));
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("orgnizationlist", organizationService.getList());
         mav.addObject("customlist", customService.getList());
@@ -79,22 +94,27 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/create")
+    @RequiresPermissions("billget:create")
     public ModelAndView Create(HttpServletRequest request)
     {
         ModelAndView mav=new ModelAndView("web/billget/edit");
         Billget billget=new Billget();
-        User user= GlobalVarContext.user;
+        User user= ((User) request.getSession().getAttribute("user"));
         billget.setCreator(user);
         billget.setFcreaterid(user.getFid());
+        billget.setGetuser(user);
+        billget.setFgeterid(user.getFid());
         billget.setFnumber(billGetService.getAutoNumber());
         mav.addObject("billget",billget);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("orgnizationlist", organizationService.getList());
         mav.addObject("customlist", customService.getList());
         mav.addObject("readonly","");
         mav.addObject("disabled","");
+        mav.addObject("dstock",((User) request.getSession().getAttribute("user")).getStock());
+        mav.addObject("dstockid",((User) request.getSession().getAttribute("user")).getStockid());
        // System.out.println(billget.getFcreatedate());
         return mav;
     }
@@ -125,13 +145,14 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/edit")
+    @RequiresPermissions("billget:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/billget/edit");
        Billget billget=billGetService.getDetail(ID);
         mav.addObject("billget",billget);
         mav.addObject("materiallist", materialService.getList());
-        mav.addObject("stocklist", stockService.getList());
+        mav.addObject("erpstocklist", stockService.getList());
         mav.addObject("userlist",userService.getList());
         mav.addObject("orgnizationlist", organizationService.getList());
         mav.addObject("customlist", customService.getList());
@@ -143,12 +164,14 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/delete")
+    @RequiresPermissions("billget:delete")
     public ModelAndView Delete(HttpServletRequest request, int ID) throws Exception {
         billGetService.delete(ID);
         return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
     }
 
     @RequestMapping(value = "/billget/deleteBatch")
+    @RequiresPermissions("billget:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         billGetService.deleteBatch(ids);
@@ -170,19 +193,23 @@ public class BillGetController {
     }
 
     @RequestMapping(value = "/billget/audit")
+    @RequiresPermissions("billget:audit")
     public ModelAndView Audit(HttpServletRequest request, int ID) throws Exception {
         Billget billget=billGetService.getDetail(ID);
-        billget.setFauditorid(GlobalVarContext.user.getFid());
+        billget.setFauditorid(((User) request.getSession().getAttribute("user")).getFid());
         billget.setFauditdate(new Date());
+        billget.setFstate(1);
         billGetService.update(billget);
         return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
     }
 
     @RequestMapping(value = "/billget/unaudit")
+    @RequiresPermissions("billget:unaudit")
     public ModelAndView UnAudit(HttpServletRequest request, int ID) throws Exception {
         Billget billget=billGetService.getDetail(ID);
         billget.setFauditorid(0);
         billget.setFauditdate(null);
+        billget.setFstate(0);
         billGetService.update(billget);
         return getList(request, (Map) request.getSession().getAttribute("Billget")) ;
     }
@@ -194,6 +221,21 @@ public class BillGetController {
         response.getWriter().println("false");
     }
 
+    @RequestMapping(value = "/billget/print")
+    @RequiresPermissions("billget:print")
+    public ModelAndView Print(int ID)
+    {
+        ModelAndView mav=Edit(ID);
+        mav.addObject("isgprint",1);
+        return mav;
+    }
+
+
+    @RequestMapping(value = "/billget/inventory")
+    public void inventory(HttpServletRequest  request,HttpServletResponse response,int fmaid) throws IOException {
+
+        response.getWriter().println(billGetService.getInventoryQty(fmaid));
+    }
 
     @InitBinder
     public void InitBinder(WebDataBinder dataBinder)

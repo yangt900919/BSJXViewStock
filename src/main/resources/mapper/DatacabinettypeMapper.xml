@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkpal.map.DatacabinettypeMapper">
+  <resultMap id="BaseResultMap" type="com.linkpal.model.Datacabinettype">
+    <id column="FID" jdbcType="INTEGER" property="fid" />
+    <result column="FNumber" jdbcType="VARCHAR" property="fnumber" />
+    <result column="FName" jdbcType="VARCHAR" property="fname" />
+    <result column="FRows" jdbcType="INTEGER" property="frows" />
+    <result column="FColumns" jdbcType="INTEGER" property="fcolumns" />
+    <result column="FRemark" jdbcType="NVARCHAR" property="fremark" />
+    <result column="FCreateTime" jdbcType="TIMESTAMP" property="fcreatetime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    FID, FNumber, FName, FRows, FColumns, FRemark, FCreateTime
+  </sql>
+  <select id="selectByExample" parameterType="com.linkpal.model.example.DatacabinettypeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VS_DataCabinetType
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_VS_DataCabinetType
+    where FID = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_VS_DataCabinetType
+    where FID = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.linkpal.model.example.DatacabinettypeExample">
+    delete from T_VS_DataCabinetType
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.linkpal.model.Datacabinettype">
+    insert into T_VS_DataCabinetType ( FNumber, FName,
+      FRows, FColumns, FRemark, 
+      FCreateTime)
+    values ( #{fnumber,jdbcType=VARCHAR}, #{fname,jdbcType=VARCHAR},
+      #{frows,jdbcType=INTEGER}, #{fcolumns,jdbcType=INTEGER}, #{fremark,jdbcType=NVARCHAR}, 
+      #{fcreatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.linkpal.model.Datacabinettype">
+    insert into T_VS_DataCabinetType
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        FID,
+      </if>
+      <if test="fnumber != null">
+        FNumber,
+      </if>
+      <if test="fname != null">
+        FName,
+      </if>
+      <if test="frows != null">
+        FRows,
+      </if>
+      <if test="fcolumns != null">
+        FColumns,
+      </if>
+      <if test="fremark != null">
+        FRemark,
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fnumber != null">
+        #{fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fname != null">
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="frows != null">
+        #{frows,jdbcType=INTEGER},
+      </if>
+      <if test="fcolumns != null">
+        #{fcolumns,jdbcType=INTEGER},
+      </if>
+      <if test="fremark != null">
+        #{fremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="fcreatetime != null">
+        #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.linkpal.model.example.DatacabinettypeExample" resultType="java.lang.Long">
+    select count(*) from T_VS_DataCabinetType
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_VS_DataCabinetType
+    <set>
+      <if test="record.fid != null">
+        FID = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fnumber != null">
+        FNumber = #{record.fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fname != null">
+        FName = #{record.fname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frows != null">
+        FRows = #{record.frows,jdbcType=INTEGER},
+      </if>
+      <if test="record.fcolumns != null">
+        FColumns = #{record.fcolumns,jdbcType=INTEGER},
+      </if>
+      <if test="record.fremark != null">
+        FRemark = #{record.fremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.fcreatetime != null">
+        FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_VS_DataCabinetType
+    set FID = #{record.fid,jdbcType=INTEGER},
+      FNumber = #{record.fnumber,jdbcType=VARCHAR},
+      FName = #{record.fname,jdbcType=VARCHAR},
+      FRows = #{record.frows,jdbcType=INTEGER},
+      FColumns = #{record.fcolumns,jdbcType=INTEGER},
+      FRemark = #{record.fremark,jdbcType=NVARCHAR},
+      FCreateTime = #{record.fcreatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.linkpal.model.Datacabinettype">
+    update T_VS_DataCabinetType
+    <set>
+      <if test="fnumber != null">
+        FNumber = #{fnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fname != null">
+        FName = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="frows != null">
+        FRows = #{frows,jdbcType=INTEGER},
+      </if>
+      <if test="fcolumns != null">
+        FColumns = #{fcolumns,jdbcType=INTEGER},
+      </if>
+      <if test="fremark != null">
+        FRemark = #{fremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="fcreatetime != null">
+        FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.linkpal.model.Datacabinettype">
+    update T_VS_DataCabinetType
+    set FNumber = #{fnumber,jdbcType=VARCHAR},
+      FName = #{fname,jdbcType=VARCHAR},
+      FRows = #{frows,jdbcType=INTEGER},
+      FColumns = #{fcolumns,jdbcType=INTEGER},
+      FRemark = #{fremark,jdbcType=NVARCHAR},
+      FCreateTime = #{fcreatetime,jdbcType=TIMESTAMP}
+    where FID = #{fid,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteBatch">
+    delete from T_VS_DataCabinetType where FID in (
+    <foreach close="" collection="array" index="index" item="item" open="" separator=",">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+
+  <select id="getList" resultType="com.linkpal.model.Datacabinettype">
+    SELECT top ${pageSize} *
+    from t_VS_dataCabinettype
+    where
+    fid not in (
+    select top ${pageIndex} fid from t_VS_dataCabinettype
+
+    <where>
+      <if test="t.fnumber!=null and t.fnumber!= '' ">
+        and fnumber like '%${t.fnumber}%' 		</if>
+      <if test="t.fname!=null and t.fname!= '' ">
+        and fname like '%${t.fname}%'
+      </if>
+
+    </where>
+    )
+
+    <if test="t.fnumber!=null and t.fnumber!= '' ">
+      and fnumber like '%${t.fnumber}%' 		</if>
+    <if test="t.fname!=null and t.fname!= '' ">
+      and fname like '%${t.fname}%'
+    </if>
+
+
+    order by fid
+  </select>
+  
+</mapper>

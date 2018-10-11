@@ -7,6 +7,7 @@ import com.linkpal.model.Page;
 import com.linkpal.service.IMaterialService;
 import com.linkpal.util.CheckOnlyContext;
 import com.linkpal.util.StringUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,7 @@ public class MaterialController {
     }
 
     @RequestMapping(value = "/material/getList")
+    @RequiresPermissions("material:view")
     public ModelAndView getList(HttpServletRequest request,Material material)
     {
 
@@ -47,6 +49,7 @@ public class MaterialController {
     }
 
     @RequestMapping(value = "/material/create")
+    @RequiresPermissions("material:create")
     public ModelAndView Create()
     {
         ModelAndView mav=new ModelAndView("web/material/edit");
@@ -73,6 +76,7 @@ public class MaterialController {
     }
 
     @RequestMapping(value = "/material/edit")
+    @RequiresPermissions("material:edit")
     public ModelAndView Edit(int ID)
     {
         ModelAndView mav=new ModelAndView("web/material/edit");
@@ -82,12 +86,14 @@ public class MaterialController {
     }
 
     @RequestMapping(value = "/material/delete")
+    @RequiresPermissions("material:delete")
     public ModelAndView Delete(HttpServletRequest request,int ID) throws Exception {
         materialService.delete(ID);
         return getList(request,(Material)request.getSession().getAttribute("Material"));
     }
 
     @RequestMapping(value = "/material/deleteBatch")
+    @RequiresPermissions("material:delete")
     public ModelAndView DeleteBatch(HttpServletRequest request,Integer[] ids)
     {
         materialService.deleteBatch(ids);

@@ -73,7 +73,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    fid, fmaterialid, flot, fapplyqty, frealqty, finventory, fsendstockid, fnote, foid, 
+    fid, fmaterialid, flot, fapplyqty, frealqty,
+   (select ISNULL(SUM(fqty),0) qty from T_VS_Inventory where fmaid=fmaterialid)
+    finventory, fsendstockid, fnote, foid,
     fentryid, fbillid
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.BillgetentryExample" resultMap="BaseResultMap">

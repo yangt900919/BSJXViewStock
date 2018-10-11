@@ -60,14 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            message: '名称不能为空'
        }
    }
- },
-     stockname: {
- 	  validators: {
- 	      notEmpty: {
- 	          message: '所属仓库不能为空'
- 	      }
- 	  }
- 	}
+ }
  }
  });
  });
@@ -75,9 +68,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-     <h3 class=title>
-  柜列信息管理
-   </h3>
+     <div class=title>
+  &nbsp;柜列信息管理
+   </div>
     <div class="container-fluid editpage-content">
 
    <form action="cabinet/save"  class="form-horizontal" method="post" id=form>
@@ -106,10 +99,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            <label for="fstockid" class=col-sm-3>仓库</label>
            <div class=col-sm-9>
            <div class="input-group">
-               <input  type="text"  onfocus="clearBasics('fstockid')"  class="form-control" id="stockname" name="stockname"  placeholder="仓库" value=${cabinet.stock.stockname}>
+               <input  type="text" readonly  onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="仓库" value=${cabinet.stock.stockname}>
                <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${cabinet.fstockid}>
                <span class="input-group-btn">
-           <button class="btn btn-primary" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+           <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
       </span>
            </div></div>
        </div>
@@ -121,15 +114,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   
   </div>
-  
-  <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
-  <!--  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
-   </div>
-   </div>
+
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+               <button  type="button" class="btn btn-warning  btn-sm" onclick="javascript:history.go(-1);">
+
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
   </form>
         <jsp:include page="../../web/shared/modal.jsp"></jsp:include>
 

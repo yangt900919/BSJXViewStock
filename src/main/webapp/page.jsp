@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   <div align="center">  
+   <div align="right">
         <font size="2">共 ${page.totalPageCount} 页</font> <font size="2">第  
             ${page.pageNow} 页</font> <a href="${url}?pageNow=1&condition=1">首页</a>  
         <c:choose>  

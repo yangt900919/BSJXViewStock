@@ -3,9 +3,11 @@ package com.linkpal.map;
 import com.linkpal.model.Role;
 import com.linkpal.model.example.RoleExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
-public interface RoleMapper {
+public interface RoleMapper extends IBaseMapper<Role>{
     long countByExample(RoleExample example);
 
     int deleteByExample(RoleExample example);
@@ -27,4 +29,8 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    public void rolepermissionBind(Map map);
+
+    public void deleteRolePermission(int id);
 }

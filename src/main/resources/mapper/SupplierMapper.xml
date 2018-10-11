@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.SupplierMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Supplier">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="supplierNumber" jdbcType="VARCHAR" property="suppliernumber" />
@@ -188,7 +189,7 @@
 
   <delete id="deleteBatch">
     delete from T_VS_Supplier where FID in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )

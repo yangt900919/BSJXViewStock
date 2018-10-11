@@ -13,6 +13,40 @@
     <title>Title</title>
 </head>
 <body>
+<div class="modal fade" id="erpstockmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >仓库信息列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover  table-striped" id=erpstocktable>
+                    <thead>
+                    <tr>
+                        <th >仓库编号</th>
+                        <th >仓库名称</th>
+                        <%--  <th>仓库地址</th>
+                          <th>联系电话</th>--%>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${erpstocklist }" var="map">
+                        <tr ondblclick="getBasics('erpstock','${map.fid}','${map.fnumber }')">
+                            <td>${map.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.fname }</td>
+                                <%-- <td>${map.stockaddress }</td>
+                               <td>${map.stocktel }</td>--%>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="stockmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -66,7 +100,7 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${materiallist }" var="map">
-                        <tr ondblclick="materialCheck('material','${map.fid}','${map.materialnumber }','${map.materialname }','${map.materialmodel}','${map.materialunit}')">
+                        <tr ondblclick="materialCheck('material','${map.fid}','${map.materialnumber }','${map.materialname }','','${map.materialunit}')">
                             <td>${map.materialnumber }</td>
                                 <%-- <td>${map.FErpNumber }</td> --%>
                             <td>${map.materialname }</td>
@@ -277,6 +311,42 @@
     </div>
 </div>
 
+<div class="modal fade" id="datacabinetmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >资料柜列信息列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover  table-striped" id=datacabinettable>
+                    <thead>
+                    <tr>
+                        <th >资料柜列编码</th>
+                        <th >资料柜列名称</th>
+                        <th>仓库编码</th>
+                        <th>仓库名称</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${cabinetlist }" var="map">
+                        <tr ondblclick="getBasics('datacabinet','${map.fid}','${map.fname }')">
+                            <td>${map.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.fname }</td>
+                            <td>${map.stock.stocknumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.stock.stockname }</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="cabinettypemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -296,6 +366,39 @@
                     <tbody>
                     <c:forEach items="${cabinettypelist }" var="map">
                         <tr ondblclick="getBasics('cabinettype','${map.fid}','${map.fname }')">
+                            <td>${map.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.fname }</td>
+
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="datacabinettypemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >资料柜类型信息列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover  table-striped" id=datacabinettypetable>
+                    <thead>
+                    <tr>
+                        <th >资料柜类型编码</th>
+                        <th >资料柜类型名称</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${cabinettypelist }" var="map">
+                        <tr ondblclick="getBasics('datacabinettype','${map.fid}','${map.fname }')">
                             <td>${map.fnumber }</td>
                                 <%-- <td>${map.FErpNumber }</td> --%>
                             <td>${map.fname }</td>
@@ -356,6 +459,52 @@
     </div>
 </div>
 
+<div class="modal fade" id="datascabinetmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >资料柜信息列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover  table-striped" id=datascabinettable>
+                    <thead>
+                    <tr>
+                        <th >资料柜编码</th>
+                        <th >资料柜名称</th>
+                        <th>资料柜列编码</th>
+                        <th>资料柜列名称</th>
+                        <th>资料柜类型编码</th>
+                        <th>资料柜类型名称</th>
+                        <th>仓库编码</th>
+                        <th>仓库名称</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${scabinetlist }" var="map">
+                        <tr ondblclick="getBasics('datascabinet','${map.fid}','${map.fname }')">
+                            <td>${map.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.fname }</td>
+                            <td>${map.cabinet.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.cabinet.fname }</td>
+                            <td>${map.cabinettype.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.cabinettype.fname }</td>
+                            <td>${map.stock.stocknumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.stock.stockname }</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="goodseatmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -378,6 +527,46 @@
                     <tbody>
                     <c:forEach items="${goodseatlist }" var="map">
                         <tr ondblclick="getBasics('goodseat','${map.fid}','${map.fnumber }')">
+                            <td>${map.fnumber }</td>
+                                <%-- <td>${map.FErpNumber }</td> --%>
+                            <td>${map.scabinet.fnumber }</td>
+                            <td>${map.scabinet.fname }</td>
+                            <td>${map.cabinet.fname }</td>
+                            <td>${map.cabinettype.fname}</td>
+                            <td>${map.stock.stockname }</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="dataseatmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >资料位置信息列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover  table-striped" id=dataseattable>
+                    <thead>
+                    <tr>
+                        <th >资料位置编码</th>
+                        <th >资料柜编码</th>
+                        <th >资料柜名称</th>
+                        <th>资料柜列</th>
+                        <th>资料柜类型</th>
+                        <th>仓库</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${dataseatlist }" var="map">
+                        <tr ondblclick="getBasics('dataseat','${map.fid}','${map.fnumber }')">
                             <td>${map.fnumber }</td>
                                 <%-- <td>${map.FErpNumber }</td> --%>
                             <td>${map.scabinet.fnumber }</td>

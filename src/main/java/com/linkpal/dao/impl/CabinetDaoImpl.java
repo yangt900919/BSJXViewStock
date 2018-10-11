@@ -2,8 +2,11 @@ package com.linkpal.dao.impl;
 
 import com.linkpal.dao.ICabinetDao;
 import com.linkpal.map.CabinetMapper;
+import com.linkpal.map.ScabinetMapper;
 import com.linkpal.model.Cabinet;
+import com.linkpal.model.Scabinet;
 import com.linkpal.model.example.CabinetExample;
+import com.linkpal.model.example.ScabinetExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +17,9 @@ public class CabinetDaoImpl implements ICabinetDao {
 
     @Autowired
     CabinetMapper cabinetMapper;
+
+    @Autowired
+    ScabinetMapper scabinetMapper;
 
     @Override
     public boolean create(Cabinet cabinet) {
@@ -88,6 +94,13 @@ public class CabinetDaoImpl implements ICabinetDao {
         if(t.getFstockid()!=null&&t.getFstockid()>0)
             example.createCriteria().andFstockidEqualTo(t.getFstockid());
         return (int) cabinetMapper.countByExample(example);
+    }
+
+    @Override
+    public List<Scabinet> getScabinetList(Integer fid) {
+        ScabinetExample example=new ScabinetExample();
+        example.createCriteria().andFcabinetidEqualTo(fid);
+        return scabinetMapper.selectByExample(example);
     }
 
 /*    @Override

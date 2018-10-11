@@ -3,6 +3,7 @@ package com.linkpal.dao.impl;
 import com.linkpal.dao.IBillOrderDao;
 import com.linkpal.map.BillorderMapper;
 import com.linkpal.map.BillorderentryMapper;
+import com.linkpal.model.Billcheck;
 import com.linkpal.model.Billorder;
 import com.linkpal.model.BillorderExample;
 import com.linkpal.model.Billorderentry;
@@ -25,7 +26,10 @@ public class BillOrderDaoImpl implements IBillOrderDao {
 
     @Override
     public boolean create(Billorder billorder) throws Exception {
-       try{ billorderMapper.insert(billorder);}
+       try{
+           Billorder bg=getDetail(billorder.getFnumber());
+           if(bg!=null) billorder.setFnumber(getAutoNumber());
+           billorderMapper.insert(billorder);}
        catch (Exception e){e.printStackTrace();}
         Billorder b=getDetail(billorder.getFnumber());
         int i=1;
@@ -54,12 +58,13 @@ public class BillOrderDaoImpl implements IBillOrderDao {
 
         List<Billorderentry> billorderentries1=billorderMapper.selectByPrimaryKey(billorder.getFbillid()).getBillorderentries();
 
+        if(billorderentries1.size()>billorderentries.size())
         for(int j=billorderentries1.size();j<billorderentries.size();j--)
         {
             billorderentryMapper.deleteByPrimaryKey(billorderentries1.get(j).getFid());
         }
 
-        int i=billorderentries.size()+1;
+        int i=billorderentries.size();
 
         for(Billorderentry entry:billorderentries)
         {
@@ -176,5 +181,15 @@ public class BillOrderDaoImpl implements IBillOrderDao {
     @Override
     public float getPushDownQty(Integer fentryid,Integer fid) {
         return billorderMapper.getPushDownQty(fentryid,fid);
+    }
+
+    @Override
+    public List<Map<String, Object>> saveBillOrder(Map map) {
+        return billorderMapper.saveBillOrder(map);
+    }
+
+    @Override
+    public void updateStock(Map map) {
+        billorderMapper.updateStock(map);
     }
 }

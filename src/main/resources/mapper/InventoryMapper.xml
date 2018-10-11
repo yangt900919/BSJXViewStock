@@ -7,8 +7,8 @@
     <result column="fgoodseatid" jdbcType="INTEGER" property="fgoodseatid" />
     <result column="fstockid" jdbcType="INTEGER" property="fstockid" />
     <result column="fqty" jdbcType="DOUBLE" property="fqty" />
-    <result column="fdate" jdbcType="TIMESTAMP" property="fdate" />
-    <result column="fmdate" jdbcType="TIMESTAMP" property="fmdate" />
+    <result column="fdate" jdbcType="VARCHAR" property="fdate" />
+    <result column="fmdate" jdbcType="VARCHAR" property="fmdate" />
     <result column="fgperiod" jdbcType="DOUBLE" property="fgperiod" />
     <result column="fbatch" jdbcType="VARCHAR" property="fbatch" />
 
@@ -31,6 +31,13 @@
       <result column="stockName" jdbcType="VARCHAR" property="stockname" />
       <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
       <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+    </association>
+
+    <association property="erpstock" javaType="com.linkpal.model.ERPStock">
+      <id column="ferpstid" jdbcType="INTEGER" property="fid" />
+      <result column="erpstnumber" jdbcType="VARCHAR" property="fnumber" />
+      <result column="erpstname" jdbcType="VARCHAR" property="fname" />
+
     </association>
 
     <association property="cabinet" javaType="com.linkpal.model.Cabinet">
@@ -143,8 +150,8 @@
       fstockid, fqty, fdate, 
       fmdate, fgperiod)
     values (#{fid,jdbcType=INTEGER}, #{fmaid,jdbcType=INTEGER}, #{fgoodseatid,jdbcType=INTEGER}, 
-      #{fstockid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE}, #{fdate,jdbcType=TIMESTAMP}, 
-      #{fmdate,jdbcType=TIMESTAMP}, #{fgperiod,jdbcType=DOUBLE})
+      #{fstockid,jdbcType=INTEGER}, #{fqty,jdbcType=DOUBLE}, #{fdate,jdbcType=VARCHAR}, 
+      #{fmdate,jdbcType=VARCHAR}, #{fgperiod,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Inventory">
     insert into T_VS_Inventory
@@ -191,10 +198,10 @@
         #{fqty,jdbcType=DOUBLE},
       </if>
       <if test="fdate != null">
-        #{fdate,jdbcType=TIMESTAMP},
+        #{fdate,jdbcType=VARCHAR},
       </if>
       <if test="fmdate != null">
-        #{fmdate,jdbcType=TIMESTAMP},
+        #{fmdate,jdbcType=VARCHAR},
       </if>
       <if test="fgperiod != null">
         #{fgperiod,jdbcType=DOUBLE},
@@ -226,10 +233,10 @@
         fqty = #{record.fqty,jdbcType=DOUBLE},
       </if>
       <if test="record.fdate != null">
-        fdate = #{record.fdate,jdbcType=TIMESTAMP},
+        fdate = #{record.fdate,jdbcType=VARCHAR},
       </if>
       <if test="record.fmdate != null">
-        fmdate = #{record.fmdate,jdbcType=TIMESTAMP},
+        fmdate = #{record.fmdate,jdbcType=VARCHAR},
       </if>
       <if test="record.fgperiod != null">
         fgperiod = #{record.fgperiod,jdbcType=DOUBLE},
@@ -246,8 +253,8 @@
       fgoodseatid = #{record.fgoodseatid,jdbcType=INTEGER},
       fstockid = #{record.fstockid,jdbcType=INTEGER},
       fqty = #{record.fqty,jdbcType=DOUBLE},
-      fdate = #{record.fdate,jdbcType=TIMESTAMP},
-      fmdate = #{record.fmdate,jdbcType=TIMESTAMP},
+      fdate = #{record.fdate,jdbcType=VARCHAR},
+      fmdate = #{record.fmdate,jdbcType=VARCHAR},
       fgperiod = #{record.fgperiod,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -269,10 +276,10 @@
         fqty = #{fqty,jdbcType=DOUBLE},
       </if>
       <if test="fdate != null">
-        fdate = #{fdate,jdbcType=TIMESTAMP},
+        fdate = #{fdate,jdbcType=VARCHAR},
       </if>
       <if test="fmdate != null">
-        fmdate = #{fmdate,jdbcType=TIMESTAMP},
+        fmdate = #{fmdate,jdbcType=VARCHAR},
       </if>
       <if test="fgperiod != null">
         fgperiod = #{fgperiod,jdbcType=DOUBLE},
@@ -286,24 +293,27 @@
       fgoodseatid = #{fgoodseatid,jdbcType=INTEGER},
       fstockid = #{fstockid,jdbcType=INTEGER},
       fqty = #{fqty,jdbcType=DOUBLE},
-      fdate = #{fdate,jdbcType=TIMESTAMP},
-      fmdate = #{fmdate,jdbcType=TIMESTAMP},
+      fdate = #{fdate,jdbcType=VARCHAR},
+      fmdate = #{fmdate,jdbcType=VARCHAR},
       fgperiod = #{fgperiod,jdbcType=DOUBLE}
     where fid = #{fid,jdbcType=INTEGER}
   </update>
 
+  <!--即时库存明细-->
 
   <select id="getList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
-    select top ${pageSize} t0.*,t1.fid fmaid,t1.materialNumber ,t1.materialName ,t1.materialModel ,
+    select top ${pageSize} t0.*,t1.fid fmaid,t1.materialNumber ,t1.materialName ,t1.materialUnit ,
     t2.fid gID,t2.fnumber gNumber,'' gName,
     t3.fid fstid,t3.stockNumber ,t3.stockName ,t4.fid cID,
-    t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber
+    t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber,t6.fid ferpstid,t6.fnumber erpstnumber,t6.fname erpstname
     from T_VS_Inventory t0
     left join T_VS_Material t1 on t0.fmaid=t1.fid
     left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
     left join T_VS_Stock t3 on t0.FStockID=t3.fid
     left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
     left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+  <!--left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
     where  t0.fqty>0 and t0.fid not in (
     select top ${pageIndex} tt0.fid from T_VS_Inventory tt0
     left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
@@ -311,34 +321,99 @@
     left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
     left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
     left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
-    where  tt0.fqty>0 and   convert(varchar,fdate,23) between #{sdate} and #{edate}
-    <if test="fmaid>0">
-      and tt0.fmaid =#{fmaid}		</if>
-    <if test="fgoodseatid>0">
-      and tt0.fgoodseatid=#{fgoodseatid}
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    <!--left join from T_VS_UserRERPStock  tt7 on tt6.fid=tt7.ferpstockid-->
+   where  tt0.fqty>0
+   <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+     and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+   </if>
+   <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+     and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+   </if>
+   <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+   and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+   </if>
+   <if test="fmaid>0">
+     and tt0.fmaid =#{fmaid}		</if>
+   <if test="fgoodseatid>0">
+     and tt0.fgoodseatid=#{fgoodseatid}
+   </if>
+   <if test="ferpstockid>0">
+     and tt0.ferpstockid =#{ferpstockid} 		</if>
+   <if test="fcabinetid>0">
+     and tt5.fid =#{fcabinetid} 		</if>
+   <if test="fscabinetid>0">
+     and tt4.fid =#{fscabinetid} 		</if>
+   <if test="fbatch!='' and fbatch!=null ">
+     and fbatch  like '%${fbatch}%'
+   </if>
+
+   <if test="fuser!='' and fuser!=null ">
+    and tt6.fid in (
+     select tt7.ferpstockid  from T_VS_UserRERPStock  tt7 where tt7.fuserid=#{fuser}
+     )
+   </if>
+
+
+   order by tt2.fnumber
+   )
+   <if test="fmaid>0">
+     and t0.fmaid =#{fmaid}		</if>
+   <if test="fgoodseatid>0">
+     and t0.fgoodseatid=#{fgoodseatid}
+   </if>
+   <if test="ferpstockid>0">
+     and t0.ferpstockid =#{ferpstockid} 		</if>
+   <if test="fcabinetid>0">
+     and t5.fid =#{fcabinetid} 		</if>
+   <if test="fscabinetid>0">
+     and t4.fid =#{fscabinetid} 		</if>
+   <if test="fbatch!='' and fbatch!=null ">
+     and fbatch  like '%${fbatch}%'
+   </if>
+   <!-- <if test="FSdate!='' and  FSdate!=null">
+   and convert(varchar,t0.fdate,23)=#{FSdate}
+   </if> -->
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
     </if>
-    <if test="fstockid>0">
-      and tt0.fstockid =#{fstockid} 		</if>
-    <if test="fcabinetid>0">
-      and tt5.fid =#{fcabinetid} 		</if>
-    <if test="fscabinetid>0">
-      and tt4.fid =#{fscabinetid} 		</if>
-    <if test="fbatch!='' and fbatch!=null ">
-      and fbatch  like '%${fbatch}%'
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
     </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t6.fid in (
+      select t7.ferpstockid  from T_VS_UserRERPStock  t7 where t7.fuserid=#{fuser}
+      )
+    </if>
+    order by t2.fnumber
+  </select>
 
 
-
-
-    order by tt2.fnumber
-    )
+  <select id="getExportList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select  t0.*,t1.fid fmaid,t1.materialNumber ,t1.materialName ,t1.materialUnit ,
+    t2.fid gID,t2.fnumber gNumber,'' gName,
+    t3.fid fstid,t3.stockNumber ,t3.stockName ,t4.fid cID,
+    t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber,t6.fid ferpstid,t6.fnumber erpstnumber,t6.fname erpstname
+    from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+    <!--left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
+    where  t0.fqty>0
     <if test="fmaid>0">
       and t0.fmaid =#{fmaid}		</if>
     <if test="fgoodseatid>0">
       and t0.fgoodseatid=#{fgoodseatid}
     </if>
-    <if test="fstockid>0">
-      and t0.fstockid =#{fstockid} 		</if>
+    <if test="ferpstockid>0">
+      and t0.ferpstockid =#{ferpstockid} 		</if>
     <if test="fcabinetid>0">
       and t5.fid =#{fcabinetid} 		</if>
     <if test="fscabinetid>0">
@@ -350,8 +425,216 @@
     and convert(varchar,t0.fdate,23)=#{FSdate}
     </if> -->
 
-    and convert(varchar,t0.fdate,23) between #{sdate} and #{edate}
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t6.fid in (
+      select t7.ferpstockid  from T_VS_UserRERPStock  t7 where t7.fuserid=#{fuser}
+      )
+    </if>
     order by t2.fnumber
+  </select>
+
+
+  <select id="getZJList" resultType="java.util.Map" parameterType="java.util.Map">
+ select  top ${pageSize} t2.materialNumber,t2.materialName,t2.materialUnit,t.fnumber fbillno,t3.fnumber fstock,
+CONVERT(varchar,t.fbizdate,23) fdate,t1.fqty,t1.fdate fmdate,t1.fguartime,t1.fbatch
+ from T_VS_BillCheck t
+inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+inner join T_VS_Material t2 on t1.fmaid=t2.fid
+inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+where t.fstatus!=2 and t1.fid not in
+(
+ select top ${pageIndex} tt1.fid from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    where tt0.fstatus!=2
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+      <if test="fmaid>0">
+        and tt1.fmaid =#{fmaid}
+      </if>
+
+      <if test="fstockid>0">
+        and tt1.fstockid =#{ferpstockid}
+      </if>
+      <if test="fbatch!='' and fbatch!=null ">
+        and tt1.fbatch  like '%${fbatch}%'
+      </if>
+
+    order by tt0.fid desc,tt1.fid
+)
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    order by t.fid desc,t1.fid
+  </select>
+
+  <select id="getZJExportList" resultType="java.util.Map" parameterType="java.util.Map">
+    select   t2.materialNumber,t2.materialName,t2.materialUnit,t.fnumber fbillno,t3.fnumber fstock,
+    CONVERT(varchar,t.fbizdate,23) fdate,t1.fqty,t1.fdate fmdate,t1.fguartime,t1.fbatch
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    where t.fstatus!=2
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    order by t.fid desc,t1.fid
+  </select>
+
+  <select id="getHGList" resultType="java.util.Map" parameterType="java.util.Map">
+    select  top ${pageSize} t2.materialNumber,t2.materialName,t2.materialUnit,t.fnumber fbillno,t3.fnumber fstock,
+    CONVERT(varchar,t.fbizdate,23) fdate,t1.fqty,t1.fdate fmdate,t1.fguartime,t1.fbatch
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    left join t_Vs_billstockentry t4 on t1.fbillid=t4.fobillid and t1.fentryid=t4.foid
+    where t.fstatus=2 and t4.fid is null and t1.fid not in
+    (
+    select top ${pageIndex} tt1.fid from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    left join t_Vs_billstockentry tt3 on tt1.fbillid=tt3.fobillid and tt1.fentryid=tt3.foid
+    where tt0.fstatus=2 and tt3.fid is null
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+
+    order by tt0.fid desc,tt1.fid
+    )
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    order by t.fid desc,t1.fid
+  </select>
+
+  <select id="getHGExportList" resultType="java.util.Map" parameterType="java.util.Map">
+    select   t2.materialNumber,t2.materialName,t2.materialUnit,t.fnumber fbillno,t3.fnumber fstock,
+    CONVERT(varchar,t.fbizdate,23) fdate,t1.fqty,t1.fdate fmdate,t1.fguartime,t1.fbatch
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    left join t_Vs_billstockentry t4 on t1.fbillid=t4.fobillid and t1.fentryid=t4.foid
+    where t.fstatus=2 and t4.fid is null
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    order by t.fid desc,t1.fid
   </select>
 
   <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
@@ -361,14 +644,137 @@
     left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
     left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
     left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
-    where  tt0.fqty>0 and   convert(varchar,fdate,23) between #{sdate} and #{edate}
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+   <!-- left join from T_VS_UserRERPStock  tt7 on tt6.fid=tt7.ferpstockid-->
+    where  tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
     <if test="fmaid>0">
       and tt0.fmaid =#{fmaid}		</if>
     <if test="fgoodseatid>0">
       and tt0.fgoodseatid=#{fgoodseatid}
     </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and tt6.fid in (
+      select tt7.ferpstockid  from T_VS_UserRERPStock  tt7 where tt7.fuserid=#{fuser}
+      )
+    </if>
+
+
+  </select>
+
+  <select id="getZJTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    where tt0.fstatus!=2
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
     <if test="fstockid>0">
-      and tt0.fstockid =#{fstockid} 		</if>
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+  </select>
+
+  <select id="getHGTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    left join t_Vs_billstockentry tt3 on tt1.fbillid=tt3.fobillid and tt1.fentryid=tt3.foid
+    where tt0.fstatus=2 and tt3.fid is null
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+  </select>
+
+  <!--即时库存按物料汇总-->
+
+  <select id="getMaList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select top ${pageSize} t1.materialNumber ,t1.materialName ,t1.materialUnit ,
+    isnull(sum(isnull(t0.fqty,0)),0) fqty
+    from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+    <!--left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
+    where  t0.fqty>0 and t0.fid not in (
+    select top ${pageIndex} tt0.fid from T_VS_Inventory tt0
+    left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
+    left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    <!--left join from T_VS_UserRERPStock  tt7 on tt6.fid=tt7.ferpstockid-->
+    where  tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fmaid>0">
+      and tt0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and tt0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
     <if test="fcabinetid>0">
       and tt5.fid =#{fcabinetid} 		</if>
     <if test="fscabinetid>0">
@@ -377,7 +783,601 @@
       and fbatch  like '%${fbatch}%'
     </if>
 
+    <if test="fuser!='' and fuser!=null ">
+      and tt6.fid in (
+      select tt7.ferpstockid  from T_VS_UserRERPStock  tt7 where tt7.fuserid=#{fuser}
+      )
+    </if>
 
+
+    order by tt1.materialnumber
+    )
+    <if test="fmaid>0">
+      and t0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and t0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and t0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and t5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and t4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+    <!-- <if test="FSdate!='' and  FSdate!=null">
+    and convert(varchar,t0.fdate,23)=#{FSdate}
+    </if> -->
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t6.fid in (
+      select t7.ferpstockid  from T_VS_UserRERPStock  t7 where t7.fuserid=#{fuser}
+      )
+    </if>
+    group by t1.materialNumber ,t1.materialName ,t1.materialUnit
+    order by t1.materialNumber
+  </select>
+
+
+  <select id="getMaExportList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select  t1.materialNumber ,t1.materialName ,t1.materialUnit ,
+    isnull(sum(isnull(t0.fqty,0)),0) fqty   from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+    <!--left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
+    where  t0.fqty>0
+    <if test="fmaid>0">
+      and t0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and t0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and t0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and t5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and t4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+    <!-- <if test="FSdate!='' and  FSdate!=null">
+    and convert(varchar,t0.fdate,23)=#{FSdate}
+    </if> -->
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t6.fid in (
+      select t7.ferpstockid  from T_VS_UserRERPStock  tt where t7.fuserid=#{fuser}
+      )
+    </if>
+ group by t1.materialNumber ,t1.materialName ,t1.materialUnit
+    order by t1.materialNumber
+  </select>
+
+
+  <select id="getMaTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from ( select 1 a from T_VS_Inventory tt0
+    left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
+    left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    <!--left join from T_VS_UserRERPStock  tt7 on tt6.fid=tt7.ferpstockid-->
+    where tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fmaid>0">
+      and tt0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and tt0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch like '%${fbatch}%'
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and tt6.fid in (
+      select tt7.ferpstockid  from T_VS_UserRERPStock  tt7 where tt7.fuserid=#{fuser}
+      )
+    </if>
+    group by tt1.materialNumber ,tt1.materialName ,tt1.materialUnit
+    )tb
 
   </select>
+
+
+
+  <select id="getZJMaList" resultType="java.util.Map" parameterType="java.util.Map">
+    select  top ${pageSize} t2.materialNumber,t2.materialName,t2.materialUnit,sum(isnull(t1.fqty,0)) fqty
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    where t.fstatus!=2 and t2.fid not in
+    (
+    select top ${pageIndex} tt1.fmaid from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    where tt0.fstatus!=2
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+group by tt1.fmaid
+    order by tt1.fmaid
+    )
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+   group by t2.materialNumber,t2.materialName,t2.materialUnit
+    order by t2.materialNumber,t2.materialName,t2.materialUnit
+  </select>
+
+  <select id="getZJMaExportList" resultType="java.util.Map" parameterType="java.util.Map">
+    select   t2.materialNumber,t2.materialName,t2.materialUnit,sum(isnull(t1.fqty,0)) fqty
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    where t.fstatus!=2
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    group by t2.materialNumber,t2.materialName,t2.materialUnit
+    order by t2.materialNumber,t2.materialName,t2.materialUnit
+  </select>
+
+  <select id="getHGMaList" resultType="java.util.Map" parameterType="java.util.Map">
+    select  top ${pageSize} t2.materialNumber,t2.materialName,t2.materialUnit,sum(isnull(t1.fqty,0)) fqty
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    left join t_Vs_billstockentry t4 on t1.fbillid=t4.fobillid and t1.fentryid=t4.foid
+    where t.fstatus=2 and t4.fid is null and t1.fmaid not in
+    (
+    select top ${pageIndex} tt1.fmaid from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    left join t_Vs_billstockentry tt3 on tt1.fbillid=tt3.fobillid and tt1.fentryid=tt3.foid
+    where tt0.fstatus=2 and tt3.fid is null
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+group by tt1.fmaid
+    order by tt1.fmaid
+    )
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    group by t2.materialNumber,t2.materialName,t2.materialUnit
+    order by t2.materialNumber,t2.materialName,t2.materialUnit
+  </select>
+
+  <select id="getHGMaExportList" resultType="java.util.Map" parameterType="java.util.Map">
+    select   t2.materialNumber,t2.materialName,t2.materialUnit,sum(isnull(t1.fqty,0))fqty
+    from T_VS_BillCheck t
+    inner join T_VS_BillCheckEntry t1 on t.fid=t1.fbillid
+    inner join T_VS_Material t2 on t1.fmaid=t2.fid
+    inner join T_VS_ERPStock t3 on t1.fstockid=t3.fid
+    left join t_Vs_billstockentry t4 on t1.fbillid=t4.fobillid and t1.fentryid=t4.foid
+    where t.fstatus=2 and t4.fid is null
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and t.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and t1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and t1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and t1.fbatch  like '%${fbatch}%'
+    </if>
+    group by t2.materialNumber,t2.materialName,t2.materialUnit
+    order by t2.materialNumber,t2.materialName,t2.materialUnit
+  </select>
+
+  <select id="getZJMaTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    where tt0.fstatus!=2
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+
+  </select>
+
+  <select id="getHGMaTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from T_VS_BillCheck tt0
+    left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
+    left join t_Vs_billstockentry tt3 on tt1.fbillid=tt3.fobillid and tt1.fentryid=tt3.foid
+    where tt0.fstatus=2 and tt3.fid is null
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!=null">
+      and tt0.fcruid=#{fuser}
+    </if>
+    <if test="fmaid>0">
+      and tt1.fmaid =#{fmaid}
+    </if>
+
+    <if test="fstockid>0">
+      and tt1.fstockid =#{ferpstockid}
+    </if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and tt1.fbatch  like '%${fbatch}%'
+    </if>
+
+  </select>
+
+
+  <!--即时库存按物料货位汇总-->
+
+
+  <select id="getMgList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select top ${pageSize} t1.materialNumber ,t1.materialName ,t1.materialUnit ,t2.fnumber gNumber,
+    isnull(sum(isnull(t0.fqty,0)),0) fqty
+    from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+    <!--left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
+    where  t0.fqty>0 and t0.fid not in (
+    select top ${pageIndex} tt0.fid from T_VS_Inventory tt0
+    left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
+    left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    <!--left join from T_VS_UserRERPStock  tt7 on tt6.fid=tt7.ferpstockid-->
+    where  tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fmaid>0">
+      and tt0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and tt0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+
+    <if test="fuser!='' and fuser!=null ">
+      and tt6.fid in (
+      select tt7.ferpstockid  from T_VS_UserRERPStock  tt7 where tt7.fuserid=#{fuser}
+      )
+    </if>
+
+
+    order by tt2.fnumber
+    )
+    <if test="fmaid>0">
+      and t0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and t0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and t0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and t5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and t4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+    <!-- <if test="FSdate!='' and  FSdate!=null">
+    and convert(varchar,t0.fdate,23)=#{FSdate}
+    </if> -->
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t6.fid in (
+      select t7.ferpstockid  from T_VS_UserRERPStock  t7 where t7.fuserid=#{fuser}
+      )
+    </if>
+    group by t1.materialNumber ,t1.materialName ,t1.materialUnit,t2.fnumber
+    order by t2.fnumber
+  </select>
+
+
+  <select id="getMgExportList"  resultMap="BaseResultMap " parameterType="java.util.Map" >
+    select  t1.materialNumber ,t1.materialName ,t1.materialUnit ,t2.fnumber gNumber
+    isnull(sum(isnull(t0.fqty,0)),0) fqty   from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+    <!--left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
+    where  t0.fqty>0
+    <if test="fmaid>0">
+      and t0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and t0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and t0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and t5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and t4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch  like '%${fbatch}%'
+    </if>
+    <!-- <if test="FSdate!='' and  FSdate!=null">
+    and convert(varchar,t0.fdate,23)=#{FSdate}
+    </if> -->
+
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and t6.fid in (
+      select t7.ferpstockid  from T_VS_UserRERPStock  t7 where t7.fuserid=#{fuser}
+      )
+    </if>
+    group by t1.materialNumber ,t1.materialName ,t1.materialUnit,t2.fnumber
+    order by t1.materialNumber
+  </select>
+
+
+  <select id="getMgTotalNum" parameterType="java.util.Map" resultType="int">
+    select count(*) from ( select 1 a from T_VS_Inventory tt0
+    left join T_VS_Material tt1 on tt0.fmaid=tt1.fid
+    left join T_VS_GoodSeat tt2 on tt0.FGoodSeatID=tt2.fid
+    left join T_VS_Stock tt3 on tt0.FStockID=tt3.fid
+    left join t_vs_scabinet tt4 on tt2.fscabinetid=tt4.fid
+    left join t_vs_cabinet tt5 on tt4.fcabinetid=tt5.fid
+    left join t_vS_erpstock tt6 on tt0.ferpstockid=tt6.fid
+    <!--left join from T_VS_UserRERPStock  tt7 on tt6.fid=tt7.ferpstockid-->
+    where tt0.fqty>0
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(fdate as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(fdate as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="fmaid>0">
+      and tt0.fmaid =#{fmaid}		</if>
+    <if test="fgoodseatid>0">
+      and tt0.fgoodseatid=#{fgoodseatid}
+    </if>
+    <if test="ferpstockid>0">
+      and tt0.ferpstockid =#{ferpstockid} 		</if>
+    <if test="fcabinetid>0">
+      and tt5.fid =#{fcabinetid} 		</if>
+    <if test="fscabinetid>0">
+      and tt4.fid =#{fscabinetid} 		</if>
+    <if test="fbatch!='' and fbatch!=null ">
+      and fbatch like '%${fbatch}%'
+    </if>
+    <if test="fuser!='' and fuser!=null ">
+      and tt6.fid in (
+      select tt7.ferpstockid  from T_VS_UserRERPStock  tt7 where tt7.fuserid=#{fuser}
+      )
+    </if>
+    group by tt1.materialNumber ,tt1.materialName ,tt1.materialUnit,tt2.fnumber
+    )tb
+
+  </select>
+
+  <select id="getInventoryDetail" resultMap="BaseResultMap " parameterType="java.util.Map">
+    select  t0.*,t1.fid fmaid,t1.materialNumber ,t1.materialName ,t1.materialUnit ,
+    t2.fid gID,t2.fnumber gNumber,'' gName,
+    t3.fid fstid,t3.stockNumber ,t3.stockName ,t4.fid cID,
+    t4.fnumber cNumber,t4.fname cName,t5.fid scID ,t5.fname scName,t5.fnumber scNumber,t6.fid ferpstid,t6.fnumber erpstnumber,t6.fname erpstname
+    from T_VS_Inventory t0
+    left join T_VS_Material t1 on t0.fmaid=t1.fid
+    left join T_VS_GoodSeat t2 on t0.FGoodSeatID=t2.fid
+    left join T_VS_Stock t3 on t0.FStockID=t3.fid
+    left join t_vs_scabinet t4 on t2.fscabinetid=t4.fid
+    left join t_vs_cabinet t5 on t4.fcabinetid=t5.fid
+    left join t_vS_erpstock t6 on t0.ferpstockid=t6.fid
+   <!-- left join from T_VS_UserRERPStock  t7 on t6.fid=t7.ferpstockid-->
+    where t1.materialnumber=#{materialnumber}
+  </select>
+
+  <update id="updateQty" parameterType="java.util.Map">
+    update t_vs_inventory set fqty=#{fqty} where fid=#{fid}
+  </update>
 </mapper>

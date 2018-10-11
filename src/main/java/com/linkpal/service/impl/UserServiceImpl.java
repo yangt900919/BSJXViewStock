@@ -5,13 +5,17 @@ import com.linkpal.dao.IUserDao;
 import com.linkpal.model.Page;
 import com.linkpal.model.User;
 import com.linkpal.service.IUserService;
+import com.linkpal.util.PageList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -34,6 +38,8 @@ public class UserServiceImpl implements IUserService {
     public boolean delete(int fid) throws Exception {
         return userDao.delete(fid);
     }
+
+
 
     @Override
     public List<User> getList() {
@@ -75,6 +81,42 @@ public class UserServiceImpl implements IUserService {
         }
         return 0;
     }
+
+    @Override
+    public boolean deleteBatch(Integer[] ids) {
+        return userDao.deleteBatch(ids);
+    }
+
+    @Override
+    public Map<String, Object> getPageList(HttpServletRequest request, User t) {
+        PageList<User> userPageList=new PageList<>();
+        return userPageList.getPageList(userDao,request,t,"User");
+    }
+
+    @Override
+    public void RoleUserBind(int ID, Integer[] ids) {
+        userDao.deleteRoleUser(ID);
+        for (Integer i : ids) {
+            Map map=new HashMap();
+            map.put("fuserid", ID);
+            map.put("froleid", i);
+            userDao.roleuserBind(map);
+        }
+    }
+
+    @Override
+    public void UserBindStock(int id, Integer[] stockId) {
+        userDao.deleteUserERPStock(id);
+        if(stockId.length>0){
+            for(Integer i : stockId){
+                Map map  = new HashMap();
+                map.put("fuserid",id);
+                map.put("ferpstockid",i);
+                userDao.saveUserErpStock(map);
+            }
+        }
+    }
+
 
     @Override
     public User getDetail(int fid) {

@@ -4,12 +4,14 @@ var id="";
 $(document).keydown(function(event){
     keyCode=event.keyCode;
 
-    //alert(keyCode);
+
     if(keyCode==8)
     {
-        //alert(bID+" "+keyCode);
+        /*alert(bName);*/
         $("#"+bID).val(0);
+        $("#"+bName).val("");
         bID="";
+        bName="";
     }
     /*if(keyCode==17)
 	{
@@ -80,7 +82,7 @@ function Delete(url,ID)
                     data: "ID=" +ID,
                     contentType: "application/json; charset=UTF-8",
                     success: function (result) {
-                    //	alert(result);
+                    	//alert(result=="true");
                         if(result)
                         {
                             alert("单据已生成下游单据不能删除!");
@@ -114,38 +116,59 @@ function DeleteBatch(url)
 	var	bool=true;
 	var str="";
         $("input[name='check']:checkbox:checked").each(function () {
-            ids.push($(this).val());
+            ids.push(Number($(this).val().split(",")[0]));
+
+
             if($("#fstate"+$(this).val()).length>0)
 			{
 				if($("#fstate"+$(this).val()).text().trim()=="审核")
 				{
-					bool=false;
+					//bool=false;
 					str="存在已审核单据，批量删除失败!";
+
 				}
 				else
 				{
-                    $.ajax
-                    ({
-                        type: "get",
-                        url: url+"/checkrelation",
-                        data: "ID=" +$(this).val(),
-                        contentType: "application/json; charset=UTF-8",
-                        success: function (result) {
-                            if(result=="true")
-                            {
-                                bool=false;
-                                str="单据已生成下游单据不能删除!";
-                            }
+				    if(ids.length>0)
+                    {
+                        $.ajax
+                        ({
+                            type: "get",
+                            url: url+"/checkrelation",
+                            data: "ID=" +Number($(this).val().split(",")[0]),
+                            contentType: "application/json; charset=UTF-8",
+                            success: function (result) {
 
-                        },
-                        error: function (result, data) {
-                            //alert(data);
-                        }
-                    });
+                                if(result)
+                                {
+
+                                   // bool=false;
+                                    str="单据已生成下游单据不能删除!";
+                                   //alert(str+"fdgdfg");
+                                }
+
+                            },
+                            error: function (result, data) {
+                                //alert(data);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        //bool=false;
+                        str="至少选择一条数据!";
+                    }
+
                 }
 			}
         });
-        if(bool)
+                if(ids.length==0)
+                {
+                    //bool=false;
+                    str="至少选择一条数据!";
+                }
+                alert(str);
+        if(str=="" )
          location.href = url+"/deleteBatch?ids=" + ids;
         else
         	alert(str);
@@ -156,10 +179,24 @@ function DeleteBatch(url)
 var pageNow=1;
 function PrintqrCode(url)
 {
-    if(confirm("确认批量打印?"))
-	{
+    /*if(confirm("确认批量打印?"))
+	{*/
 var qrcodes=[];
-        $("input[name='push']:checkbox:checked").each(function () {
+        $("input[name='check']:checkbox:checked").each(function () {
+            qrcodes.push($(this).val());
+        });
+
+        location.href = url+"/print?qrcodes=" + qrcodes+"&pageNow="+pageNow+"&condition=1";
+    /*}*/
+
+}
+
+function scPrint(url)
+{
+    if(confirm("确认批量打印?"))
+    {
+        var qrcodes=[];
+        $("input[name='check']:checkbox:checked").each(function () {
             qrcodes.push($(this).val());
         });
 
@@ -220,6 +257,7 @@ function getBasics(modal,IDval,nameval)
     $("#"+bID).val(IDval);
     $("#"+bName).val(nameval);
 
+    //alert(bName);
     if(modal=="goodseat")
 	{
         getGSInfo();
@@ -339,34 +377,68 @@ Date.prototype.format=function(fmt)
 
 function adjust(ID)
 {
-	location.href="ItemRGoodsSeat/adjustGoodsSeat?ID="+ID;
+	location.href="materialrgoodseat/adjustGoodseat?ID="+ID;
 	}
 	
 	
 	function Bind()
 {
-	var id=$("#FID").val();
+	var id=$("#fid").val();
 	var ids = [];
           $("input[name='check']:checkbox:checked").each(function () {
               ids.push($(this).val());
           });
-           location.href = "User/Bind?ID="+id+"&rids=" + ids;
+           location.href = "user/bind?ID="+id+"&rids=" + ids;
 }
 	
-	function auth(ID)
+	function bindrole(ID)
 	{
-		location.href="Authority?ID="+ID;
+		location.href="bindrole?ID="+ID;
 		}
-	
-	function doAuth()
+
+		function initpsw(ID)
+        {
+            if(confirm("确认初始化密码!"))
+            {
+                location.href="initpsw?ID="+ID;
+            }
+        }
+
+function auth(ID)
+{
+    location.href="authority?ID="+ID;
+}
+
+function defaultstock(ID,it)
+{
+    var rolename=$(it).parent().prev().text();
+    if(rolename.indexOf(".库管员")>-1){
+        location.href="defaultstock?ID="+ID;
+    }else{
+        alert('不是库管员不能设置仓库');
+    }
+
+
+}
+
+function BindStock(){
+    var id =$("#fid").val();
+    var ids =[];
+    $("input[name='check']:checkbox:checked").each(function(){
+        ids.push($(this).val());
+    });
+    location.href="user/bindStock?ID="+id+"&stockId="+ids;
+}
+
+function doAuth()
 	{
 		
-		var id=$("#FID").val();
+		var id=$("#fid").val();
 		var ids = [];
 	          $("input[name='check']:checkbox:checked").each(function () {
 	              ids.push($(this).val());
 	          });
-	           location.href = "doAuthority?ID="+id+"&pids=" + ids;
+	           location.href = "doauthority?ID="+id+"&pids=" + ids;
 	}
 	function getGSInfo()
 	{

@@ -137,46 +137,51 @@
           <%-- <div id="code${st.index}" class="code"></div>--%>
 
            <table border="1" cellspacing="0" style="text-align: center; width:400px;  font-size: 15px;" >
-               <tr style="height: 60px;">
-                   <td width="60px">编号</td><td>${map.fbillno}</td><td width="60px">批号</td><td width="100px">${map.fbatch}</td>
+               <tr style="height: 50px;">
+                   <td width="60px">编号</td><td>${map.fbillno}</td><td colspan="2" rowspan="3"> <img id="image${st.index}"  src="" /></td>
+
+               </tr>
+               <tr style="height: 50px;">
+                   <td width="60px">批号</td><td width="160px">${map.fbatch}</td>
+               </tr>
+               <tr style="height: 50px;">
+                   <td>物料编码</td><td >${map.material.materialnumber}</td>
                </tr>
                <tr style="height: 60px;">
-                   <td>物料编码</td><td >${map.material.materialnumber}</td><td colspan="2" rowspan="3"> <img id="image${st.index}"  src="" /></td>
+                   <td>物料名称</td><td colspan="3">${map.material.materialname}</td>
                </tr>
-               <tr style="height: 60px;">
-                   <td>物料名称</td><td width="160px">${map.material.materialname}</td>
-               </tr>
-               <tr style="height: 60px;">
+               <%--<tr style="height: 60px;">
                    <td>规格型号</td><td>${map.material.materialmodel}</td>
-               </tr>
-               <tr style="height: 60px;">
-                   <td>保质期</td><td>${map.fgperiod}</td><td>生产日期</td><td>
+               </tr>--%>
+               <tr style="height: 50px;">
+                   <td>保质期</td><td>${map.fgperiod}</td><td width="60px">生产日期</td><td>
                   <%-- <fmt:formatDate value="${map.fmdate}" pattern="yyyy-MM-dd"></fmt:formatDate>--%>
                    ${map.fmdate}
                </td>
                </tr>
                <tr style="height: 60px;">
-                   <td>合格数量</td><td>${map.fquqty}</td><td>到货日期</td><td>
+                   <td>供货单位</td><td >
+                       ${map.supplier.suppliername}
+               </td>
+                   <%--<td>合格数量</td><td></td>--%><td>到货日期</td><td>
                   <%-- <fmt:formatDate value="${map.fadate}" pattern="yyyy-MM-dd"></fmt:formatDate>--%>
                    ${map.fadate}
                </td>
                </tr>
-               <tr style="height: 60px;">
-                   <td>供货单位</td><td colspan="3">
-                   ${map.supplier.suppliername}
-               </td>
-               </tr>
+              <%-- <tr style="height: 60px;">
+
+               </tr>--%>
            </table>
 
            <div style="page-break-after: always"></div>
            <script>
-               var str="{\"fnumber\":\"${map.material.materialnumber}\",\"fsrc_number\":\"${map.fbillno}\",\"fsrc_billid\":,\"fsrc_entryid\":,\"ftype\":\"w\"}";
+               var str="{\"fnumber\":\"${map.material.materialnumber}\",\"fsrc_number\":\"${map.fbillno}\",\"fsrc_billid\":0,\"fsrc_entryid\":0,\"ftype\":\"w\"}";
               //var str="123";
                str=toUtf8(str);
                $("#code${st.index}").qrcode({
                    render: "canvas", //table方式
-                   width:130, //宽度
-                   height:130, //高度
+                   width:120, //宽度
+                   height:120, //高度
                    text: str //任意内容
                });
                var canvas  = document.getElementsByTagName("canvas");

@@ -92,4 +92,9 @@ public class MaterialDaoImpl implements IMaterialDao {
     public boolean create(Material material) {
         return materialMapper.insert(material) > 0;
     }
+
+    @Override
+    public List<Material> getnoStList() {
+        return materialMapper.getnoStList();
+    }
 }

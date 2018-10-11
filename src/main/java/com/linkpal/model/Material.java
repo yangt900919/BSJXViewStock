@@ -1,6 +1,6 @@
 package com.linkpal.model;
 
-import org.hibernate.jsr303.tck.tests.metadata.NotEmpty;
+
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Material implements Serializable {
 
-    @NotEmpty
+
     private String materialnumber;
 
     private Integer fid;

@@ -34,4 +34,6 @@ public interface MaterialMapper extends IBaseMapper<Material>{
     List<Material> getTipPageList(int totalSize, int perSize, String fnumber);
 
     List<Material> getPageList(int totalSize, int perSize);
+
+    List<Material> getnoStList();
 }

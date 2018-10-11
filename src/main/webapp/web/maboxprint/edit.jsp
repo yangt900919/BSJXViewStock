@@ -76,9 +76,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-     <h3 class=title>
-  齐套二维码打印管理
-   </h3>
+     <div class=title>
+  &nbsp;齐套二维码打印管理
+   </div>
     <div class="container-fluid editpage-content">
 
    <form action="maboxprint/save"  class="form-horizontal" method="post" id=form>
@@ -114,19 +114,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
              <input  type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="供货单位" value="${maboxprint.supplier.suppliername}">
              <input type="hidden" class="form-control" id="fsupplierid" name=fsupplierid  placeholder="" value="${maboxprint.fsupplierid}">
              <span class="input-group-btn">
-         <button class="btn btn-primary" type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm" type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
          </div></div>
      </div>
 
-   <div class="form-group">
-  <div class="col-sm-offset-3 col-sm-9">
-  <button type="submit" class="btn btn-primary">
-  <!--  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->  提交</button>
-   <button type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
-  <!--  <span class="glyphicon glyphicon-share-alt" aria-hidden="true" ></span> -->  返回</button>
-   </div>
-   </div>
+       <div class="form-group">
+           <div class="col-sm-offset-3 col-sm-9">
+               <button type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
+
+               <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
+
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
+           </div>
+       </div>
     </div>
   </form>
   

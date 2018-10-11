@@ -13,6 +13,8 @@
     <result column="fstatus" jdbcType="INTEGER" property="fstatus" />
     <result column="fboxno" jdbcType="VARCHAR" property="fboxno" />
     <result column="fisqt" jdbcType="INTEGER" property="fisqt" />
+    <result column="fisinout" jdbcType="INTEGER" property="fisinout" />
+    <result column="fisdata" jdbcType="INTEGER" property="fisdata" />
 
     <association property="supplier" javaType="com.linkpal.model.Supplier">
       <id column="suid" property="fid"/>
@@ -56,12 +58,12 @@
         <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
         <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
       </association>
-      <association property="fStock" javaType="com.linkpal.model.Stock">
+      <association property="fStock" javaType="com.linkpal.model.ERPStock">
         <id column="fstid" jdbcType="INTEGER" property="fid" />
-        <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
-        <result column="stockName" jdbcType="VARCHAR" property="stockname" />
-        <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
-        <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+        <result column="stocknumber" jdbcType="VARCHAR" property="fnumber" />
+        <result column="stockname" jdbcType="VARCHAR" property="fname" />
+ <!--       <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
+        <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />-->
       </association>
     </collection>
 
@@ -131,7 +133,8 @@
     t0.*,t1.fid feid,t1.foid ,t1.fobillid,t1.fonumber,t1.fentryid,t1.fmaid,t1.fqty,t1.fdate,t1.fbillid,t1.feligqty,t1.funqty,t1.freason
 ,t1.fresult,t1.fbatch,t1.fguartime ,t1.fdeltime ,t1.fstockid,t2.fid suid,t2.supplierNumber sunumber,t2.supplierName suname,
  t3.fid crid,t3.username crname,t4.fid auid,t4.username auname,t5.fid fmaid,t5.materialNumber,t5.materialName,t5.materialModel,
- t5.materialUnit,t6.fid fstid,t6.stocknumber,t6.stockname,t6.stockaddress,t6.stocktel
+ t5.materialUnit,t6.fid fstid,t6.fnumber stocknumber,t6.fname stockname
+
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.BillcheckExample" resultMap="BaseResultMap">
     select
@@ -146,7 +149,7 @@
     left join T_VS_User t3 on t0.fcruid=t3.fid
     left join T_VS_User t4 on t0.fchuid=t4.fid
     left join T_VS_Material t5 on t1.fmaid=t5.fid
-    left join T_VS_Stock t6 on t1.fstockid=t6.fid
+    left join T_VS_ERPStock t6 on t1.fstockid=t6.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -155,7 +158,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
      from T_VS_BillCheck t0
     left join T_VS_BillCheckEntry t1 on t0.fid=t1.fbillid
@@ -163,12 +166,14 @@
     left join T_VS_User t3 on t0.fcruid=t3.fid
     left join T_VS_User t4 on t0.fchuid=t4.fid
     left join T_VS_Material t5 on t1.fmaid=t5.fid
-    left join T_VS_Stock t6 on t1.fstockid=t6.fid
+    left join T_VS_ERPStock t6 on t1.fstockid=t6.fid
     where t0.fid = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from T_VS_BillCheck
     where fid = #{fid,jdbcType=INTEGER}
+
+    delete from t_vs_billcheckentry where fbillid=#{fbillid,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.linkpal.model.example.BillcheckExample">
     delete from T_VS_BillCheck
@@ -178,13 +183,13 @@
   </delete>
   <insert id="insert" parameterType="com.linkpal.model.Billcheck">
     insert into T_VS_BillCheck (fnumber, fbizdate,
-      fsupplierid, fcruid, fchuid, 
-      fcretime, fchetime, fstatus,fboxno,fisqt
+      fsupplierid, fcruid, fchuid,
+      fcretime, fchetime, fstatus,fboxno,fisqt,fisinout,fisdata
       )
     values ( #{fnumber,jdbcType=VARCHAR}, #{fbizdate,jdbcType=TIMESTAMP},
-      #{fsupplierid,jdbcType=INTEGER}, #{fcruid,jdbcType=INTEGER}, #{fchuid,jdbcType=INTEGER}, 
+      #{fsupplierid,jdbcType=INTEGER}, #{fcruid,jdbcType=INTEGER}, #{fchuid,jdbcType=INTEGER},
       #{fcretime,jdbcType=TIMESTAMP}, #{fchetime,jdbcType=TIMESTAMP}, #{fstatus,jdbcType=INTEGER},
-      #{fboxno,jdbcType=VARCHAR},#{fisqt,jdbcType=INTEGER}
+      #{fboxno,jdbcType=VARCHAR},#{fisqt,jdbcType=INTEGER},#{fisinout,jdbcType=INTEGER},#{fisdata,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Billcheck">
@@ -219,7 +224,13 @@
         fboxno,
       </if>
       <if test="fisqt">
-        fisqt
+        fisqt,
+      </if>
+      <if test="fisinout">
+        fisinout,
+      </if>
+      <if test="fisdata">
+        fisdata,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -252,7 +263,13 @@
         #{fboxno,jdbcType=VARCHAR},
       </if>
       <if test="fisqt != null">
-        #{fisqt,jdbcType=INTEGER}
+        #{fisqt,jdbcType=INTEGER},
+      </if>
+      <if test="fisinout != null">
+        #{fisinout,jdbcType=INTEGER},
+      </if>
+      <if test="fisdata != null">
+        #{fisdata,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
@@ -296,7 +313,13 @@
         fboxno=#{fboxno,jdbcType=VARCHAR},
       </if>
       <if test="fisqt != null">
-        fisqt=#{fisqt,jdbcType=INTEGER}
+        fisqt=#{fisqt,jdbcType=INTEGER},
+      </if>
+      <if test="fisinout != null">
+        fisqt=#{fisinout,jdbcType=INTEGER},
+      </if>
+      <if test="fisdata != null">
+        fisqt=#{fisdata,jdbcType=INTEGER}
       </if>
     </set>
     <if test="_parameter != null">
@@ -315,7 +338,9 @@
       fchetime = #{record.fchetime,jdbcType=TIMESTAMP},
       fstatus = #{record.fstatus,jdbcType=INTEGER},
       fboxno=#{fboxno,jdbcType=VARCHAR},
-      fisqt=#{fisqt,jdbcType=INTEGER}
+      fisqt=#{fisqt,jdbcType=INTEGER},
+    fisinout=#{fisinout,jdbcType=INTEGER},
+    fisdata=#{fisdata,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -361,7 +386,9 @@
       fchetime = #{fchetime,jdbcType=TIMESTAMP},
       fstatus = #{fstatus,jdbcType=INTEGER},
       fboxno=#{fboxno,jdbcType=VARCHAR},
-      fisqt=#{fisqt,jdbcType=INTEGER}
+      fisqt=#{fisqt,jdbcType=INTEGER},
+      fisinout=#{fisinout,jdbcType=INTEGER},
+      fisdata=#{fisdata,jdbcType=INTEGER}
     where fid = #{fid,jdbcType=INTEGER}
   </update>
 
@@ -374,11 +401,24 @@
     left join T_VS_User t3 on t0.fcruid=t3.fid
     left join T_VS_User t4 on t0.fchuid=t4.fid
     left join T_VS_Material t5 on t1.fmaid=t5.fid
-    left join T_VS_Stock t6 on t1.fstockid=t6.fid
-    where t0.fid not IN (
-    select top ${pageIndex} tt0.fid from T_VS_BillCheck tt0
+    left join T_VS_ERPStock t6 on t1.fstockid=t6.fid
+    where t1.fid not IN (
+    select top ${pageIndex} tt1.fid from T_VS_BillCheck tt0
     left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
-    where CONVERT(varchar,tt0.fbizdate,23) between #{sdate} and #{edate}
+
+    <where>
+      <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+        and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+      </if>
+      <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+        and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+      </if>
+      <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+        and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+      </if>
+    <if test="creatorid!=null">
+      and tt0.fcruid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and tt0.fnumber like '%${fnumber}%'
     </if>
@@ -409,8 +449,21 @@
     <if test="fdeltime!='' and fdeltime!=null">
       and tt1.fdeltime =#{fdeltime}
     </if>
+    </where>
+    order by tt0.fid desc,tt1.fid
     )
-    and CONVERT(varchar,t0.fbizdate,23) between #{sdate} and #{edate}
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(t0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(t0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(t0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    <if test="creatorid!=null">
+      and t0.fcruid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and t0.fnumber like '%${fnumber}%'
     </if>
@@ -440,13 +493,16 @@
     <if test="fdeltime!='' and fdeltime!=null">
       and t1.fdeltime =#{fdeltime}
     </if>
-    order by t0.fid
+    order by t0.fid desc,t1.fid
   </select>
   <select id="getTotalNum" parameterType="java.util.Map" resultType="int">
 
     select count(*) from T_VS_BillCheck tt0
     left join T_VS_BillCheckEntry tt1 on tt0.fid=tt1.fbillid
-    where CONVERT(varchar,tt0.fbizdate,23) between #{sdate} and #{edate}
+   <where>
+    <if test="creatorid!=null">
+      and tt0.fcruid=#{creatorid}
+    </if>
     <if test="fnumber!='' and fnumber!=null">
       and tt0.fnumber like '%${fnumber}%'
     </if>
@@ -476,17 +532,27 @@
     <if test="fdeltime!='' and fdeltime!=null">
       and tt1.fdeltime =#{fdeltime}
     </if>
+    <if test="sdate!='' and sdate!=null and (edate=='' || edate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &gt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and (sdate=='' || sdate==null)">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) &lt; #{sdate}
+    </if>
+    <if test="edate!='' and edate!=null and sdate!='' and sdate!=null">
+      and convert(varchar,cast(tt0.fcretime as datetime),23) between #{sdate} and #{edate}
+    </if>
+    </where>
   </select>
 
   <delete id="deleteBatch">
     delete from T_VS_BillCheck where FID in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )
 
     delete from T_VS_BillCheckentry where fbillid in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )
@@ -511,6 +577,10 @@ exec Proc_initAutoNum 'T_VS_BillCheck','SHTZ'
 
   <select id="BillCheck" statementType="CALLABLE"  parameterType="Integer" resultType="int">
     exec Proc_BillCheck #{fid}
+  </select>
+
+  <select id="BillCheckRewrite_Order" statementType="CALLABLE"  parameterType="java.util.Map" resultType="int">
+    exec Proc_BillCheckRewrite_Order #{fid},#{fuserid},#{fstate}
   </select>
 
 </mapper>

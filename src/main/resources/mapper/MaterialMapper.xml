@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.MaterialMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Material">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="materialNumber" jdbcType="VARCHAR" property="materialnumber" />
     <result column="materialName" jdbcType="VARCHAR" property="materialname" />
     <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
     <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
+<!--
+    <association property="stock" javaType="com.linkpal.model.Stock">
+      <id column="sID" property="fid"/>
+      <result column="sNumber" property="stocknumber"/>
+      <result column="sName" property="stockname"/>
+    </association>-->
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    fid, materialNumber, materialName, materialModel, materialUnit
+    fid, materialNumber, REPLACE(materialName,'"','') materialName, materialModel, materialUnit
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.MaterialExample" resultMap="BaseResultMap">
     select
@@ -212,7 +220,7 @@
 
   <delete id="deleteBatch">
     delete from T_VS_material where FID in (
-    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
       #{item}
     </foreach>
     )
@@ -244,6 +252,10 @@
 
 
     order by fid
+  </select>
+
+  <select id="getnoStList"  resultType="com.linkpal.model.Material">
+    select * from t_vs_material where fstockid=0
   </select>
 
 </mapper>

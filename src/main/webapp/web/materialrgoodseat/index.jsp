@@ -24,41 +24,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		 showCondition("materialrgoodseat",'${materialrgoodseatlist }');
 	 });
+     $("#home", parent.document).removeClass("active");
+     $("#link", parent.document).empty();
+     $("#link", parent.document).addClass("active");
+     $("#link", parent.document).text("物料-货位信息管理");
 	</script>
   </head>
   
   <body>
    <jsp:include page="condition.jsp"></jsp:include>
    <div class=container-fluid>
-   <h3 class=title_index>
-   物料-货位信息管理
-   </h3>
+   <div class=title_index>
+   &nbsp;物料-货位信息管理
+   </div>
   <div class="row">
-       <div class="col-md-3 col-sm-3 col-xs-4" >
-        <div class=row>
-    
-        <div class="col-md-4 col-sm-4 col-xs-4" >  <a class="btn btn-primary btn-sm"  href="materialrgoodseat/create">
-        <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
-     
-      
-             <div class="col-md-4 col-sm-4 col-xs-4"> <a class="btn btn-danger  btn-sm"  href="javascript:;" onclick="DeleteBatch('materialrgoodseat')">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        删除</a>
-           </div>
-      
-             <div class="col-md-4 col-sm-4 col-xs-4">  <a class="btn btn-info  btn-sm"  onclick="filter('materialrgoodseat')" href="javascript:;">
+      <div class="col-md-9 col-sm-9 col-xs-9" ></div>
+       <div class="col-md-3 col-sm-3 col-xs-3" >
+
+             <div class="buttongroups">  <a class="btn btn-info  btn-sm"  onclick="filter('materialrgoodseat')" href="javascript:;">
         <span class="glyphicon   glyphicon-filter" aria-hidden="true"></span>过滤</a>
-           </div> 
-        </div>
-      
+           </div>
+           <div class="buttongroups"> <a class="btn btn-danger  btn-sm"  href="javascript:;" onclick="DeleteBatch('materialrgoodseat')">
+               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+               删除</a>
+           </div>
+           <div class="buttongroups" >  <a class="btn btn-primary btn-sm"  href="materialrgoodseat/create">
+               <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     新增</a></div>
     </div>
    </div> 
-   <br>
+<br>
+       <div class="table-responsive">
    <table class="table table-bordered table-hover table-striped ">
   <thead >
   <tr>
   <th>
-  <input type="checkbox"  class="check" id="checkall" onclick="checkall()">全选
+      &nbsp;<input type="checkbox"  class="check" id="checkall" onclick="checkall()"> &nbsp;
   </th>
   <th >物料编码</th>
   <th >物料名称</th>
@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <td>${map.fremark }</td>
   <td>
 
-   <button class="btn btn-primary btn-xs" onclick="Edit('materialrgoodseat',${map.fid})">
+   <button class="btn btn-success btn-xs" onclick="Edit('materialrgoodseat',${map.fid})">
         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</button>
 
      <%--   <c:if test="${mags_delete=='mags_delete' }">--%>
@@ -98,6 +98,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </c:forEach>
   </tbody>
 </table>
+       </div>
 <jsp:include page="../../page.jsp"></jsp:include>
 <jsp:include page="../../web/shared/modal.jsp"></jsp:include>
    </div>

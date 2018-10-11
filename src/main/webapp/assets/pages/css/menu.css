@@ -1,0 +1,65 @@
+body{
+    margin: auto;
+}
+.navbar
+{
+    background-color: #147ecf !important;
+    border-radius: 0px;
+   color: #fbfafb;
+}
+.navbar-nav>li>a,navbar-nav>li>a:hover,navbar-nav>li>a:visited,navbar-nav>li>a:active
+{
+    text-decoration: none !important;
+    color: #fbfafb !important;
+    font-size:20px;
+}
+.nav_title
+{
+    font-size: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.page-body
+{
+    margin: 100px auto;
+}
+.menu
+{
+   width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    color: #ffffff;
+
+   /* border :1px solid red;*/
+
+}
+
+#libage
+{
+    background-color: #2ba8ff;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+#frequency
+{
+    background-color: #fd672b;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+#value
+{
+    background-color: #6fcc41;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+#qualified
+{
+    background-color: #ea5e56;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+.rname
+{
+    color:#3a3a3a;
+    font-size: 15px;
+}

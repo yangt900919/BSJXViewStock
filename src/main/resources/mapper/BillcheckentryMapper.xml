@@ -27,12 +27,12 @@
       <result column="materialModel" jdbcType="VARCHAR" property="materialmodel" />
       <result column="materialUnit" jdbcType="VARCHAR" property="materialunit" />
     </association>
-    <association property="fStock" javaType="com.linkpal.model.Stock">
+    <association property="fStock" javaType="com.linkpal.model.ERPStock">
       <id column="fid" jdbcType="INTEGER" property="fid" />
-      <result column="stockNumber" jdbcType="VARCHAR" property="stocknumber" />
-      <result column="stockName" jdbcType="VARCHAR" property="stockname" />
-      <result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
-      <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />
+      <result column="stockNumber" jdbcType="VARCHAR" property="fnumber" />
+      <result column="stockName" jdbcType="VARCHAR" property="fname" />
+      <!--<result column="stockAddress" jdbcType="VARCHAR" property="stockaddress" />
+      <result column="stockTel" jdbcType="VARCHAR" property="stocktel" />-->
     </association>
 
   </resultMap>

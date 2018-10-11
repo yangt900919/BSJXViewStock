@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linkpal.map.RoleMapper">
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
   <resultMap id="BaseResultMap" type="com.linkpal.model.Role">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="roleName" jdbcType="VARCHAR" property="rolename" />
+    <collection property="permissions" ofType="com.linkpal.model.Permission">
+      <result column="pID" property="fid"/>
+      <result column="pNumber" property="fnumber"/>
+      <result column="pName" property="fname"/>
+      <result column="pUrl" property="furl"/>
+      <result column="pisNav" property="fisnav"/>
+    </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -64,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    fid, roleName
+   t0.*,t2.fid pID,t2.fnumber pNumber,t2.fname pName,t2.furl pUrl ,t2.fisnav pisNav
   </sql>
   <select id="selectByExample" parameterType="com.linkpal.model.example.RoleExample" resultMap="BaseResultMap">
     select
@@ -73,7 +81,9 @@
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from T_VS_Role
+    from T_VS_Role t0
+    left join T_VS_RoleRPermission t1 on t0.fid=t1.froleid
+    left join T_VS_Permission t2 on t1.FPermissionID=t2.fid
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,8 +94,10 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from T_VS_Role
-    where fid = #{fid,jdbcType=INTEGER}
+    from T_VS_Role t0
+    left join T_VS_RoleRPermission t1 on t0.fid=t1.froleid
+    left join T_VS_Permission t2 on t1.FPermissionID=t2.fid
+    where t0.fid = #{fid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from T_VS_Role
@@ -98,15 +110,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.linkpal.model.Role">
-    insert into T_VS_Role (fid, roleName)
-    values (#{fid,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR})
+    insert into T_VS_Role ( roleName)
+    values ( #{rolename,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.linkpal.model.Role">
     insert into T_VS_Role
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fid != null">
-        fid,
-      </if>
+
       <if test="rolename != null">
         roleName,
       </if>
@@ -162,4 +172,72 @@
     set roleName = #{rolename,jdbcType=VARCHAR}
     where fid = #{fid,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteBatch">
+    delete from T_VS_Role where FID in (
+    <foreach collection="array" index="index" item="item" open="" separator="," close="">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+
+  <select id="getAllList" resultMap="BaseResultMap " >
+    SELECT t0.*,t2.fid pID,t2.fnumber pNumber,t2.fname pName,t2.furl pUrl ,t2.fisnav pisNav from T_VS_Role t0
+    left join T_VS_RoleRPermission t1 on t0.fid=t1.froleid
+    left join T_VS_Permission t2 on t1.FPermissionID=t2.fid order by fid
+  </select>
+
+  <select id="getList"  resultMap="BaseResultMap " >
+    SELECT   t0.*,t2.fid pID,t2.fnumber pNumber,t2.fname pName,t2.furl pUrl ,t2.fisnav pisNav from T_VS_Role t0
+    left join T_VS_RoleRPermission t1 on t0.fid=t1.froleid
+    left join T_VS_Permission t2 on t1.FPermissionID=t2.fid
+    where
+    t0.fid not in (
+    select top ${pageIndex} fid from t_VS_Role
+
+    <where>
+
+      <if test="t.rolename!=null and t.rolename!= '' ">
+        and rolename like '%${t.rolename}%'
+      </if>
+
+    </where>
+    )
+
+
+    <if test="t.rolename!=null and t.rolename!= '' ">
+      and t0.rolename like '%${t.rolename}%'
+    </if>
+
+
+    order by t0.fid
+  </select>
+
+  <select id="getTotalNum" parameterType="com.linkpal.model.Role" resultType="int">
+    SELECT count(*)
+    FROM t_VS_Role
+    <where>
+
+      <if test="rolename!=null and rolename!= '' ">
+        and rolename like '%${rolename}%'
+      </if>
+
+    </where>
+  </select>
+  <select id="checkOnly"  resultType="int">
+    SELECT Count(*)
+    FROM t_VS_Role
+    where rolename=#{param}
+  </select>
+
+
+  <insert id="rolepermissionBind" parameterType="java.util.Map">
+    insert into T_VS_RoleRPermission values(#{FRoleID},#{FPermissionID},getdate())
+  </insert>
+
+  <delete id="deleteRolePermission" parameterType="int">
+    DELETE FROM T_VS_RoleRPermission
+    WHERE froleid=#{id}
+  </delete>
 </mapper>

@@ -46,6 +46,9 @@
             .code{
                 display: none;
             }
+            .datacode{
+                display: none;
+            }
         }
         @media screen
         {
@@ -64,6 +67,9 @@
                 height: 60px;
             }*/
             .code{
+                display: none;
+            }
+            .datacode{
                 display: none;
             }
         }
@@ -128,16 +134,24 @@
 <div class="container">
     <div id="codes" align="center">
         <c:forEach items="${mplist}" var="map" varStatus="st">
-            <c:choose>
-            <c:when test="${ map.fboxno!=null && map.fboxno!=''}">
+
+            <%--<c:choose>
+            <c:when test="${ map.fisqt!=null || map.fisqt==1}">
+--%>
             <div id="code${st.index}" class="code"></div>
-            </c:when>
+
+            <c:if test="${map.fisdata!=null && map.fisdata==1}">
+                <div id="datacode${st.index}" class="datacode"></div>
+            </c:if>
+
+          <%--  </c:when>
             <c:otherwise>
+<c:if>
             <c:forEach items="${map.billcheckentries}" var="entry" varStatus="ste">
                 <div id="code${ste.index}" class="code"></div>
             </c:forEach>
         </c:otherwise>
-        </c:choose>
+        </c:choose>--%>
         </c:forEach>
     </div>
     <div  align="center" id="image">
@@ -145,8 +159,68 @@
         <%--${mplist[0]}--%>
        <c:forEach items="${mplist}" var="map" varStatus="st">
           <%-- <div id="code${st.index}" class="code"></div>--%>
+
+           <c:if test="${map.fisdata!=null && map.fisdata==1}">
+               <c:forEach items="${map.billcheckentries}" var="entry" varStatus="ste">
+                   <%--  <div id="code${ste.index}" class="code"></div>--%>
+                   <table border="1" cellspacing="0" style="text-align: center; width:400px;font-size:15px" >
+                       <tr style="height: 50px;">
+                           <td width="60px" colspan="2">资料</td>
+                           <td colspan="2" rowspan="3"> <img id="dataimage${st.index}"  src="" /></td>
+
+                       </tr>
+                       <tr style="height: 50px;">
+                           <td width="60px">编号</td><td width="160px">${map.fnumber}</td>
+                       </tr>
+                       <tr style="height: 50px;">
+                           <td>物料编码</td><td >${entry.fMaterial.materialnumber}</td>
+                       </tr>
+                       <tr style="height: 60px;">
+                           <td>物料名称</td><td colspan="3">${entry.fMaterial.materialname}</td>
+                       </tr>
+                           <%--     <tr style="height: 60px;">
+                                    <td>规格型号</td><td>${entry.fMaterial.materialmodel}</td>
+                                </tr>--%>
+                      <%-- <tr style="height: 50px;">
+                           <td>保质期</td><td>${entry.fguartime}</td><td width="60px">生产日期</td><td>
+                           <fmt:formatDate value="${entry.fdate}" pattern="yyyy-MM-dd"></fmt:formatDate>
+                               &lt;%&ndash; ${entry.fdate}&ndash;%&gt;
+                       </td>
+                       </tr>--%>
+                       <tr style="height: 60px;">
+                           <td>供货单位</td><td colspan="3">
+                               ${map.supplier.suppliername}
+                       </td>
+                               <%-- <td>合格数量</td><td></td>--%><%--<td>到货日期</td><td>
+                           <fmt:formatDate value="${entry.fdeltime}" pattern="yyyy-MM-dd"></fmt:formatDate>
+                               &lt;%&ndash;            ${entry.fdeltime}&ndash;%&gt;
+                       </td>--%>
+                       </tr>
+                           <%--<tr style="height: 60px;">
+                               <td>供货单位</td><td colspan="3">
+                                   ${map.supplier.suppliername}
+                           </td>
+                           </tr>--%>
+                   </table>
+                   <div style="page-break-after: always"></div>
+                   <script>
+                       var str="{\"fnumber\":\"${entry.fMaterial.materialnumber}\",\"fsrc_number\":\"${map.fnumber}\",\"fsrc_billid\":${entry.fbillid},\"fsrc_entryid\":${entry.fentryid},\"ftype\":\"z\"}";
+                       //var str="123";
+                       str=toUtf8(str);
+                       $("#datacode${st.index}").qrcode({
+                           render: "canvas", //table方式
+                           width:120, //宽度
+                           height:120, //高度
+                           text: str //任意内容
+                       });
+                       var canvas  = document.getElementsByTagName("canvas");
+                       document.getElementById("dataimage${st.index}").src=canvas[${st.index}].toDataURL();
+                   </script>
+               </c:forEach>
+           </c:if>
+
            <c:choose>
-               <c:when test="${map.fboxno!=null && map.fboxno!=''}">
+               <c:when test="${ map.fisqt!=null && map.fisqt==1}">
 
                 <%--   <div id="code${st.index}" class="code"></div>--%>
                      <table border="1" cellspacing="0" style="text-align: center; width:400px;font-size:15px" >
@@ -189,49 +263,57 @@
                       <c:forEach items="${map.billcheckentries}" var="entry" varStatus="ste">
                         <%--  <div id="code${ste.index}" class="code"></div>--%>
                       <table border="1" cellspacing="0" style="text-align: center; width:400px;font-size:15px" >
-                          <tr style="height: 60px;">
-                              <td width="60px">编号</td><td>${map.fnumber}</td><td width="60px">批号</td><td width="100px">${entry.fbatch}</td>
+                          <tr style="height: 50px;">
+                              <td width="60px">编号</td><td>${map.fnumber}</td>
+                              <td colspan="2" rowspan="3"> <img id="image${st.index}"  src="" /></td>
+
+                          </tr>
+                          <tr style="height: 50px;">
+                              <td width="60px">批号</td><td width="160px">${entry.fbatch}</td>
+                          </tr>
+                          <tr style="height: 50px;">
+                              <td>物料编码</td><td >${entry.fMaterial.materialnumber}</td>
                           </tr>
                           <tr style="height: 60px;">
-                              <td>物料编码</td><td >${entry.fMaterial.materialnumber}</td><td colspan="2" rowspan="3"> <img id="image${ste.index}"  src="" /></td>
+                              <td>物料名称</td><td colspan="3">${entry.fMaterial.materialname}</td>
                           </tr>
-                          <tr style="height: 60px;">
-                              <td>物料名称</td><td width="160px">${entry.fMaterial.materialname}</td>
-                          </tr>
-                          <tr style="height: 60px;">
+                     <%--     <tr style="height: 60px;">
                               <td>规格型号</td><td>${entry.fMaterial.materialmodel}</td>
-                          </tr>
-                          <tr style="height: 60px;">
-                              <td>保质期</td><td>${entry.fguartime}</td><td>生产日期</td><td>
+                          </tr>--%>
+                          <tr style="height: 50px;">
+                              <td>保质期</td><td>${entry.fguartime}</td><td width="60px">生产日期</td><td>
                                    <fmt:formatDate value="${entry.fdate}" pattern="yyyy-MM-dd"></fmt:formatDate>
                                  <%-- ${entry.fdate}--%>
                           </td>
                           </tr>
                           <tr style="height: 60px;">
-                              <td>合格数量</td><td>${entry.feligqty}</td><td>到货日期</td><td>
+                              <td>供货单位</td><td  style="width: 160px;word-wrap: break-word">
+                                  ${map.supplier.suppliername}
+                          </td>
+                             <%-- <td>合格数量</td><td></td>--%><td>到货日期</td><td>
                                    <fmt:formatDate value="${entry.fdeltime}" pattern="yyyy-MM-dd"></fmt:formatDate>
                       <%--            ${entry.fdeltime}--%>
                           </td>
                           </tr>
-                          <tr style="height: 60px;">
+                          <%--<tr style="height: 60px;">
                               <td>供货单位</td><td colspan="3">
                                   ${map.supplier.suppliername}
                           </td>
-                          </tr>
+                          </tr>--%>
                       </table>
                       <div style="page-break-after: always"></div>
                  <script>
                           var str="{\"fnumber\":\"${entry.fMaterial.materialnumber}\",\"fsrc_number\":\"${map.fnumber}\",\"fsrc_billid\":${entry.fbillid},\"fsrc_entryid\":${entry.fentryid},\"ftype\":\"w\"}";
                           //var str="123";
                           str=toUtf8(str);
-                          $("#code${ste.index}").qrcode({
+                          $("#code${st.index}").qrcode({
                               render: "canvas", //table方式
-                              width:130, //宽度
-                              height:130, //高度
+                              width:120, //宽度
+                              height:120, //高度
                               text: str //任意内容
                           });
                           var canvas  = document.getElementsByTagName("canvas");
-                          document.getElementById("image${ste.index}").src=canvas[${ste.index}].toDataURL();
+                          document.getElementById("image${st.index}").src=canvas[${st.index}].toDataURL();
                       </script>
                       </c:forEach>
                </c:otherwise>

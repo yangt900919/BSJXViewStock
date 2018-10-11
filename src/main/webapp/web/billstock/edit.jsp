@@ -24,14 +24,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <script type="application/javascript" src="assets/pages/scripts/bill.js"></script>
       <script type="text/javascript">
           index=${billstock.billstockentries.size()}
+/*
+              $("#home", parent.document).removeClass("active");
+          $("#link", parent.document).empty();
+          $("#link", parent.document).addClass("active");
+          $("#link", parent.document).text("入库单信息管理");*/
+
       </script>
   </head>
-  
-  <body>
-     <h3 class=title>
-入库单信息管理
 
-     </h3>
+  <body>
+     <div class=title>
+&nbsp;入库单信息管理
+
+     </div>
     <div class="container ">
 
    <form action="billstock/save"  class="form-horizontal" method="post" id=form>
@@ -86,10 +92,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <div class=row>
 
                                <div class="input-group">
-                                   <input ${readonly} type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="" value=${billstock.supplier.suppliername}>
+                                   <input readonly type="text"  onfocus="clearBasics('fsupplierid')"  class="form-control" id="supplier" name="suppliername"  placeholder="" value=${billstock.supplier.suppliername}>
                                    <input type="hidden" class="form-control" id="fsupplierid" name=fsupplierid  placeholder="" value=${billstock.fsupplierid}>
                                    <span class="input-group-btn">
-         <button class="btn btn-primary" ${disabled} type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm " ${disabled} type="button" onclick="showBasics('supplier','fsupplierid','supplier')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                            </div>
 
@@ -107,10 +113,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <div class=row>
 
                            <div class="input-group">
-                               <input type="text"  ${readonly} onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="stockname"  placeholder="" value=${billstock.stock.stockname}>
+                               <input type="text"  readonly onfocus="clearBasics('fstockid')"  class="form-control" id="stock" name="fname"  placeholder="" value=${billstock.stock.fnumber}>
                                <input type="hidden" class="form-control" id="fstockid" name=fstockid  placeholder="" value=${billstock.fstockid}>
                                <span class="input-group-btn">
-         <button class="btn btn-primary" type="button" onclick="showBasics('stock','fstockid','stock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm " type="button" onclick="showBasics('erpstock','fstockid','erpstock')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                            </div>
 
@@ -125,10 +131,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <div class=row>
 
                            <div class="input-group">
-                               <input type="text" required  ${readonly} onfocus="clearBasics('fkeeperid')"  class="form-control" id="keeper" name="keepername"  placeholder="" value=${billstock.keeper.username}>
+                               <input type="text" required  readonly onfocus="clearBasics('fkeeperid')"  class="form-control" id="keeper" name="keepername"  placeholder="" value=${billstock.keeper.username}>
                                <input type="hidden" class="form-control" id="fkeeperid" name=fkeeperid  placeholder="" value=${billstock.fkeeperid}>
                                <span class="input-group-btn">
-         <button class="btn btn-primary" type="button" onclick="showBasics('user','fkeeperid','keeper')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm " type="button" onclick="showBasics('user','fkeeperid','keeper')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                            </div>
 
@@ -180,20 +186,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
        <div class="row">
            <div class="row">
-               <div class="col-md-4 col-sm-4 col-xs-4" >
-               <div class="col-md-4 col-sm-4 col-xs-4">
-                   <a class="btn btn-primary btn-xs "  href="javaScript:void(0)" onclick="addEntry('stock')">
-                       <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     增加分录</a></div>
+               <div class="col-md-10 col-sm-10 col-xs-10" >   </div>
+               <div class="col-md-1 col-sm-1 col-xs-1">
+                   <button ${disabled} class="btn btn-primary btn-xs " type="button" onclick="addEntry('stock',${billstock.billstockentries.size()})">
+                       <span class="glyphicon   glyphicon-plus" aria-hidden="true"></span>     增加分录</button></div>
 
-           <div class="col-md-4 col-sm-4 col-xs-4">
-               <a class="btn btn-danger btn-xs " href="javaScript:void(0)" onclick="deleteEntry()">
-                   <span class="glyphicon   glyphicon-remove" aria-hidden="true"></span>     删除分录</a></div>
-           </div>
+               <div class="col-md-1 col-sm-1 col-xs-1">
+                   <button ${disabled} class="btn btn-danger btn-xs " type="button" onclick="deleteEntry()">
+                       <span class="glyphicon   glyphicon-remove" aria-hidden="true"></span>     删除分录</button></div>
+
            </div>
            <br>
         <div class="row" >
-<div class="table-responsive">
-                <table class="table table-striped table-bordered ">
+<div class="table-responsive" style="height: 38% !important;">
+                <table class="table table-striped table-bordered " >
                     <thead>
                     <tr>
                         <th>物料代码</th>
@@ -211,7 +217,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
                 <c:forEach items="${billstock.billstockentries}" var="map" varStatus="st">
-                    <tr>
+                    <tr id="tr${st.index}">
 
                         <td>
                             <c:if test="${map.fid>0}">
@@ -221,10 +227,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <input type="hidden" id="fentryid${st.index}" name="billstockentries[${st.index}].fentryid" value="${map.fentryid}"/>
                             </c:if>
                             <div class="input-group">
-                                <input ${readonly} type="text"  onfocus="clearBasics('fmaterialid${st.index}')"  class="form-control bill_input_b" id="material${st.index}" name="billstockentries[${st.index}].maname"  placeholder="" value="${map.material.materialnumber}">
+                                <input readonly type="text"  onfocus="clearBasics('fmaterialid${st.index}')"  class="form-control bill_input_b" id="material${st.index}" name="billstockentries[${st.index}].maname"  placeholder="" value="${map.material.materialnumber}">
                                 <input type="hidden" class="form-control" id="fmaterialid${st.index}" name=billstockentries[${st.index}].fmaterialid  placeholder="" value="${map.fmaterialid}">
                                 <span class="input-group-btn">
-         <button class="btn btn-primary" ${disabled} type="button" onclick="getmaterial('material','fmaterialid${st.index}','material${st.index}','materialname${st.index}','','materialunit${st.index}')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary  btn-sm" ${disabled} type="button" onclick="getmaterial('material','fmaterialid${st.index}','material${st.index}','materialname${st.index}','','materialunit${st.index}')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                             </div>
                         </td>
@@ -239,18 +245,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                  <input ${readonly} type="text" class="form-control bill_input" id="fbatch${st.index}" name="billstockentries[${st.index}].flot"  value="${map.fbatch}" >
                              </td>
                              <td>
-                                 <input ${readonly} type="number" class="form-control bill_input" id="fqty${st.index}" name="billstockentries[${st.index}].fqty"  value="${map.fqty}" >
+                                 <input ${readonly} type="text" class="form-control bill_input" id="fqty${st.index}" name="billstockentries[${st.index}].fqty"  value="${map.fqty}" >
                              </td>
                             <td>
-                                 <input ${readonly}  type="number" class="form-control bill_input" id="factqty${st.index}" name="billstockentries[${st.index}].factqty"  value="${map.factqty}" >
+                                 <input readonly type="text" class="form-control bill_input" id="factqty${st.index}" name="billstockentries[${st.index}].factqty"  value="${map.factqty}" >
                              </td>
 
                                 <td>
                                  <div class="input-group">
-                                     <input ${readonly} type="text"  onfocus="clearBasics('fstockid${st.index}')"  class="form-control bill_input_b" id="stock${st.index}" name="billstockentries[${st.index}].stockname"  placeholder="" value="${map.stock.stockname}">
+                                     <input readonly type="text"  onfocus="clearBasics('fstockid${st.index}')"  class="form-control bill_input_b" id="stock${st.index}" name="billstockentries[${st.index}].fname"  placeholder="" value="${map.stock.fnumber}">
                                      <input  type="hidden" class="form-control" id="fstockid${st.index}" name=billstockentries[${st.index}].fstockid  placeholder="" value="${map.fstockid}">
                                      <span class="input-group-btn">
-              <button class="btn btn-primary" ${disabled} type="button" onclick="showBasics('stock','fstockid${st.index}','stock${st.index}')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+              <button class="btn btn-primary  btn-sm" ${disabled} type="button" onclick="showBasics('erpstock','fstockid${st.index}','stock${st.index}')">&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
          </span>
                                  </div>
                              </td>
@@ -285,7 +291,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                <input type="text"  readonly onfocus="clearBasics('fuserid')"  class="form-control" id="creator" name="creatorname"  placeholder="" value=${billstock.creator.username}>
                                <input type="hidden" class="form-control" id="fuserid" name=fuserid  placeholder="" value=${billstock.fuserid}>
                                <span class="input-group-btn">
-         <button class="btn btn-primary"disabled type="button" >&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm"disabled type="button" >&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                            </div>
 
@@ -316,7 +322,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                <input type="text"  readonly onfocus="clearBasics('fchuserid')"  class="form-control" id="auditor" name="auditorname"  placeholder="" value=${billstock.auditor.username}>
                                <input type="hidden" class="form-control" id="fchuserid" name=fchuserid  placeholder="" value=${billstock.fchuserid}>
                                <span class="input-group-btn">
-         <button class="btn btn-primary" disabled type="button" >&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
+         <button class="btn btn-primary btn-sm" disabled type="button" >&nbsp;<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ></span>&nbsp;</button>
     </span>
                            </div>
 
@@ -344,20 +350,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
        <div class="form-group">
            <div class="col-sm-offset-5 col-sm-7">
-               <button ${disabled} type="submit" class="btn btn-primary">
-                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   提交</button>
+               <button ${disabled} type="submit" class="btn btn-primary btn-sm">
+                   <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>   保存</button>
                <c:if test="${billstock.fid>0}">
-                   <button  type="button" class="btn btn-success" id="btn-print" onclick="billprint('billorder',${billorder.fbillid})">
+                   <button  type="button" class="btn btn-success btn-sm" id="btn-print" onclick="billprint('billstock',${billstock.fid})">
                        <span class="glyphicon glyphicon-print" aria-hidden="true" ></span>  打印</button>
                </c:if>
-               <button  type="button" class="btn btn-warning" onclick="javascript:history.go(-1);">
+               <button  type="button" class="btn btn-warning btn-sm" onclick="javascript:history.go(-1);">
 
-                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  返回</button>
+                   <span class="glyphicon glyphicon-log-out" aria-hidden="true" ></span>  退出</button>
            </div>
        </div>
   </form>
   
   </div>
+     <c:if test="${issprint==1}">
+
+         <jsp:include page="stockprint.jsp"></jsp:include>
+     </c:if>
   <jsp:include page="../shared/modal.jsp"></jsp:include>
   </body>
 </html>
